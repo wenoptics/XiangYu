@@ -1,0 +1,53 @@
+package tk.wenop.XiangYu.network;
+
+import android.content.Context;
+import android.widget.Toast;
+
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+import tk.wenop.XiangYu.bean.MessageEntity;
+
+public class MessageNetwork {
+    public static void save(final Context context,MessageEntity messageEntity){
+
+        messageEntity.save(context,new SaveListener() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(context, "save success", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    Toast.makeText(context,"save failure",Toast.LENGTH_SHORT).show();
+                }
+            });
+    }
+
+    public static void loadMessage(final Context context, final OnGetMessageEntities onGetMessageEntities){
+
+        BmobQuery<MessageEntity> query = new BmobQuery<>();
+        query.findObjects(context,new FindListener<MessageEntity>(){
+            @Override
+            public void onSuccess(List<MessageEntity> messageEntities) {
+                onGetMessageEntities.onGetMessageEntities(messageEntities);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Toast.makeText(context,"get data failure",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    public interface  OnGetMessageEntities{
+
+        public void onGetMessageEntities(List<MessageEntity> allMessageEntities);
+    }
+
+
+} 

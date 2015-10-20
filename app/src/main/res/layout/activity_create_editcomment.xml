@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+         xmlns:android="http://schemas.android.com/apk/res/android"
+         xmlns:custom="http://schemas.android.com/apk/res-auto"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+         <LinearLayout
+              android:id="@+id/jianjie"
+              android:layout_width="match_parent"
+              android:layout_marginLeft="15dp"
+              android:layout_marginBottom="20dp"
+              android:orientation="vertical"
+              android:layout_height="wrap_content">
+
+       <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@color/divider"
+            />
+
+       <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@color/divider"
+            />
+                 <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/good_item_style"
+                    >
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="评论"
+                        android:layout_weight="1"
+                         />
+
+                    <Button
+                        android:id="@+id/comment"
+                        android:layout_weight="2"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent" />
+                </RelativeLayout> 
+       <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@color/divider"
+            />
+
+    	<Button
+           android:layout_marginTop="30dp"
+           android:id="@+id/supply"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@color/material_blue_grey_900"
+           android:text="save"/>
+         </LinearLayout>
+ </ScrollView> 
+    
