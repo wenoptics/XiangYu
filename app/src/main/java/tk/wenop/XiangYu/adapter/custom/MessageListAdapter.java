@@ -7,16 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.lidroid.xutils.HttpUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.bean.MessageEntity;
-import tk.wenop.XiangYu.ui.activity.MessageViewActivity;
+import tk.wenop.XiangYu.ui.activity.CommentCreateEditActivity;
 
 public class MessageListAdapter extends BaseAdapter implements
         AdapterView.OnItemClickListener,
@@ -25,6 +30,8 @@ public class MessageListAdapter extends BaseAdapter implements
     private List<MessageEntity> allMessageEntity = new ArrayList<>();
     private List<MessageEntity> filter_MessageEntity = new ArrayList<>();
 //    DBManager dbManager = DBManager.getInstance();
+    ImageLoader imageLoader;
+    HttpUtils http = new HttpUtils();
 
 
 
@@ -51,6 +58,8 @@ public class MessageListAdapter extends BaseAdapter implements
 
     public MessageListAdapter(Context context){
         this.context = context;
+        imageLoader = ImageLoader.getInstance();
+
     }
 
     @Override
@@ -72,17 +81,16 @@ public class MessageListAdapter extends BaseAdapter implements
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         final MessageEntity  messageEntity = (MessageEntity)getItem(position);
-        MessageHolder messageHolder = new MessageHolder();
+        final MessageHolder messageHolder;
 
         if(convertView == null){
-
+            messageHolder = new MessageHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_message_list,parent,false);
 
             messageHolder.audio = (ImageView) convertView.findViewById(R.id.audio);
-
 			messageHolder.image = (ImageView) convertView.findViewById(R.id.image);
-
-			
+            messageHolder.item_action_comment = (TextView) convertView.findViewById(R.id.item_action_comment);
+//            messageHolder.comment = (EditText) convertView.findViewById(R.id.comment);
 
 
             convertView.setTag(messageHolder);
@@ -90,42 +98,42 @@ public class MessageListAdapter extends BaseAdapter implements
             messageHolder = (MessageHolder) convertView.getTag();
         }
 
-//        messageHolder.audio.setText(messageEntity.getAudio());
-//
-//		messageHolder.image.setText(messageEntity.getImage());
+		imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), messageHolder.image);
+        String path = "http://file.bmob.cn/" + messageEntity.getAudio();
+        messageHolder.audio.setOnClickListener(new NewRecordPlayClickListener(context,path, messageHolder.audio));
 
-		
+
+        messageHolder.item_action_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent  intent = new Intent(context, CommentCreateEditActivity.class);
+                CommentCreateEditActivity.messageEntity = messageEntity;
+                context.startActivity(intent);
+
+            }
+        });
+
 
         //if (dbManager.messageEntityCarFileHashMap.containsKey(messageEntity.getObjectId())){
         //    CarFile file = dbManager.carEntityCarFileHashMap.get(carEntity.getObjectId());
         //    file.getFile().loadImage(context,carHolder.imageView);
         //}
 
-        convertView.setClickable(true);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MessageViewActivity.class);
-                MessageViewActivity.messageEntity = messageEntity;
-                context.startActivity(intent);
-            }
-        });
 
-
-//        messageHolder.cancel.setOnClickListener(new View.OnClickListener() {
+        /*
+            查看项目详情
+         */
+//        convertView.setClickable(true);
+//        convertView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                delete(position);
+//                Intent intent = new Intent(context, MessageViewActivity.class);
+//                MessageViewActivity.messageEntity = messageEntity;
+//                context.startActivity(intent);
 //            }
 //        });
 
-
-
-        //if (MainFrontActivity.nearstOrMine == 0){
-        //    messageHolder.cancel.setVisibility(View.INVISIBLE);
-        //}else {
-        //    messageHolder.cancel.setVisibility(View.VISIBLE);
-        //}
 
 
 
@@ -159,6 +167,8 @@ public class MessageListAdapter extends BaseAdapter implements
 
         public ImageView image;
         public ImageView audio;
+        public EditText comment;
+        public TextView item_action_comment;
 
     }
 

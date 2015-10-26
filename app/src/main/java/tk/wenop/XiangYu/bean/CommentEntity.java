@@ -1,21 +1,21 @@
 package tk.wenop.XiangYu.bean;
 
-import com.bmob.BmobProFile;
-
 import cn.bmob.v3.BmobObject;
 
     public class CommentEntity extends BmobObject {
-        private BmobProFile comment;
+        private String comment;
         private User toUser;
         private User ownerUser;
         private MessageEntity ownerMessage;
 
-        public void setComment(BmobProFile comment) {
-            this.comment = comment;
-        }
-        public BmobProFile getComment() {
+        public String getComment() {
             return comment;
         }
+
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
+
         public void setToUser(User toUser) {
             this.toUser = toUser;
         }

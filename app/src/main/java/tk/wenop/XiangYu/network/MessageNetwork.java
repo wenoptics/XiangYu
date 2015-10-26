@@ -9,14 +9,22 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.bean.MessageEntity;
+import tk.wenop.XiangYu.manager.DBManager;
 
 public class MessageNetwork {
-    public static void save(final Context context,MessageEntity messageEntity){
+    public static void save(final Context context, final MessageEntity messageEntity){
 
         messageEntity.save(context,new SaveListener() {
                 @Override
                 public void onSuccess() {
                     Toast.makeText(context, "save success", Toast.LENGTH_SHORT).show();
+
+                    /*
+                        网络存储成功后更新本地的数据
+                     */
+
+                    DBManager.instance(context).add2MessageEntities(messageEntity);
+
                 }
 
                 @Override

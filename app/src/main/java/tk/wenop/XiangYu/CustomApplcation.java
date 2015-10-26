@@ -28,6 +28,7 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.util.CollectionUtils;
 import tk.wenop.XiangYu.util.SharePreferenceUtil;
 
@@ -54,6 +55,9 @@ public class CustomApplcation extends Application {
 		BmobChat.DEBUG_MODE = true;
 		mInstance = this;
 		init();
+
+		DBManager.instance(this).initNetLogin();
+
 	}
 
 	private void init() {

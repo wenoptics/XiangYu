@@ -1,7 +1,6 @@
 package tk.wenop.XiangYu.adapter.custom;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,8 @@ import java.util.List;
 import java.util.Locale;
 
 import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.bean.CommentEntity;
-import tk.wenop.XiangYu.ui.activity.CommentViewActivity;
 
 public class CommentListAdapter extends BaseAdapter implements
         AdapterView.OnItemClickListener,
@@ -43,8 +42,18 @@ public class CommentListAdapter extends BaseAdapter implements
             filter_CommentEntity.clear();
             filter_CommentEntity.addAll(allComment);
         }
-
         notifyDataSetChanged();
+    }
+
+
+
+    public void addCommentEntity(CommentEntity commentEntity){
+
+        if(commentEntity == null) return;
+        allCommentEntity.add(commentEntity);
+        filter_CommentEntity.add(commentEntity);
+        notifyDataSetChanged();
+
     }
 
     Context context;
@@ -72,58 +81,18 @@ public class CommentListAdapter extends BaseAdapter implements
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         final CommentEntity  commentEntity = (CommentEntity)getItem(position);
-        CommentHolder commentHolder = new CommentHolder();
+        final CommentHolder commentHolder;
 
         if(convertView == null){
-
+            commentHolder = new CommentHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_comment_list,parent,false);
-
-
 			commentHolder.comment = (ImageView) convertView.findViewById(R.id.comment);
-			
-
-
             convertView.setTag(commentHolder);
         }else {
             commentHolder = (CommentHolder) convertView.getTag();
         }
-
-
-//		commentHolder.comment.setText(commentEntity.getComment());
-		
-
-        //if (dbManager.commentEntityCarFileHashMap.containsKey(commentEntity.getObjectId())){
-        //    CarFile file = dbManager.carEntityCarFileHashMap.get(carEntity.getObjectId());
-        //    file.getFile().loadImage(context,carHolder.imageView);
-        //}
-
-        convertView.setClickable(true);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CommentViewActivity.class);
-                CommentViewActivity.commentEntity = commentEntity;
-                context.startActivity(intent);
-            }
-        });
-
-
-//        commentHolder.cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                delete(position);
-//            }
-//        });
-
-
-
-        //if (MainFrontActivity.nearstOrMine == 0){
-        //    commentHolder.cancel.setVisibility(View.INVISIBLE);
-        //}else {
-        //    commentHolder.cancel.setVisibility(View.VISIBLE);
-        //}
-
-
+        String path = "http://file.bmob.cn/" + commentEntity.getComment();
+        commentHolder.comment.setOnClickListener(new NewRecordPlayClickListener(context,path, commentHolder.comment));
 
         return convertView;
     }

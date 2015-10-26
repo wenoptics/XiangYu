@@ -84,11 +84,15 @@
     <activity
         android:name="tk.wenop.XiangYu.ui.SplashActivity"
         android:label="@string/app_name" >
+
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+
+
+
+
     </activity>
     <activity
         android:name="tk.wenop.XiangYu.ui.MainActivity"
@@ -125,6 +129,21 @@
     <activity
         android:name="tk.wenop.XiangYu.ui.RegisterActivity"
         android:label="@string/app_name" />
+
+    <activity android:name=".ui.activity.MessageCreateEditActivity"
+        >
+
+
+
+    </activity>
+    <activity android:name=".ui.activity.MessageListActivity">
+    </activity>
+
+    <activity android:name=".ui.activity.CommentCreateEditActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        ></activity>
+
+
 
     <!-- baidu map-->
     <meta-data

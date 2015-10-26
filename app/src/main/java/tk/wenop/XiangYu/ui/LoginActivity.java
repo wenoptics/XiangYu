@@ -19,6 +19,7 @@ import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.BmobConstants;
+import tk.wenop.XiangYu.ui.activity.MessageListActivity;
 import tk.wenop.XiangYu.util.CommonUtils;
 import tk.wenop.XiangYu.view.dialog.DialogTips;
 
@@ -136,7 +137,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				//更新用户的地理位置以及好友的资料
 				updateUserInfos();
 				progress.dismiss();
-				Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+//				Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+				Intent intent = new Intent(LoginActivity.this, MessageListActivity.class);
 				startActivity(intent);
 				finish();
 			}

@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView
+<FrameLayout
          xmlns:android="http://schemas.android.com/apk/res/android"
          xmlns:custom="http://schemas.android.com/apk/res-auto"
          android:layout_width="match_parent"
          android:layout_height="match_parent">
 
-         <LinearLayout
-              android:id="@+id/jianjie"
-              android:layout_width="match_parent"
-              android:layout_marginLeft="15dp"
-              android:layout_marginBottom="20dp"
-              android:orientation="vertical"
-              android:layout_height="wrap_content">
 
-    
-                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/good_item_style"
-                    >
+<RelativeLayout
+    android:layout_marginTop="150dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_centerVertical="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="text"
-                        android:layout_weight="1"
-                         />
+    <LinearLayout
+        android:id="@+id/jianjie"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-                    <ImageView
 
-                        android:id="@+id/image"
-                        android:layout_weight="2"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-                </RelativeLayout> 
-       <LinearLayout
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/good_item_style"
+            >
+
+            <ImageView
+
+                android:id="@+id/upload_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="fitXY"
+                />
+                />
+            <Button
+                android:background="@drawable/btn_chat_record_selector"
+                style="@style/Smile.TextView._Black"
+                android:id="@+id/image"
+                android:layout_weight="2"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="80dp"
+                android:text="Select Image"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_marginRight="30dp"
@@ -45,58 +54,95 @@
             android:background="@color/divider"
             />
 
-       <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:background="@color/divider"
-            />
-                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/good_item_style"
-                    >
 
-                    <TextView
-                        android:layout_centerVertical="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="text"
-                        android:layout_weight="1"
-                         />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            style="@style/good_item_style"
+            >
 
-                    <ImageView
+            <ImageView
+                android:visibility="visible"
+                android:id="@+id/view_audio"
+                android:layout_width="80dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/voice_right3"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="33dp" />
 
-                        android:id="@+id/audio"
-                        android:layout_weight="2"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-                </RelativeLayout> 
-       <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:background="@color/divider"
-            />
+            <Button
 
-       <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:background="@color/divider"
-            />
+                android:id="@+id/audio"
+                android:layout_weight="2"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                style="@style/Smile.TextView._Black"
+                android:background="@drawable/btn_chat_record_selector"
+                android:text="@string/longclick_speak"
 
-    	       <Button
-           android:layout_marginTop="30dp"
-           android:id="@+id/supply"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:background="@color/material_blue_grey_900"
-           android:text="save"/></LinearLayout> 
- </ScrollView> 
+                />
+        </RelativeLayout>
+
+
+
+
+    </LinearLayout>
+
+    <Button
+
+
+
+        android:layout_below="@+id/jianjie"
+        android:layout_marginTop="60dp"
+        android:id="@+id/supply"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/material_blue_grey_900"
+        android:text="save"/>
+
+
+</RelativeLayout>
+
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/layout_record"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:background="@drawable/chat_top_voice_bg"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/iv_record"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/action_settings"
+            android:src="@drawable/chat_icon_voice1" />
+
+        <TextView
+            android:id="@+id/tv_voice_tips"
+            style="@style/Smile.TextView._White"
+            android:layout_below="@id/iv_record"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/voice_up_tips"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+
+
+
+
+ </FrameLayout>
     

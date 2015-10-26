@@ -11,4 +11,29 @@
     </style>
 
 
+    <style name="TextTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:shadowColor">#00000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">0</item>
+        <item name="android:background">@null</item>
+
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#242424</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!--<style name="release_dialog" parent="@android:style/Theme.Dialog">-->
+        <!--<item name="android:windowFrame">@null</item>&lt;!&ndash; 边框 &ndash;&gt;-->
+        <!--<item name="android:windowIsFloating">true</item>&lt;!&ndash; 是否浮现在activity之上 &ndash;&gt;-->
+        <!--<item name="android:windowIsTranslucent">false</item>&lt;!&ndash; 半透明 &ndash;&gt;-->
+        <!--<item name="android:windowNoTitle">true</item>&lt;!&ndash; 无标题 &ndash;&gt;-->
+        <!--<item name="android:windowBackground">@drawable/dialog_background</item>&lt;!&ndash; 自己想要的背景 &ndash;&gt;-->
+        <!--<item name="android:backgroundDimEnabled">true</item>&lt;!&ndash; 模糊 &ndash;&gt;-->
+    <!--</style>-->
+
 </resources>

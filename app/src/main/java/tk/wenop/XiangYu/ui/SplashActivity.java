@@ -8,15 +8,17 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import cn.bmob.im.BmobChat;
 
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 import com.baidu.mapapi.SDKInitializer;
+
+import cn.bmob.im.BmobChat;
 import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.config.Config;
+import tk.wenop.XiangYu.ui.activity.MessageListActivity;
 
 /**
  * 引导页
@@ -93,7 +95,8 @@ public class SplashActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case GO_HOME:
-				startAnimActivity(MainActivity.class);
+//				startAnimActivity(MainActivity.class);
+				startAnimActivity(MessageListActivity.class);
 				finish();
 				break;
 			case GO_LOGIN:

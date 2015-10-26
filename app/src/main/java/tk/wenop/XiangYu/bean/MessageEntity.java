@@ -1,28 +1,31 @@
 package tk.wenop.XiangYu.bean;
 
-import com.bmob.BmobProFile;
-
 import cn.bmob.v3.BmobObject;
 
 
     public class MessageEntity extends BmobObject {
-        private BmobProFile image;
-        private BmobProFile audio;
+        private String image;
+        private String audio;
         private User ownerUser;
         private AreaEntity ownerArea;
 
-        public void setImage(BmobProFile image) {
-            this.image = image;
-        }
-        public BmobProFile getImage() {
+
+        public String getImage() {
             return image;
         }
-        public void setAudio(BmobProFile audio) {
-            this.audio = audio;
+
+        public void setImage(String image) {
+            this.image = image;
         }
-        public BmobProFile getAudio() {
+
+        public String getAudio() {
             return audio;
         }
+
+        public void setAudio(String audio) {
+            this.audio = audio;
+        }
+
         public void setOwnerUser(User ownerUser) {
             this.ownerUser = ownerUser;
         }
