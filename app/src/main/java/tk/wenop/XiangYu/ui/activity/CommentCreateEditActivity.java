@@ -30,10 +30,12 @@ import tk.wenop.XiangYu.adapter.custom.CommentListAdapter;
 import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
+import tk.wenop.XiangYu.manager.DBManager;
+import tk.wenop.XiangYu.network.CommentNetwork;
 import tk.wenop.XiangYu.ui.ActivityBase;
 import tk.wenop.XiangYu.util.CommonUtils;
 
-public class CommentCreateEditActivity extends ActivityBase implements View.OnClickListener, View.OnLongClickListener {
+public class CommentCreateEditActivity extends ActivityBase implements View.OnClickListener, View.OnLongClickListener, CommentNetwork.OnGetCommentEntities {
 
 
 	@ViewInject(R.id.comment)
@@ -84,6 +86,9 @@ public class CommentCreateEditActivity extends ActivityBase implements View.OnCl
         commentListAdapter = new CommentListAdapter(this);
         comment_list.setAdapter(commentListAdapter);
 
+        //加载评论信息
+        DBManager.instance(context).getComments(messageEntity, this);
+
     }
 
     public void initView(){
@@ -91,10 +96,12 @@ public class CommentCreateEditActivity extends ActivityBase implements View.OnCl
         initVoiceView();
 
         if (messageEntity == null) return;
-        imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(),image);
+        imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), image);
 //      audio.setOnClickListener(new NewRecordPlayClickListener(context,));
         String path = "http://file.bmob.cn/" + messageEntity.getAudio();
-        audio.setOnClickListener(new NewRecordPlayClickListener(context,path,audio));
+        audio.setOnClickListener(new NewRecordPlayClickListener(context, path, audio));
+
+
 
     }
 
@@ -199,6 +206,11 @@ public class CommentCreateEditActivity extends ActivityBase implements View.OnCl
     @Override
     public boolean onLongClick(View v) {
         return false;
+    }
+
+    @Override
+    public void onGetCommentEntities(List<CommentEntity> allCommentEntities) {
+        commentListAdapter.putCommentEntity(allCommentEntities);
     }
 
 

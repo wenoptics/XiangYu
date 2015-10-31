@@ -1,0 +1,106 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#55000000"
+    android:orientation="vertical"
+
+    android:layout_gravity="center"
+    android:gravity="center"
+    >
+    <!--android:padding="32dp"-->
+    <LinearLayout
+        android:id="@+id/contentDialog"
+        android:background="@drawable/dialog_background"
+
+        android:layout_gravity="center"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp"
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="5dip" >
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dip"
+            android:text="请选择省市区"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+    </RelativeLayout>
+        <!--android:layout_marginTop="30dip"-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <tk.wenop.XiangYu.ui.widget.wheel.WheelView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <tk.wenop.XiangYu.ui.widget.wheel.WheelView
+            android:id="@+id/id_province"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </tk.wenop.XiangYu.ui.widget.wheel.WheelView>
+
+        <tk.wenop.XiangYu.ui.widget.wheel.WheelView
+            android:id="@+id/id_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </tk.wenop.XiangYu.ui.widget.wheel.WheelView>
+
+        <tk.wenop.XiangYu.ui.widget.wheel.WheelView
+            android:id="@+id/id_district"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </tk.wenop.XiangYu.ui.widget.wheel.WheelView>
+    </LinearLayout>
+
+    <TextView
+         android:gravity="center"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_centerVertical="true"
+         android:layout_marginLeft="20dip"
+         android:text="请填写详细地址"
+         android:textColor="#000000"
+         android:textSize="15sp" />
+
+    <AutoCompleteTextView
+        android:id="@+id/detail_address"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="详细街道地址"
+        android:textColor="@color/text_gray"
+        android:textSize="15dp"/>
+
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_marginTop="10dip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="确定"
+        android:textColor="#000000" />
+
+    </LinearLayout>
+</LinearLayout>

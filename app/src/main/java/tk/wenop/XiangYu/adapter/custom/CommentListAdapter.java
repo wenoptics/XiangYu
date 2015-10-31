@@ -26,7 +26,6 @@ public class CommentListAdapter extends BaseAdapter implements
 //    DBManager dbManager = DBManager.getInstance();
 
 
-
     public void putCommentEntity(List<CommentEntity> allComment){
 
         if (allComment == null) return;
@@ -78,7 +77,7 @@ public class CommentListAdapter extends BaseAdapter implements
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         final CommentEntity  commentEntity = (CommentEntity)getItem(position);
         final CommentHolder commentHolder;
@@ -112,12 +111,7 @@ public class CommentListAdapter extends BaseAdapter implements
 
     public static class CommentHolder{
 
-
-
         public ImageView comment;
-
-
-
     }
 
 

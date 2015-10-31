@@ -9,6 +9,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.bean.CommentEntity;
+import tk.wenop.XiangYu.bean.MessageEntity;
 
 public class CommentNetwork {
     public static void save(final Context context,CommentEntity commentEntity){
@@ -26,9 +27,10 @@ public class CommentNetwork {
             });
     }
 
-    public static void loadComment(final Context context, final OnGetCommentEntities onGetCommentEntities){
+    public static void loadComment(final Context context, final OnGetCommentEntities onGetCommentEntities,MessageEntity messageEntity){
 
         BmobQuery<CommentEntity> query = new BmobQuery<>();
+        query.addWhereEqualTo("ownerMessage",messageEntity);
         query.findObjects(context,new FindListener<CommentEntity>(){
             @Override
             public void onSuccess(List<CommentEntity> commentEntities) {

@@ -13,14 +13,13 @@
         android:layout_height="50dp">
 
         <Button
-
-            android:id="@+id/message_add"
-            android:text="添加"
-            android:layout_alignParentRight="true"
-            android:layout_width="60dp"
-
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp" />
+            android:text="address"
+            android:layout_alignParentLeft="true"
+            />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,7 +32,15 @@
             android:layout_alignParentBottom="false"
             android:textSize="30sp"
             android:textColor="#6ba063" />
+        <Button
 
+            android:id="@+id/message_add"
+            android:text="添加"
+            android:layout_alignParentRight="true"
+            android:layout_width="60dp"
+
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp" />
     </RelativeLayout>
 
 

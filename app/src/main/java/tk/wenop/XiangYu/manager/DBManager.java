@@ -5,11 +5,13 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.event.ConstantEvent;
+import tk.wenop.XiangYu.network.CommentNetwork;
 import tk.wenop.XiangYu.network.MessageNetwork;
 
 /**
@@ -36,8 +38,8 @@ public class DBManager implements MessageNetwork.OnGetMessageEntities {
     }
 
     private static List<MessageEntity> allMessageEntities = new ArrayList<>();
-    private static HashMap<String,List<CommentEntity>> messageId2CommentListMap = new HashMap<>();
-
+//    private static HashMap<String,List<CommentEntity>> messageId2CommentListMap = new HashMap<>();
+    private static Map<String,ArrayList<CommentEntity>> messageId2CommentListMap = new HashMap<String,ArrayList<CommentEntity>>();
 
     public void initNetLogin(){
         MessageNetwork.loadMessage(mContext,this);
@@ -77,13 +79,41 @@ public class DBManager implements MessageNetwork.OnGetMessageEntities {
         if (commentEntity == null) return;
         String str = commentEntity.getOwnerMessage().getObjectId();
         if (messageId2CommentListMap.containsKey(str)){
+            ArrayList<CommentEntity> commentEntities = messageId2CommentListMap.get(str);
+            commentEntities.add(commentEntity);
+            messageId2CommentListMap.put(str,commentEntities);
 
+        }else {
 
+            ArrayList<CommentEntity> commentEntities =new ArrayList<>();
+            commentEntities.add(commentEntity);
+            messageId2CommentListMap.put(str,commentEntities);
 
         }
 
 
     }
+
+    /*
+
+        todo;从网络中加载都的CommentEntity 应该先存在DBManager里然后返回 通过enentbus  通知其他地方在这里加载数据;
+
+     */
+    public void getComments(MessageEntity messageEntity,CommentNetwork.OnGetCommentEntities onGetCommentEntities){
+
+        if (messageId2CommentListMap.containsKey(messageEntity.getObjectId()))
+        {
+            onGetCommentEntities.onGetCommentEntities(messageId2CommentListMap.get(messageEntity.getObjectId()));
+        }
+        else
+        {
+            CommentNetwork.loadComment(mContext,onGetCommentEntities,messageEntity);
+//            .instance(mContext).getComments(messageEntity,onGetCommentEntities);
+        }
+
+    }
+
+
 
 
 }

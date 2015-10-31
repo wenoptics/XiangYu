@@ -16,23 +16,29 @@ import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.custom.MessageListAdapter;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
+import tk.wenop.XiangYu.ui.dialog.SelectAddressDialog;
 
 /**
  * Created by zysd on 15/10/22.
  */
-public class MessageListActivity extends Activity implements View.OnClickListener {
+public class MessageListActivity extends Activity implements View.OnClickListener, SelectAddressDialog.OnGetAddressResult {
 
 
     @ViewInject(R.id.message_list)
     ListView message_list;
     @ViewInject(R.id.message_add)
     Button message_add;
+    @ViewInject(R.id.address)
+    Button address;
+
+
 
     @ViewInject(R.id.swipeRefreshLayout)
     PullRefreshLayout swipeRefreshLayout;
 
     DBManager dbManager;
     MessageListAdapter messageListAdapter;
+    SelectAddressDialog selectAddressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +53,11 @@ public class MessageListActivity extends Activity implements View.OnClickListene
         swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                   dbManager.getAllMessageEntities();
+                dbManager.getAllMessageEntities();
             }
         });
-
+        selectAddressDialog = new SelectAddressDialog(this,this);
+        address.setOnClickListener(this);
 
     }
 
@@ -89,6 +96,20 @@ public class MessageListActivity extends Activity implements View.OnClickListene
             Intent intent = new Intent(MessageListActivity.this,MessageCreateEditActivity.class);
             startActivity(intent);
 
+        }else if (v.getId() == address.getId()){
+
+            selectAddressDialog.show();
+        }
+
+    }
+
+
+    @Override
+    public void onGetResult(String province, String city, String district) {
+        if (district != null){
+            address.setText(district);
+        }else if (city!= null){
+            address.setText(city);
         }
 
     }
