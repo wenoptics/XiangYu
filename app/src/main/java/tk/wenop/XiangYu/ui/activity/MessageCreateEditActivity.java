@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bmob.BmobProFile;
+import com.flyco.animation.BounceEnter.BounceBottomEnter;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -39,9 +40,10 @@ import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.network.MessageNetwork;
 import tk.wenop.XiangYu.ui.ActivityBase;
+import tk.wenop.XiangYu.ui.wenui.NewContentBottomDialog;
 import tk.wenop.XiangYu.util.CommonUtils;
 
-public class MessageCreateEditActivity extends ActivityBase implements View.OnClickListener{
+public class MessageCreateEditActivity extends ActivityBase implements View.OnClickListener, NewContentBottomDialog.SelectImageInterface {
 
     @ViewInject(R.id.image)
     Button btn_image;
@@ -75,6 +77,16 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
     String getImagePath = "";
     String getVoicePath = "";
 
+
+    /*
+        选取图片相关的声明
+     */
+    OnGetImageFromResoult onGetImageFromResoult = null;
+    NewContentBottomDialog newContentBottomDialog;
+    BounceBottomEnter bas_in;
+    NewContentBottomDialog.SelectImageInterface selectImageInterface;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -88,6 +100,21 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
         supply.setOnClickListener(this);
         initView();
         initVoiceView();
+
+        initNewMessageDialog();
+    }
+
+    /*
+        实现新建消息的dialog
+     */
+    public void initNewMessageDialog(){
+
+        selectImageInterface = this;
+         bas_in = new BounceBottomEnter();
+         newContentBottomDialog = new NewContentBottomDialog(MessageCreateEditActivity.this,selectImageInterface);
+         onGetImageFromResoult = newContentBottomDialog;
+
+
     }
 
     public void initView(){
@@ -179,6 +206,8 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
             }
         });
     }
+
+
 
 
     /**
@@ -349,6 +378,12 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
 
                             getImagePath = localSelectPath;
 
+                            /*
+                                获得图片,然后发送事件给dialog
+                             */
+                            if (onGetImageFromResoult != null) onGetImageFromResoult.onGetImageFromResoult(getImagePath);
+
+
                             BitmapFactory.Options options = new BitmapFactory.Options();
                             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                             Bitmap bitmap = BitmapFactory.decodeFile(getImagePath, options);
@@ -371,6 +406,21 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
             }
         }
     }
+
+    /*
+        需要知道回调过来的图片路径的时候，实现此接口
+     */
+//    public  interface OnGetImageFromResoult{
+//        public void onGetImageFromResoult(String path);
+//    }
+    /*
+        发布选择图片通知
+     */
+    @Override
+    public void toSelectImageInterface() {
+            selectImageFromLocal();
+    }
+
 
     /**
      * 默认先上传本地图片，之后才显示出来 sendImageMessage
@@ -480,7 +530,12 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
 
         }else if (v.getId() == btn_image.getId()){
 
-        selectImageFromLocal();
+        /*
+            todo:用来测试选取图片的dialog
+         */
+        newContentBottomDialog.showAnim(bas_in)
+                .show();
+//            selectImageFromLocal();
         }
 
     }

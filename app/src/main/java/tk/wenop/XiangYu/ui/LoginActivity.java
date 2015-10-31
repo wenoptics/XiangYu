@@ -13,13 +13,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.SaveListener;
-
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.BmobConstants;
-import tk.wenop.XiangYu.ui.activity.MessageListActivity;
+import tk.wenop.XiangYu.ui.wenui.SideActivity;
 import tk.wenop.XiangYu.util.CommonUtils;
 import tk.wenop.XiangYu.view.dialog.DialogTips;
 
@@ -138,7 +138,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				updateUserInfos();
 				progress.dismiss();
 //				Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-				Intent intent = new Intent(LoginActivity.this, MessageListActivity.class);
+//				Intent intent = new Intent(LoginActivity.this, MessageListActivity.class);
+				Intent intent = new Intent(LoginActivity.this, SideActivity.class);
 				startActivity(intent);
 				finish();
 			}

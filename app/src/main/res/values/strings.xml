@@ -76,4 +76,9 @@
     <string name="voice_short_tips">录音时间太短</string>
     
     <string name="show_notice">\t\t\t\t\t自V1.0.6版本开始，应用源码中将不再公开ApplicationId,开发者请自行到官网申请。\n\t\t\t\t\t申请成功之后在应用程序启动页(SplashActivity)进行初始化操作!</string>
+
+    <string name="title_activity_test_side">TestSideActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

@@ -47,6 +47,10 @@ public class DBManager implements MessageNetwork.OnGetMessageEntities {
     }
 
 
+    public void refreshMessageEntities(){
+        MessageNetwork.loadMessage(mContext,this);
+    }
+
     @Override
     public void onGetMessageEntities(List<MessageEntity> allMessageEntities) {
             this.allMessageEntities.clear();

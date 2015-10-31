@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/base_comment_emo_bar"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="50dip"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+        <ToggleButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/toggleButton_isAnonymous"
+            android:checked="false"
+            android:textOn="匿"
+            android:textOff="关"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_speak"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="6dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/btn_chat_record_selector"
+            android:gravity="center"
+            android:visibility="visible"
+            android:textColor="@color/base_color_text_black"
+            android:text="长按说话" >
+
+        </Button>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/msg_emote_divider"
+        android:focusable="false" />
+
+</LinearLayout>

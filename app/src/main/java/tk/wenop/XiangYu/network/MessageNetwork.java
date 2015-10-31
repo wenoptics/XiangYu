@@ -37,6 +37,7 @@ public class MessageNetwork {
     public static void loadMessage(final Context context, final OnGetMessageEntities onGetMessageEntities){
 
         BmobQuery<MessageEntity> query = new BmobQuery<>();
+        query.include("ownerUser");
         query.findObjects(context,new FindListener<MessageEntity>(){
             @Override
             public void onSuccess(List<MessageEntity> messageEntities) {

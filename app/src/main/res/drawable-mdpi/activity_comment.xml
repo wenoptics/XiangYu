@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tk.wenop.testapp.UI.CommentActivity">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/add_audio">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingTop="8dp">
+
+                <include layout="@layout/content_comment" />
+
+            </android.support.v4.widget.NestedScrollView>
+
+        </LinearLayout>
+
+    <include
+        android:id="@+id/add_audio"
+        layout="@layout/include_chat_bottom_bar_with_image_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

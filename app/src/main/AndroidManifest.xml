@@ -144,6 +144,12 @@
         ></activity>
 
 
+    <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"-->
+    <activity
+        android:name=".ui.wenui.SideActivity"
+        android:theme="@style/AppTheme.NoActionBar"
+        ></activity>
+
 
     <!-- baidu map-->
     <meta-data

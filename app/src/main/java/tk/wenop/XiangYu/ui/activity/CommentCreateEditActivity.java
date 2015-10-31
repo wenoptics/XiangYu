@@ -113,13 +113,9 @@ public class CommentCreateEditActivity extends ActivityBase implements View.OnCl
      if (v.getId() == audio.getId()){
 
 
-
      }
 
     }
-
-
-
 
 
     /**

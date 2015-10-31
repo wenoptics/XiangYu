@@ -18,7 +18,7 @@ import cn.bmob.im.BmobChat;
 import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.config.Config;
-import tk.wenop.XiangYu.ui.activity.MessageListActivity;
+import tk.wenop.XiangYu.ui.wenui.SideActivity;
 
 /**
  * 引导页
@@ -96,7 +96,8 @@ public class SplashActivity extends BaseActivity {
 			switch (msg.what) {
 			case GO_HOME:
 //				startAnimActivity(MainActivity.class);
-				startAnimActivity(MessageListActivity.class);
+//				startAnimActivity(MessageListActivity.class);
+				startAnimActivity(SideActivity.class);
 				finish();
 				break;
 			case GO_LOGIN:
