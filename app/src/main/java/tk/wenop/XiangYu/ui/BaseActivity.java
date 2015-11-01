@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -109,7 +110,7 @@ public class BaseActivity extends AppCompatActivity {
     /** 打Log
       */
     public void ShowLog(String msg){
-        Log.i("life",msg);
+        Log.i("life", msg);
     }
     
     /**
@@ -148,6 +149,9 @@ public class BaseActivity extends AppCompatActivity {
                 new OnLeftButtonClickListener());
         mHeaderLayout.setTitleAndRightImageButton(titleName, rightDrawableId,
                 listener);*/
+
+        /// wenop this method is duplicated
+        initTopBar_withBackButton(titleName);
     }
 
     /**
@@ -164,6 +168,18 @@ public class BaseActivity extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setTitle(titleName);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // 如果是返回按钮，那就finish这个activity
+        if (id==android.R.id.home) {
+            finish();
+        }
+
+        return true;
     }
     
     /** 
