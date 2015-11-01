@@ -10,13 +10,13 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="292dp"
         card_view:cardCornerRadius="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginTop="8dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,7 +26,9 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:id="@+id/_tmpL1">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -104,17 +106,19 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:background="#dfdfdf"
                 android:baselineAligned="false"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/_tmpL1"
+                android:layout_above="@+id/_tmpL2">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/imageView_contentPhoto"
                     android:src="@drawable/l_0"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerCrop"
                     android:adjustViewBounds="true" />
             </LinearLayout>
 
@@ -123,7 +127,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="7dp">
+                android:layout_marginTop="7dp"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/_tmpL2">
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -191,7 +197,7 @@
 
             </RelativeLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
 

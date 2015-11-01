@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/XiangYu.iml" filepath="$PROJECT_DIR$/XiangYu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XiangYu-llwoll.iml" filepath="$PROJECT_DIR$/XiangYu-llwoll.iml" />
       <module fileurl="file://$PROJECT_DIR$/XiangYuUI/XiangYuUI.iml" filepath="$PROJECT_DIR$/XiangYuUI/XiangYuUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rippleanimation/rippleanimation.iml" filepath="$PROJECT_DIR$/rippleanimation/rippleanimation.iml" />
     </modules>
   </component>
 </project>

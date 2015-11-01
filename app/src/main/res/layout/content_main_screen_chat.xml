@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:id="@+id/mainscreen_recycler_view"
-        android:paddingTop="8dp" />
+         />
 
 
 </android.support.v4.widget.SwipeRefreshLayout>

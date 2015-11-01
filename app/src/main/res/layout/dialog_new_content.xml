@@ -24,19 +24,29 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="210dp"
                 android:background="#4e342e"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/group_add_photo">
 
                 <ImageView
-                    android:id="@+id/group_add_photo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_photoHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="-2dp"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     android:scrollIndicators="none"
                     android:src="@drawable/content_add_top_bg" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_photoTopShade"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/bg_shade_after_select_sent_photo"
+                    android:scaleType="fitXY"
+                    android:visibility="invisible" />
 
                 <ImageView
                     android:id="@+id/imageView7"
@@ -54,7 +64,7 @@
                     android:id="@+id/_add_pic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/group_add_photo"
+                    android:layout_alignBottom="@+id/iv_photoHolder"
                     android:layout_alignParentBottom="false"
                     android:layout_alignParentStart="true"
                     android:layout_marginBottom="18dp"
@@ -140,7 +150,9 @@
                     android:layout_marginTop="8dp"
                     android:src="@drawable/ic_send_white_48dp" />
 
-                <com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
+
+                <tk.wenop.rippleanimation.RippleBackground
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/audio_wave"
                     android:layout_width="fill_parent"
@@ -149,7 +161,7 @@
                     android:layout_centerInParent="true"
                     app:rb_color="#9a746d"
                     app:rb_duration="10000"
-                    app:rb_radius="32dp"
+                    app:rb_radius="40dp"
                     app:rb_rippleAmount="4"
                     app:rb_scale="6"
                     android:layout_marginTop="-4dp">
@@ -164,29 +176,31 @@
                         <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true">
+                            android:layout_centerInParent="true"
+                            android:id="@+id/_tmpR0">
 
                             <ImageView
                                 android:id="@+id/imageView10"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/ic_mic_white_48dp" />
+                                android:src="@drawable/ic_mic_white_48dp"
+                                android:layout_centerInParent="true" />
 
-                            <TextView
-                                android:id="@+id/textView_textTip"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imageView10"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="4dp"
-                                android:text="长按录音"
-                                android:textColor="#ffffff" />
                         </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/textView_textTip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="长按录音…"
+                            android:textColor="#050505"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="36dp"
+                            android:alpha="0.7" />
 
                     </RelativeLayout>
 
-                </com.skyfishjy.library.RippleBackground>
+                </tk.wenop.rippleanimation.RippleBackground>
 
             </RelativeLayout>
 
