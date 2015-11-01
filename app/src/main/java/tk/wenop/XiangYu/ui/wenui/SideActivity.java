@@ -1,5 +1,6 @@
 package tk.wenop.XiangYu.ui.wenui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ import com.flyco.animation.ZoomEnter.ZoomInEnter;
 import com.flyco.animation.ZoomExit.ZoomInExit;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
 import tk.wenop.XiangYu.bean.MessageEntity;
+import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
@@ -82,6 +85,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     NewContentBottomDialog.SelectImageInterface selectImageInterface;
     Context mContext;
 
+    User user;
 
     void refreshItems() {
         // Load items
@@ -108,6 +112,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         EventBus.getDefault().register(this);
         setSupportActionBar(toolbar);
 
+        user = BmobUser.getCurrentUser(this,User.class);
         mContext =this;
         //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         //actionBar.setTitle("天天市");
@@ -169,6 +174,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         /// TODO 设置侧边栏上的用户头像
         // sidebarAvatar.setImageResource();
+        ImageLoader.getInstance().displayImage(user.getAvatar(),sidebarAvatar);
 
         sidebarAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
