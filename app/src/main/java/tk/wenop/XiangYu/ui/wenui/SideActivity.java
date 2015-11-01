@@ -227,6 +227,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search_place).getActionView();
 
+        // TODO llwoll:     searchView就是那个搜索框， 用来搜索、进入地区群组
+
         return true;
     }
 
