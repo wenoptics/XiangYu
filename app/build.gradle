@@ -46,4 +46,10 @@ dependencies {
     ///// 环形波浪动画
     //compile 'com.skyfishjy.ripplebackground:library:1.0.1'
     compile project(':rippleanimation')
+
+    //tablayout
+    compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
+    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'//Optional: for V4 Fragment
+
+
 }

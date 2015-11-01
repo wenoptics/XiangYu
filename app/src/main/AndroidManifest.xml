@@ -155,6 +155,7 @@
 
     <activity android:name=".ui.wenui.CommentActivity"
         ></activity>
+<activity android:name=".ui.activity.OverallMessageListActivity"></activity>
 
     <!-- baidu map-->
     <meta-data

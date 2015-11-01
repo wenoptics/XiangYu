@@ -81,4 +81,11 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+
+    <string name="fragment_contact">联系人</string>
+    <string name="fragment_recent">最近回话</string>
+    <string name="fragment_setting">设置</string>
+
 </resources>
