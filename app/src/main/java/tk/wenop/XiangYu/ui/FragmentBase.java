@@ -35,11 +35,8 @@ public abstract class FragmentBase extends Fragment {
 	public HeaderLayout mHeaderLayout;
 
 	protected View contentView;
-	
 	public LayoutInflater mInflater;
-	
 	private Handler handler = new Handler();
-	
 	public void runOnWorkThread(Runnable action) {
 		new Thread(action).start();
 	}
@@ -95,6 +92,10 @@ public abstract class FragmentBase extends Fragment {
 	}
 	
 	public View findViewById(int paramInt) {
+
+//		if (getView() == null){
+//			onCreateView()
+//		}
 		return getView().findViewById(paramInt);
 	}
 

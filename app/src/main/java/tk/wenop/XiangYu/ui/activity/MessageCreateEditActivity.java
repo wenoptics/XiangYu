@@ -301,7 +301,6 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
 
                 Log.i("bmob",filename+"upload success");
             }
-
             @Override
             public void onProgress(int i) {
 
@@ -505,7 +504,6 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
                     messageEntity.setAudio(list.get(1).getUrl());
                     messageEntity.setImage(list.get(0).getUrl());
                     MessageNetwork.save(context, messageEntity);
-
                 }
 
             }

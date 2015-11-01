@@ -34,6 +34,7 @@ import com.flyco.dialog.widget.NormalDialog;
 import java.io.File;
 import java.util.ArrayList;
 
+import cn.bmob.v3.BmobUser;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.R;
@@ -44,6 +45,7 @@ import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.ui.SetMyInfoActivity;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
+import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
 import tk.wenop.XiangYu.util.animatedDialogUtils.T;
 
 //import tk.wenop.XiangYu.R;
@@ -78,9 +80,20 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
    */
     OnGetImageFromResoult onGetImageFromResoult = null;
     NewContentBottomDialog.SelectImageInterface selectImageInterface;
+    Context mContext;
 
 
     void refreshItems() {
+        // Load items
+        //TODO llwoll
+        dbManager.refreshMessageEntities();
+        // Load complete
+        onItemsLoadComplete();
+    }
+
+    void onItemsLoadComplete() {
+        // Update the adapter and notify data set changed
+        //TODO llwoll
         dbManager.refreshMessageEntities();
     }
 
@@ -95,6 +108,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         EventBus.getDefault().register(this);
         setSupportActionBar(toolbar);
 
+        mContext =this;
         //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         //actionBar.setTitle("天天市");
 
@@ -162,6 +176,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 gotoSettingActivity();
             }
         });
+
         ///////////////////////// 侧滑Nav Drawer /END///////////////////////////////////////
 
         //设置recyclerView
@@ -252,8 +267,13 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         if (id == R.id.nav_main_screen) {
 
         } else if (id == R.id.nav_message_list) {
+            //消息
+            Intent intent = new Intent(this, OverallMessageListActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_setting) {
+
+
             gotoSettingActivity();
         } else if (id == R.id.nav_logout) {
             // 退出登录
@@ -297,6 +317,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                     public void onBtnClick() {
                         dialog.dismiss();
                         // TODO llwoll
+                        BmobUser.logOut(mContext);
+                        finish();
                         T.showShort(SideActivity.this, "确定");
                     }
                 });
@@ -309,7 +331,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         switch (event){
             case MESSAGE_LOAD:
                 mainActRVAdapter.putDataSet(dbManager.getAllMessageEntities());
-
                 // Stop refresh animation
                 mSwipeRefreshLayout.setRefreshing(false);
                 break;

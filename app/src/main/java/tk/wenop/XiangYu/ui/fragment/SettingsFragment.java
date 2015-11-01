@@ -67,7 +67,7 @@ public class SettingsFragment extends FragmentBase implements OnClickListener{
 	}
 
 	private void initView() {
-		initTopBarForOnlyTitle("设置");
+//		initTopBarForOnlyTitle("设置");
 		//黑名单列表
 		layout_blacklist = (RelativeLayout) findViewById(R.id.layout_blacklist);
 		

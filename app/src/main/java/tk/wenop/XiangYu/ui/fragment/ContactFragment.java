@@ -84,6 +84,13 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	 */
 	private PinyinComparator pinyinComparator;
 
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -102,15 +109,15 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	private void init() {
 		characterParser = CharacterParser.getInstance();
 		pinyinComparator = new PinyinComparator();
-		initTopBarForRight("联系人", R.drawable.base_action_bar_add_bg_selector,
-				new onRightImageButtonClickListener() {
-
-					@Override
-					public void onClick() {
-						// TODO Auto-generated method stub
-						startAnimActivity(AddFriendActivity.class);
-					}
-				});
+//		initTopBarForRight("联系人", R.drawable.base_action_bar_add_bg_selector,
+//				new onRightImageButtonClickListener() {
+//
+//					@Override
+//					public void onClick() {
+//						// TODO Auto-generated method stub
+//						startAnimActivity(AddFriendActivity.class);
+//					}
+//				});
 		initListView();
 		initRightLetterView();
 		initEditText();
@@ -188,6 +195,8 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 			String username = sortModel.getUsername();
 			// 若没有username
 			if (username != null) {
+
+				if (characterParser == null){init();}
 				String pinyin = characterParser.getSelling(sortModel.getUsername());
 				String sortString = pinyin.substring(0, 1).toUpperCase();
 				// 正则表达式，判断首字母是否是英文字母
@@ -296,8 +305,10 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 	private void queryMyfriends() {
 		//是否有新的好友请求
 		if(BmobDB.create(getActivity()).hasNewInvite()){
+			if (iv_msg_tips!=null)
 			iv_msg_tips.setVisibility(View.VISIBLE);
 		}else{
+			if (iv_msg_tips!=null)
 			iv_msg_tips.setVisibility(View.GONE);
 		}
 		//在这里再做一次本地的好友数据库的检查，是为了本地好友数据库中已经添加了对方，但是界面却没有显示出来的问题
