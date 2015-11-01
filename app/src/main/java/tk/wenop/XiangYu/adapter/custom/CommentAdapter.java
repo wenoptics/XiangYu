@@ -79,11 +79,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     }
 
-    public void putDataSet(List<CommentEntity> mDataset){
+    public void putDataSet(List<CommentEntity> myDataset){
 
-        if (mDataset == null) return;
+        if (myDataset == null) return;
         mDataset.clear();
-        mDataset.addAll(mDataset);
+        mDataset.addAll(myDataset);
         notifyDataSetChanged();
     }
 

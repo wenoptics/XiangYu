@@ -8,6 +8,7 @@ import cn.bmob.v3.BmobObject;
         private String audio;
         private User ownerUser;
         private AreaEntity ownerArea;
+        private Boolean anonymous;
 
 
         public String getImage() {
@@ -39,4 +40,11 @@ import cn.bmob.v3.BmobObject;
             return ownerArea;
         }
 
+        public Boolean getAnonymous() {
+            return anonymous;
+        }
+
+        public void setAnonymous(Boolean anonymous) {
+            this.anonymous = anonymous;
+        }
     }

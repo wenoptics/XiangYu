@@ -132,10 +132,21 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 //        holder.mAvatar.setImageResource();
         if (data.getOwnerUser()!=null){
             holder.mNickName.setText(data.getOwnerUser().getNick());
+
+            //私聊
+            holder.mAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent =  new Intent(mContext, PeopleDetailActivity.class);
+//                    Intent intent =  new Intent(mContext, ChatActivity.class);
+                    intent.putExtra("user",data.getOwnerUser());
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
 
-        holder.mAvatar.setOnClickListener(onAvatarClickListener);
+//        holder.mAvatar.setOnClickListener(onAvatarClickListener);
 
         imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(), holder.mContentPhoto);
         String path = "http://file.bmob.cn/" + data.getAudio();

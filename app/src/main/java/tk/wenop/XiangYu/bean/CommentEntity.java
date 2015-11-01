@@ -7,6 +7,7 @@ import cn.bmob.v3.BmobObject;
         private User toUser;
         private User ownerUser;
         private MessageEntity ownerMessage;
+        private Boolean anonymous;
 
         public String getComment() {
             return comment;
@@ -33,6 +34,14 @@ import cn.bmob.v3.BmobObject;
         }
         public MessageEntity getOwnerMessage() {
             return ownerMessage;
+        }
+
+        public Boolean getAnonymous() {
+            return anonymous;
+        }
+
+        public void setAnonymous(Boolean anonymous) {
+            this.anonymous = anonymous;
         }
 
     }

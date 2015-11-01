@@ -183,8 +183,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
 
 
-
-
     /*
         录音功能
      */
