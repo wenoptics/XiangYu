@@ -1,1 +1,1 @@
-include ':app', ':XiangYuUI', ':rippleanimation'
+include ':app', ':rippleanimation'
