@@ -10,12 +10,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.bean.CommentEntity;
+import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
 
 //import tk.wenop.XiangYu.R;
@@ -32,6 +35,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private ArrayList<CommentEntity> mDataset = new ArrayList<>();
     protected Context mContext;
 
+    ImageLoader imageLoader;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -76,7 +80,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         mContext = context;
         inflater = LayoutInflater.from(mContext);
-
+        imageLoader = ImageLoader.getInstance();
     }
 
     public void putDataSet(List<CommentEntity> myDataset){
@@ -133,6 +137,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 //        Object data = mDataset.get(position);
 //        holder.mAvatar.setImageResource(  );
 //        holder.mNickName.setText(data.mNickName);
+
+        User user = data.getOwnerUser();
+        if (user!=null){
+            if (user.getAvatar()!=null) {
+                imageLoader.displayImage(data.getOwnerUser().getAvatar(), holder.mAvatar);
+            }
+        }
+
         holder.mAvatar.setOnClickListener(onAvatarClickListener);
 
         // TODO 长按头像可以at人

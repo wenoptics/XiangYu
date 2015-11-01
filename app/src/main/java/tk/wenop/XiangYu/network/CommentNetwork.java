@@ -30,6 +30,7 @@ public class CommentNetwork {
     public static void loadComment(final Context context, final OnGetCommentEntities onGetCommentEntities,MessageEntity messageEntity){
 
         BmobQuery<CommentEntity> query = new BmobQuery<>();
+        query.include("ownerUser");
         query.addWhereEqualTo("ownerMessage",messageEntity);
         query.findObjects(context,new FindListener<CommentEntity>(){
             @Override
