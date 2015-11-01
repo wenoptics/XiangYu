@@ -84,7 +84,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         // Update the adapter and notify data set changed
         //TODO llwoll
         dbManager.refreshMessageEntities();
-
     }
 
     @Override
@@ -115,11 +114,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         bas_in = new BounceBottomEnter();
         bas_out = new SlideBottomExit();
+
         /*
             让本activity承担起选取图片的功能
          */
         selectImageInterface = this;
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -332,11 +331,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     }
     /**
      * 选择图片
-     * @Title: selectImage
-     * @Description: TODO
-     * @param
-     * @return void
-     * @throws
      */
     public void selectImageFromLocal() {
 
