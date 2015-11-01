@@ -18,4 +18,9 @@
     <color name="icons">#ffffff</color>
 
 
+    <color name="common_bg">#fcfcfc</color>
+    <color name="primary_peopleDetail">#009688</color>
+    <color name="primary_dark_peopleDetail">#00796b</color>
+    <color name="accent_peopleDetail">#ffc107</color>
+
 </resources>

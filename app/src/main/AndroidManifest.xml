@@ -90,9 +90,6 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
 
-
-
-
     </activity>
     <activity
         android:name="tk.wenop.XiangYu.ui.MainActivity"
@@ -141,15 +138,18 @@
 
     <activity android:name=".ui.activity.CommentCreateEditActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar"
-        ></activity>
-
+        />
 
     <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"-->
     <activity
         android:name=".ui.wenui.SideActivity"
         android:theme="@style/AppTheme.NoActionBar"
-        ></activity>
+        />
 
+    <activity
+        android:name=".ui.wenui.PeopleDetailActivity"
+        android:theme="@style/PeopleDetailTheme"
+        />
 
     <!-- baidu map-->
     <meta-data

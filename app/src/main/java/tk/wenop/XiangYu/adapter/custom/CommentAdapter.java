@@ -44,7 +44,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             super(v);
             mView = v;
 
-            mNickName      = (TextView)  v.findViewById(R.id.textView_nickName        );
+            mNickName      = (TextView)  v.findViewById(R.id.tv_nickName);
             mAudioTimeSec  = (TextView)  v.findViewById(R.id.textView_audioLength     );
             mAvatar        = (ImageView) v.findViewById(R.id.imageView_avatar         );
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );

@@ -59,7 +59,7 @@
                         android:paddingTop="5dp">
 
                         <TextView
-                            android:id="@+id/textView_nickName"
+                            android:id="@+id/tv_nickName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -78,7 +78,7 @@
                             android:layout_gravity="center_vertical|right"
                             android:layout_marginLeft="12dp"
                             android:layout_marginRight="2dp"
-                            android:layout_toRightOf="@+id/textView_nickName"
+                            android:layout_toRightOf="@+id/tv_nickName"
                             android:layout_weight="1"
                             android:alpha="0.5"
                             android:contextClickable="false"

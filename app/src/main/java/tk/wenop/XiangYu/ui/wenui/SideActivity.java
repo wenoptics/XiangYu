@@ -97,8 +97,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         EventBus.getDefault().register(this);
         setSupportActionBar(toolbar);
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("天天市");
+        //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        //actionBar.setTitle("天天市");
 
 
         // 下拉刷新
@@ -175,7 +175,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 //        msovi_1.mLocation = "天津市";
 //        msovi_1.mCommentCount = 2;
 //        mainActDataSet.add(msovi_1);
-
 
 
         // specify an adapter

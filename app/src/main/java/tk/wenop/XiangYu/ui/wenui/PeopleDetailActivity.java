@@ -18,11 +18,13 @@ public class PeopleDetailActivity extends AppCompatActivity {
 
         // 显示出返回按钮
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // 在actionBar显示用户名
-        actionBar.setTitle("wenop" + "的详细信息");
-//        actionBar.setTitle("");
+            // 在actionBar显示用户名
+            actionBar.setTitle("wenop" + "的详细信息");
+    //        actionBar.setTitle("");
+        }
 
     }
 
