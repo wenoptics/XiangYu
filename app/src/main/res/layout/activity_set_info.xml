@@ -6,10 +6,6 @@
     android:background="@color/theme_bg_color"
     android:orientation="vertical" >
 
-    <include
-        android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" />
-
     <RelativeLayout
         android:id="@+id/layout_head"
         android:layout_width="match_parent"

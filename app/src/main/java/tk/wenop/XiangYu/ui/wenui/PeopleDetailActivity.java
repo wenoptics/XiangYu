@@ -40,7 +40,6 @@ public class PeopleDetailActivity extends AppCompatActivity implements View.OnCl
         targetUser = (User) getIntent().getSerializableExtra("user");
         targetId = targetUser.getObjectId();
 
-
         // 显示出返回按钮
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {

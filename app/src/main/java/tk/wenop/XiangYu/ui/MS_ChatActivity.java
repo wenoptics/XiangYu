@@ -180,7 +180,7 @@ public class MS_ChatActivity extends ActivityBase implements OnClickListener,
 
 				}
 			});
-        //initTopBarForLeft("与" + targetUser.getUsername() + "对话");
+        //initTopBar_withBackButton("与" + targetUser.getUsername() + "对话");
 
         initBottomView();
         initXListView();

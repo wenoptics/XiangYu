@@ -1,7 +1,6 @@
 package tk.wenop.XiangYu.ui;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -20,26 +19,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
-import android.text.Selection;
-import android.text.Spannable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,15 +47,11 @@ import cn.bmob.v3.listener.PushListener;
 
 import tk.wenop.XiangYu.MyMessageReceiver;
 import tk.wenop.XiangYu.R;
-import tk.wenop.XiangYu.adapter.EmoViewPagerAdapter;
-import tk.wenop.XiangYu.adapter.EmoteAdapter;
 import tk.wenop.XiangYu.adapter.MessageChatAdapter;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.bean.FaceText;
 import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.util.CommonUtils;
-import tk.wenop.XiangYu.util.FaceTextUtils;
-import tk.wenop.XiangYu.view.EmoticonsEditText;
 import tk.wenop.XiangYu.view.HeaderLayout;
 import tk.wenop.XiangYu.view.dialog.DialogTips;
 import tk.wenop.XiangYu.view.xlist.XListView;
@@ -185,7 +169,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
     private void initView() {
         mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
         mListView = (XListView) findViewById(R.id.mListView);
-        initTopBarForLeft("与" + targetUser.getUsername() + "对话");
+        initTopBar_withBackButton("与" + targetUser.getUsername() + "对话");
         initBottomView();
         initXListView();
         initVoiceView();
@@ -393,7 +377,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
-                
+
                 hideSoftInputView();
                 btn_chat_send.setVisibility(View.GONE);
                 return false;
@@ -445,7 +429,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
                     @Override
                     public void onSuccess() {
-                        
+
                         ShowLog("发送成功");
                         ((BmobMsg) values)
                                 .setStatus(BmobConfig.STATUS_SEND_SUCCESS);
@@ -461,7 +445,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
                     @Override
                     public void onFailure(int arg0, String arg1) {
-                        
+
                         ShowLog("发送失败:" + arg1);
                         ((BmobMsg) values)
                                 .setStatus(BmobConfig.STATUS_SEND_FAIL);

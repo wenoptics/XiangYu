@@ -46,7 +46,7 @@ public class NearPeopleActivity extends ActivityBase implements IXListViewListen
 	}
 
 	private void initView() {
-		initTopBarForLeft("附近的人");
+		initTopBar_withBackButton("附近的人");
 		initXListView();
 	}
 

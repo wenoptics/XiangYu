@@ -40,7 +40,7 @@ public class BlackListActivity extends ActivityBase implements OnItemClickListen
 
 	private void initView() {
 		mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
-		initTopBarForLeft("黑名单");
+		initTopBar_withBackButton("黑名单");
 		adapter = new BlackListAdapter(this, BmobDB.create(this).getBlackList());
 		listview = (ListView) findViewById(R.id.list_blacklist);
 		listview.setOnItemClickListener(this);
