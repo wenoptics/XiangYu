@@ -31,6 +31,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobNotifyManager;
 import cn.bmob.im.BmobRecordManager;
@@ -346,6 +348,10 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
     }
 
     private void initBottomView() {
+
+        // we don't need 匿名按钮 in 私聊
+        ToggleButton _toggleAnonymous = (ToggleButton) findViewById(R.id.toggleButton_isAnonymous);
+        _toggleAnonymous.setVisibility(View.GONE);
 
         btn_chat_send = (Button) findViewById(R.id.btn_chat_send);
         btn_chat_send.setOnClickListener(this);
