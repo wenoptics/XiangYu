@@ -34,7 +34,7 @@ import tk.wenop.XiangYu.view.dialog.DialogTips;
   */
 public class BaseActivity extends AppCompatActivity {
 
-    BmobUserManager userManager;
+    protected BmobUserManager userManager;
     BmobChatManager manager;
     
     CustomApplcation mApplication;
