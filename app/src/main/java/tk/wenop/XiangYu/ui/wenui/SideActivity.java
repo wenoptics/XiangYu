@@ -72,7 +72,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     // 下拉刷新
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-
     /*
       选取图片相关的声明
    */
@@ -81,16 +80,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
 
     void refreshItems() {
-        // Load items
-        //TODO llwoll
-
-        // Load complete
-        onItemsLoadComplete();
-    }
-
-    void onItemsLoadComplete() {
-        // Update the adapter and notify data set changed
-        //TODO llwoll
         dbManager.refreshMessageEntities();
     }
 
@@ -172,7 +161,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 // TODO 点击侧边栏头像去到用户设置页面
             }
         });
-
         ///////////////////////// 侧滑Nav Drawer /END///////////////////////////////////////
 
         //设置recyclerView

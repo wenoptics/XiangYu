@@ -54,6 +54,6 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <include layout="@layout/include_chat_bottom_bar" />
+    <include layout="@layout/include_chat_bottom_bar_with_image_selection" />
 
 </LinearLayout>
