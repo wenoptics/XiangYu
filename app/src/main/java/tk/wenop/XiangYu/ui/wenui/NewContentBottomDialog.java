@@ -95,7 +95,6 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         });*/
     }
 
-
     /*
         此接口接受订阅的图片地址
      */
@@ -108,5 +107,12 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                             group_add_photo.setImageBitmap(bitmap);
 
     }
+
+
+    /*
+
+
+     */
+
 
 }
