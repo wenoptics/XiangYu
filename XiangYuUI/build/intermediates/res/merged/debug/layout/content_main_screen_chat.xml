@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/main_screen_swipe_refresh"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=""
+    tools:showIn="@layout/activity_side">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:id="@+id/mainscreen_recycler_view"
+        android:paddingTop="8dp" />
+
+
+</android.support.v4.widget.SwipeRefreshLayout>
+
+<!-- From: file:/Users/zysd/Documents/workspace/XiangYu/XiangYuUI/src/main/res/layout/content_main_screen_chat.xml -->
