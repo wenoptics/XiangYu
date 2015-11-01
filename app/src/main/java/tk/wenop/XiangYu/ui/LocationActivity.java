@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import cn.bmob.im.util.BmobLog;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -29,6 +28,8 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+
+import cn.bmob.im.util.BmobLog;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.view.HeaderLayout.onRightImageButtonClickListener;
 
@@ -93,7 +94,7 @@ public class LocationActivity extends BaseActivity implements OnGetGeoCoderResul
 			mHeaderLayout.getRightImageButton().setEnabled(false);
 			initLocClient();
 		} else {// 查看当前位置
-			initTopBarForLeft("位置");
+			initTopBar_withBackButton("位置");
 			Bundle b = intent.getExtras();
 			LatLng latlng = new LatLng(b.getDouble("latitude"), b.getDouble("longtitude"));//维度在前，经度在后
 			mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(latlng));

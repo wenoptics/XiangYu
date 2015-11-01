@@ -16,14 +16,13 @@
         android:paddingRight="5dp" >
 
         <ToggleButton
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:id="@+id/toggleButton_isAnonymous"
             android:checked="false"
-            android:textOn="已匿名"
+            android:textOn="匿"
             android:textOff="关"
-            android:visibility="visible"
-            android:layout_marginRight="6dp" />
+            android:visibility="visible" />
 
         <ImageButton
             android:layout_width="40dp"

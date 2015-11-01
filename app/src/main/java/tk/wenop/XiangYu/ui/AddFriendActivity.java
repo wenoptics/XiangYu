@@ -1,8 +1,5 @@
 package tk.wenop.XiangYu.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +9,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.task.BRequest;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
-
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.AddFriendAdapter;
 import tk.wenop.XiangYu.util.CollectionUtils;
@@ -47,7 +47,7 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener,I
 	}
 	
 	private void initView(){
-		initTopBarForLeft("查找好友");
+		initTopBar_withBackButton("查找好友");
 		et_find_name = (EditText)findViewById(R.id.et_find_name);
 		btn_search = (Button)findViewById(R.id.btn_search);
 		btn_search.setOnClickListener(this);

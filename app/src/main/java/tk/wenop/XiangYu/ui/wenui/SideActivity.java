@@ -1,6 +1,5 @@
 package tk.wenop.XiangYu.ui.wenui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -44,6 +43,7 @@ import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
+import tk.wenop.XiangYu.ui.SetMyInfoActivity;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
 import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
 import tk.wenop.XiangYu.util.animatedDialogUtils.T;
@@ -74,7 +74,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
     // 下拉刷新
     SwipeRefreshLayout mSwipeRefreshLayout;
-
 
     /*
       选取图片相关的声明
@@ -174,7 +173,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         sidebarAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO 点击侧边栏头像去到用户设置页面
+                gotoSettingActivity();
             }
         });
 
@@ -211,6 +210,13 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         mainActDataSet.addAll(dbManager.getAllMessageEntities());
         mainActRVAdapter = new MainScreenChatAdapter(SideActivity.this, mainActDataSet);
         mRecyclerView.setAdapter(mainActRVAdapter);
+    }
+
+
+    private void gotoSettingActivity() {
+        Intent intent =  new Intent(SideActivity.this, SetMyInfoActivity.class);
+//        intent.putExtra("user",data.getOwnerUser());
+        SideActivity.this.startActivity(intent);
     }
 
     @Override
@@ -268,6 +274,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         } else if (id == R.id.nav_setting) {
 
 
+            gotoSettingActivity();
         } else if (id == R.id.nav_logout) {
             // 退出登录
             confirmLogout();
