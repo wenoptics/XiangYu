@@ -190,7 +190,6 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
 //                    sendVoiceMessage(localPath, recordTime);
                     //是为了防止过了录音时间后，会多发一条语音出去的情况。
 
-
 //                    handler.postDelayed(new Runnable() {
 //
 //                        @Override
@@ -301,8 +300,6 @@ public class MessageCreateEditActivity extends ActivityBase implements View.OnCl
             public void onSuccess(String filename, String url, BmobFile bmobFile) {
 
                 Log.i("bmob",filename+"upload success");
-
-
             }
 
             @Override
