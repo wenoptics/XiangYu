@@ -194,11 +194,6 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
     /**
      * 初始化语音布局
      *
-     * @Title: initVoiceView
-     * @Description: TODO
-     * @param
-     * @return void
-     * @throws
      */
     private void initVoiceView() {
         layout_record = (RelativeLayout) findViewById(R.id.layout_record);
@@ -211,10 +206,6 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
     /**
      * 长按说话
-     * @ClassName: VoiceTouchListen
-     * @Description: TODO
-     * @author smile
-     * @date 2014-7-1 下午6:10:16
      */
     class VoiceTouchListen implements View.OnTouchListener {
         @Override
@@ -342,11 +333,6 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
     /**
      * 界面刷新
-     * @Title: initOrRefresh
-     * @Description: TODO
-     * @param
-     * @return void
-     * @throws
      */
     private void initOrRefresh() {
         if (mAdapter != null) {
@@ -641,6 +627,9 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
     private String localCameraPath = "";// 拍照后得到的图片地址
 
+
+    // TODO 加一个Dialog, 提示图片是拍照还是选择
+
     /**
      * 启动相机拍照 startCamera
      */
@@ -842,11 +831,6 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
     /**
      * 刷新界面
-     * @Title: refreshMessage
-     * @Description: TODO
-     * @param @param message
-     * @return void
-     * @throws
      */
     private void refreshMessage(BmobMsg msg) {
         // 更新界面
