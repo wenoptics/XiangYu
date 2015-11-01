@@ -1,5 +1,6 @@
 package tk.wenop.XiangYu.ui.wenui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -285,6 +286,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // TODO llwoll, 是不是在这里也要设置数据源，防止列表为空。 因为退出后台等
+    }
 
     protected void confirmLogout() {
         final NormalDialog dialog = new NormalDialog(SideActivity.this);
