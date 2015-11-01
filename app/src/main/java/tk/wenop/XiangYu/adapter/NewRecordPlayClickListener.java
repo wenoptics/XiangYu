@@ -35,6 +35,7 @@ import tk.wenop.XiangYu.R;
 public class NewRecordPlayClickListener implements View.OnClickListener {
 
 	BmobMsg message;
+//	ImageView iv_voice;
 	ImageView iv_voice;
 	private AnimationDrawable anim = null;
 	Context context;

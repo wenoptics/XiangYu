@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.ui.wenui.CommentActivity;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
@@ -46,9 +48,13 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         public TextView  mAudioTimeSec;
         public ImageView mAvatar;
         public ImageView mContentPhoto;
+        public RelativeLayout audio_msg_bubble;
+        public ImageView audio_animation;
         public TextView  mLocation;
         public TextView  mCommentCount;
         public TextView  mTime;
+
+
 
         public ViewHolder(View v) {
             super(v);
@@ -57,9 +63,16 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
             mAudioTimeSec  = (TextView)  v.findViewById(R.id.textView_audioLength     );
             mAvatar        = (ImageView) v.findViewById(R.id.imageView_avatar        );
             mContentPhoto  = (ImageView) v.findViewById(R.id.imageView_contentPhoto  );
+            //按气泡播放语音
+            audio_msg_bubble = (RelativeLayout) v.findViewById(R.id.audio_msg_bubble);
+            //声音按钮
+            audio_animation = (ImageView) v.findViewById(R.id.imageView2);
+
             mLocation      = (TextView)  v.findViewById(R.id.textView_location        );
             mCommentCount  = (TextView)  v.findViewById(R.id.textView_commentCount    );
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );
+
+
         }
     }
 
@@ -137,6 +150,9 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 
         imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(), holder.mContentPhoto);
         String path = "http://file.bmob.cn/" + data.getAudio();
+        holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext,path,holder.audio_animation));
+
+
 //        holder.audio.setOnClickListener(new NewRecordPlayClickListener(context,path, messageHolder.audio));
         //评论按钮
         holder.mView.findViewById(R.id.group_comment)

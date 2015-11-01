@@ -22,7 +22,6 @@ public class MessageNetwork {
                     /*
                         网络存储成功后更新本地的数据
                      */
-
                     DBManager.instance(context).add2MessageEntities(messageEntity);
 
                 }
@@ -51,12 +50,14 @@ public class MessageNetwork {
         });
 
 
-    }
+     }
 
     public interface  OnGetMessageEntities{
 
         public void onGetMessageEntities(List<MessageEntity> allMessageEntities);
     }
+
+
 
 
 } 
