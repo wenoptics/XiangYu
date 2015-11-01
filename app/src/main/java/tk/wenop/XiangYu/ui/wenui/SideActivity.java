@@ -2,6 +2,7 @@ package tk.wenop.XiangYu.ui.wenui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,11 +26,16 @@ import android.widget.ExpandableListView;
 import com.flyco.animation.BaseAnimatorSet;
 import com.flyco.animation.BounceEnter.BounceBottomEnter;
 import com.flyco.animation.SlideExit.SlideBottomExit;
+import com.flyco.animation.ZoomEnter.ZoomInEnter;
+import com.flyco.animation.ZoomExit.ZoomInExit;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
+import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
 import tk.wenop.XiangYu.bean.MessageEntity;
@@ -36,6 +43,7 @@ import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
+import tk.wenop.XiangYu.util.animatedDialogUtils.T;
 
 //import tk.wenop.XiangYu.R;
 //import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
@@ -143,6 +151,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
             }
         });
 
+        ///////////////////////// 侧滑Nav Drawer ///////////////////////////////////////////
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -151,6 +160,20 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        CircleImageView sidebarAvatar = (CircleImageView) findViewById(R.id.nav_iv_avatar);
+
+        /// TODO 设置侧边栏上的用户头像
+        // sidebarAvatar.setImageResource();
+
+        sidebarAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO 点击侧边栏头像去到用户设置页面
+            }
+        });
+
+        ///////////////////////// 侧滑Nav Drawer /END///////////////////////////////////////
 
         //设置recyclerView
         mRecyclerView = (RecyclerView) findViewById(R.id.mainscreen_recycler_view);
@@ -204,6 +227,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search_place).getActionView();
 
+        // TODO llwoll:     searchView就是那个搜索框， 用来搜索、进入地区群组
+
         return true;
     }
 
@@ -228,23 +253,57 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_main_screen) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_message_list) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_setting) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_logout) {
+            // 退出登录
+            confirmLogout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    protected void confirmLogout() {
+        final NormalDialog dialog = new NormalDialog(SideActivity.this);
+        dialog.isTitleShow(false)//
+                .bgColor(Color.parseColor("#383838"))//
+                .cornerRadius(5)//
+                .content("真的要退出登录吗?")//
+                .contentGravity(Gravity.CENTER)//
+                .contentTextColor(Color.parseColor("#ffffff"))//
+                .dividerColor(Color.parseColor("#222222"))//
+                .btnTextSize(15.5f, 15.5f)//
+                .btnTextColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"))//
+                .btnPressColor(Color.parseColor("#2B2B2B"))//
+                .widthScale(0.85f)//
+                .showAnim(new ZoomInEnter())//
+                .dismissAnim(new ZoomInExit())//
+                .show();
+
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        //T.showShort(SideActivity.this, "取消");
+
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        // TODO llwoll
+                        T.showShort(SideActivity.this, "确定");
+                    }
+                });
     }
 
 
