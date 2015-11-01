@@ -50,6 +50,7 @@ public class CommentCreateEditActivity extends ActivityBase implements View.OnCl
 
     @ViewInject(R.id.comment_list)
     ListView comment_list;
+
     // 语音有关
     @ViewInject(R.id.layout_record)
     RelativeLayout layout_record;
@@ -97,11 +98,8 @@ public class CommentCreateEditActivity extends ActivityBase implements View.OnCl
 
         if (messageEntity == null) return;
         imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), image);
-//      audio.setOnClickListener(new NewRecordPlayClickListener(context,));
         String path = "http://file.bmob.cn/" + messageEntity.getAudio();
         audio.setOnClickListener(new NewRecordPlayClickListener(context, path, audio));
-
-
 
     }
 
@@ -301,8 +299,6 @@ public class CommentCreateEditActivity extends ActivityBase implements View.OnCl
                     commentListAdapter.addCommentEntity(commentEntity);
 
                 }
-
-
             }
 
             @Override

@@ -38,7 +38,6 @@ import tk.wenop.rippleanimation.RippleBackground;
 * */
 public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDialog> implements OnGetImageFromResoult {
 
-
     /*
         语音有关
      */

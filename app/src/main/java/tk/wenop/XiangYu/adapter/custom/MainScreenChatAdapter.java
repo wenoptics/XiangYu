@@ -120,17 +120,6 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         }
     };
 
-    // 点击评论按钮
-    private final View.OnClickListener onCommentClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(mContext, CommentActivity.class);
-//            TODO 把相关信息传过去?
-//            intent.putExtra("BAR_CODE_RESULT", result);
-            mContext.startActivity(intent);
-        }
-    };
-
 
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -139,7 +128,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        MessageEntity data = mDataset.get(position);
+        final MessageEntity data = mDataset.get(position);
 //        holder.mAvatar.setImageResource();
         if (data.getOwnerUser()!=null){
             holder.mNickName.setText(data.getOwnerUser().getNick());
@@ -156,7 +145,14 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 //        holder.audio.setOnClickListener(new NewRecordPlayClickListener(context,path, messageHolder.audio));
         //评论按钮
         holder.mView.findViewById(R.id.group_comment)
-                .setOnClickListener(onCommentClickListener);
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, CommentActivity.class);
+                        CommentActivity.messageEntity = data;
+                        mContext.startActivity(intent);
+                    }
+                });
     }
 
 

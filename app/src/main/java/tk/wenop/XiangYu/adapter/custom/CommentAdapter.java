@@ -7,11 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
+import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
 
 //import tk.wenop.XiangYu.R;
@@ -25,7 +29,7 @@ import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private ArrayList<MainScreenOverviewItem> mDataset;
+    private ArrayList<CommentEntity> mDataset = new ArrayList<>();
     protected Context mContext;
 
     // Provide a reference to the views for each data item
@@ -40,6 +44,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         public ImageView mAvatar;
         public TextView  mTime;
 
+        public RelativeLayout audio_msg_bubble;
+        public ImageView audio_animation;
+
         public ViewHolder(View v) {
             super(v);
             mView = v;
@@ -49,15 +56,44 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             mAvatar        = (ImageView) v.findViewById(R.id.imageView_avatar         );
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );
 
+            //按气泡播放语音
+            audio_msg_bubble = (RelativeLayout) v.findViewById(R.id.audio_msg_bubble);
+            //声音按钮
+            audio_animation = (ImageView) v.findViewById(R.id.imageView2);
         }
+
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public CommentAdapter(Context context, ArrayList<MainScreenOverviewItem> myDataset) {
+
+    public CommentAdapter(Context context,ArrayList<CommentEntity> myDataset){
+
         mDataset = myDataset;
         mContext = context;
         inflater = LayoutInflater.from(mContext);
+
     }
+    public CommentAdapter(Context context){
+
+        mContext = context;
+        inflater = LayoutInflater.from(mContext);
+
+    }
+
+    public void putDataSet(List<CommentEntity> mDataset){
+
+        if (mDataset == null) return;
+        mDataset.clear();
+        mDataset.addAll(mDataset);
+        notifyDataSetChanged();
+    }
+
+    public void addData(CommentEntity commentEntity){
+        if (commentEntity == null) return;
+        mDataset.add(commentEntity);
+        notifyDataSetChanged();
+    }
+
+
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -92,7 +128,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-
+        final CommentEntity data = mDataset.get(position);
         // TODO wenop 把对应数据取出来, 然后设置view
 //        Object data = mDataset.get(position);
 //        holder.mAvatar.setImageResource(  );
@@ -100,7 +136,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.mAvatar.setOnClickListener(onAvatarClickListener);
 
         // TODO 长按头像可以at人
+
         holder.mAvatar.setOnLongClickListener(null);
+        String path = "http://file.bmob.cn/" + data.getComment();
+        holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
 
     }
 

@@ -151,6 +151,11 @@
         android:theme="@style/PeopleDetailTheme"
         />
 
+
+
+    <activity android:name=".ui.wenui.CommentActivity"
+        ></activity>
+
     <!-- baidu map-->
     <meta-data
         android:name="com.baidu.lbsapi.API_KEY"

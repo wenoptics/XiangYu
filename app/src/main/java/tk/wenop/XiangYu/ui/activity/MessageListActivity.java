@@ -31,8 +31,6 @@ public class MessageListActivity extends Activity implements View.OnClickListene
     @ViewInject(R.id.address)
     Button address;
 
-
-
     @ViewInject(R.id.swipeRefreshLayout)
     PullRefreshLayout swipeRefreshLayout;
 
