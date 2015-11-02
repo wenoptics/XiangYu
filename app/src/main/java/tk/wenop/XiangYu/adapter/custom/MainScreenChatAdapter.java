@@ -17,6 +17,7 @@ import java.util.List;
 
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
+import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.ui.wenui.CommentActivity;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
@@ -146,7 +147,14 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                 }
             });
         }
+        AreaEntity areaEntity = data.getOwnerArea();
+        if (areaEntity.getArea()!=null){
+            holder.mLocation.setText(data.getOwnerArea().getArea());
+        }
+//        Time time =  Time.valueOf(data.getCreatedAt());
+        String s =data.getCreatedAt().substring(11,19);
 
+        holder.mTime.setText(s);
         imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(), holder.mContentPhoto);
         String path = "http://file.bmob.cn/" + data.getAudio();
         holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext,path,holder.audio_animation));
@@ -163,8 +171,6 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                         mContext.startActivity(intent);
                     }
                 });
-
-
     }
 
 

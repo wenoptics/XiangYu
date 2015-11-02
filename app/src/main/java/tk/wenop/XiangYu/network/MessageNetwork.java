@@ -39,6 +39,7 @@ public class MessageNetwork {
         BmobQuery<MessageEntity> query = new BmobQuery<>();
         query.addWhereEqualTo("ownerArea",areaEntity);
         query.include("ownerUser");
+        query.include("ownerArea");
         query.findObjects(context,new FindListener<MessageEntity>(){
             @Override
             public void onSuccess(List<MessageEntity> messageEntities) {
