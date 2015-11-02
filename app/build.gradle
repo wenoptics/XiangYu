@@ -51,5 +51,8 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'//Optional: for V4 Fragment
 
+    //gif drawable
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
+
 
 }

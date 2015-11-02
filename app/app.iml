@@ -82,6 +82,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.ogaclejapan.smarttablayout/library/1.4.2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.ogaclejapan.smarttablayout/utils-v4/1.4.2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/2.0.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/pl.droidsonroids.gif/android-gif-drawable/1.1.10/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jacoco" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaResources" />
@@ -109,6 +110,7 @@
     <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="circleimageview-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="baidumapapi_v3_0_0" level="project" />
+    <orderEntry type="library" exported="" name="android-gif-drawable-1.1.10" level="project" />
     <orderEntry type="library" exported="" name="xUtils-2.6.14" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="utils-v4-1.4.2" level="project" />
