@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    tools:context="tk.wenop.XiangYu.ui.FirstRunActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:id="@+id/imageView13"
-        android:src="@drawable/bg_splashscreen"
-        android:scaleType="centerCrop" />
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/gif_space_9_16"
+        android:background="#000000"
+        android:scaleType="centerCrop"
+        android:id="@+id/gif_first_bg" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:id="@+id/relativeLayout"
-        android:visibility="visible">
+        android:id="@+id/group_logo"
+        android:alpha="0">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView12"
+            android:id="@+id/imageView11"
             android:src="@mipmap/ic_launcher"
             android:layout_centerHorizontal="true" />
 
@@ -29,25 +31,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="沟通家乡 · 沟通你心"
-            android:id="@+id/textView10"
-            android:layout_below="@+id/imageView12"
+            android:id="@+id/textView9"
+            android:layout_below="@+id/imageView11"
             android:layout_centerHorizontal="true"
+            android:textColor="#ffffff"
             android:layout_marginTop="24dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="乡语"
-            android:id="@+id/textView11"
-            android:layout_below="@+id/textView10"
+            android:id="@+id/textView8"
+            android:layout_below="@+id/textView9"
             android:layout_centerHorizontal="true"
+            android:textColor="#ffffff"
             android:layout_marginTop="12dp"
             android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="100dp"
-            android:layout_below="@+id/textView11"></RelativeLayout>
+            android:layout_below="@+id/textView8" />
     </RelativeLayout>
 
 </RelativeLayout>

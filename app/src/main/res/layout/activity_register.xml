@@ -5,10 +5,6 @@
     android:background="@color/theme_bg_color"
     android:orientation="vertical" >
 
-    <include
-        android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" />
-
     <LinearLayout style="@style/Register_Input" >
 
         <TextView
