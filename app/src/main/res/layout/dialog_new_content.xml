@@ -198,6 +198,15 @@
                             android:layout_marginLeft="36dp"
                             android:alpha="0.7" />
 
+                        <tk.wenop.XiangYu.ui.wenui.SoundWave
+                            android:id="@+id/soundWave"
+                            android:layout_width="280dp"
+                            android:layout_height="180dp"
+                            android:layout_alignLeft="@+id/textView_textTip"
+                            android:layout_marginTop="-50dp"
+                            android:layout_toLeftOf="@+id/_tmpR0"
+                            android:layout_toStartOf="@+id/_tmpR0" />
+
                     </RelativeLayout>
 
                 </tk.wenop.rippleanimation.RippleBackground>

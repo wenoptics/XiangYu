@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -108,6 +109,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         });
 
         //录音相关
+        soundWave = ViewFindUtils.find(inflate, R.id.soundWave);
 
         userID = BmobUser.getCurrentUser(context).getObjectId();
         loginUser  = BmobUser.getCurrentUser(context,User.class);
@@ -119,13 +121,17 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
 
 
+    SoundWave soundWave;
+
     void onVolumnChangedH(int volume) {
 
-        audio_wave.setRippleDurationTime(1000);
-        audio_wave.setRippleAmount(2);
-        audio_wave.setRippleRepeatCount(0);
-        audio_wave.reloadAnimator();
-        audio_wave.startRippleAnimation();
+        Log.d("valueOf volume", String.valueOf(volume));
+        soundWave.setCurrentVolume(volume);
+//        audio_wave.setRippleDurationTime(1000);
+//        audio_wave.setRippleAmount(2);
+//        audio_wave.setRippleRepeatCount(0);
+//        audio_wave.reloadAnimator();
+//        audio_wave.startRippleAnimation();
     }
 
 
