@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -54,10 +55,11 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     public static MessageEntity messageEntity = null;
     ActionBar actionBar;
 
-    @ViewInject(R.id.imageView_contentPhoto)
-    ImageView contentPhoto;
-    @ViewInject(R.id.imageView_avatar)
-    ImageView avatar;
+    // wenop-update 不能用inject了，因为我动态改变了View
+//    @ViewInject(R.id.imageView_contentPhoto)
+    ImageView iv_contentPhoto;
+//    @ViewInject(R.id.imageView_avatar)
+    ImageView iv_avatar;
 
     @ViewInject(R.id.btn_speak)
     Button btn_speak;
@@ -75,6 +77,9 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     TextView tv_voice_tips;
     @ViewInject(R.id.iv_record)
     ImageView iv_record;
+    @ViewInject(R.id.comment_content)
+    ViewStub comment_content;
+
     private Drawable[] drawable_Anims;// 话筒动画
     BmobRecordManager recordManager;
 
@@ -83,6 +88,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+
         ViewUtils.inject(this);
 
         // 显示出返回按钮
@@ -121,41 +127,74 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
     }
 
-    public void initData(){
-
-
-
-
-    }
-
     public void initView(){
 
         if (messageEntity == null) return;
-        // 在actionBar显示用户名
+
+        String audioPath;
+        // wenop-mod
+        // 根据messageEntity msgType来选择layout_include
+        switch (messageEntity.getMsgType()) {
+            case MessageEntity.MSG_TYPE_ONLY_PHOTO:
+                comment_content.setLayoutResource(R.layout.content_comment_photo);
+                break;
+            case MessageEntity.MSG_TYPE_ONLY_AUDIO:
+                comment_content.setLayoutResource(R.layout.content_comment_audio);
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+                break;
+            case MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO:
+                comment_content.setLayoutResource(R.layout.content_comment_both);
+                break;
+            default:
+                //TODO !!! debug here, should be deleted later
+                comment_content.setLayoutResource(R.layout.content_comment_both);
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+        }
+        comment_content.inflate();
+
+        // inflate完 才绑定这个控件
+        iv_avatar = (ImageView) findViewById(R.id.imageView_avatar);
 
         if (messageEntity.getOwnerUser() != null){
             final User user = messageEntity.getOwnerUser();
 
              if (user.getAvatar()!=null){
                 //渲染用户头像
-                 imageLoader.displayImage(user.getAvatar(), avatar);
-                 avatar.setOnClickListener(new View.OnClickListener() {
+                 imageLoader.displayImage(user.getAvatar(), iv_avatar);
+                 iv_avatar.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
 //                         Intent intent = new Intent(context, PeopleDetailActivity.class);
-                         Intent intent =  new Intent(context, ChatActivity.class);
+                         Intent intent = new Intent(context, ChatActivity.class);
                          intent.putExtra("user", user);
                          context.startActivity(intent);
                      }
                  });
              }
 
+            // 在actionBar显示用户名
             actionBar.setTitle(user.getUsername());
+
         }
 
-        if (messageEntity == null) return;
-        imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), contentPhoto);
-        String path = "http://file.bmob.cn/" + messageEntity.getAudio();
+        // 分消息类型来设置view
+        iv_contentPhoto = (ImageView) findViewById(R.id.imageView_contentPhoto);
+        switch (messageEntity.getMsgType()) {
+            case MessageEntity.MSG_TYPE_ONLY_PHOTO:
+                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
+                break;
+            case MessageEntity.MSG_TYPE_ONLY_AUDIO:
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+                break;
+            case MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO:
+                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+                break;
+            default:
+                //TODO !!! debug here, should be deleted later
+                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+        }
 
 //        audio.setOnClickListener(new NewRecordPlayClickListener(context, path, audio));
         initVoiceView();

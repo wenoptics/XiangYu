@@ -24,7 +24,11 @@
                 android:layout_height="fill_parent"
                 android:paddingTop="8dp">
 
-                <include layout="@layout/content_comment" />
+                <ViewStub
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/comment_content"
+                    layout="@layout/content_comment_both" />
 
             </android.support.v4.widget.NestedScrollView>
 

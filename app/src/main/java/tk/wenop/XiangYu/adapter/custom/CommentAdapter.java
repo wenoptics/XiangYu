@@ -57,7 +57,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             mNickName      = (TextView)  v.findViewById(R.id.tv_nickName);
             mAudioTimeSec  = (TextView)  v.findViewById(R.id.textView_audioLength     );
-            mAvatar        = (ImageView) v.findViewById(R.id.imageView_avatar         );
+            mAvatar        = (ImageView) v.findViewById(R.id.iv_comment_comment_item_avatar         );
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );
 
             //按气泡播放语音

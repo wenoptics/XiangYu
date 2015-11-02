@@ -21,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="8dp"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:id="@+id/card_root_view">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -70,6 +71,16 @@
                             android:layout_gravity="left|center_vertical"
                             android:layout_weight="2"
                             android:layout_centerVertical="true" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="发了一张照片"
+                            android:id="@+id/textView13"
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_weight="2"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/tv_nickName" />
 
                     </RelativeLayout>
 

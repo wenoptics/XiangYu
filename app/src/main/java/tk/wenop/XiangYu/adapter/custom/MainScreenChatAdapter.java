@@ -194,6 +194,15 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                 /// TODO !!! end
         }
 
+        /// TODO wenop (评论页面也是如此)
+        if (消息匿名) {
+            set 匿名头像;
+
+            set R.id.card_root_view - backgroundColor = color/anonymous_card_color_male
+                    或
+            set R.id.card_root_view - backgroundColor = color/anonymous_card_color_female
+        }
+
 //        holder.audio.setOnClickListener(new NewRecordPlayClickListener(context,path, messageHolder.audio));
         //评论按钮
         holder.mView.findViewById(R.id.group_comment)
