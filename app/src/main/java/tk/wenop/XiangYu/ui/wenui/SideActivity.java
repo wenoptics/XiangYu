@@ -85,12 +85,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
     /*
       选取图片相关的声明
-   */
+    */
     OnGetImageFromResoult onGetImageFromResoult = null;
     NewContentBottomDialog.SelectImageInterface selectImageInterface;
     Context mContext;
     SelectAddressDialog.OnGetAddressResult onGetAddressResult;
-
 
     private User user;
     private Toolbar toolbar;
@@ -98,7 +97,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
     void refreshItems() {
         // Load items
-        if (nowAreaEntity == null){
+        if (nowAreaEntity == null) {
             Toast.makeText(mContext,"请选择群组",Toast.LENGTH_SHORT).show();
         }
         // Load complete
@@ -116,9 +115,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_side);
-        dbManager = DBManager.instance(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("请选择当前位置");
+
+        dbManager = DBManager.instance(this);
+
         EventBus.getDefault().register(this);
         setSupportActionBar(toolbar);
 
@@ -127,7 +128,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         onGetAddressResult = this;
         //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         //actionBar.setTitle("天天市");
-
 
         // 下拉刷新
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_screen_swipe_refresh);
