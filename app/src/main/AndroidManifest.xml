@@ -88,7 +88,7 @@
         <activity
             android:name=".ui.SplashActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/SplashScreenTheme" >
 
         </activity>
         <activity android:name=".ui.EntryActivity"
@@ -100,7 +100,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.FirstRunActivity"
-            android:theme="@style/TranslucentBar" >
+            android:theme="@style/SplashScreenTheme" >
         </activity>
 
         <activity
