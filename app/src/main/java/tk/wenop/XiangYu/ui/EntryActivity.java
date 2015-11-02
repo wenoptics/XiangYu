@@ -12,10 +12,7 @@ public class EntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = new Intent(EntryActivity.this, FirstRunActivity.class);
-        startActivity(intent);
-
-        //checkFirstRun();
+        checkFirstRun();
         this.finish();
     }
 
