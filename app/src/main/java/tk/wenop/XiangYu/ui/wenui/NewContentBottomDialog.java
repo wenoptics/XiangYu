@@ -345,6 +345,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                     if (areaEntity!=null) messageEntity.setOwnerArea(areaEntity);
                     messageEntity.setAudio(list.get(1).getUrl());
                     messageEntity.setImage(list.get(0).getUrl());
+                    messageEntity.setCommentCount(0);
                     messageEntity.setOwnerUser(loginUser);
                     MessageNetwork.save(context, messageEntity);
                     dismiss();

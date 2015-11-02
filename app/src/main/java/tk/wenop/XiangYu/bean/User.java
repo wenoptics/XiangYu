@@ -39,8 +39,11 @@ public class User extends BmobChatUser {
      */
     private BmobGeoPoint location;//
 
-    private Integer hight;
 
+     Integer hight;
+
+    private BmobRelation followAreas;
+    //FollowAreas
 
 
     // wenop-add 个性签名
@@ -92,4 +95,11 @@ public class User extends BmobChatUser {
         this.userDesc = userDesc;
     }
 
+    public BmobRelation getFollowAreas() {
+        return followAreas;
+    }
+
+    public void setFollowAreas(BmobRelation followAreas) {
+        this.followAreas = followAreas;
+    }
 }

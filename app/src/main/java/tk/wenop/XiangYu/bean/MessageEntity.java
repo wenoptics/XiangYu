@@ -9,7 +9,8 @@ import cn.bmob.v3.BmobObject;
         private User ownerUser;
         private AreaEntity ownerArea;
         private Boolean anonymous;
-
+        //评论数量；
+        private Integer commentCount;
 
         public String getImage() {
             return image;
@@ -46,5 +47,13 @@ import cn.bmob.v3.BmobObject;
 
         public void setAnonymous(Boolean anonymous) {
             this.anonymous = anonymous;
+        }
+
+        public Integer getCommentCount() {
+            return commentCount;
+        }
+
+        public void setCommentCount(Integer commentCount) {
+            this.commentCount = commentCount;
         }
     }

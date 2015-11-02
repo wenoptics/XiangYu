@@ -29,6 +29,7 @@ import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.custom.CommentAdapter;
 import tk.wenop.XiangYu.adapter.custom.MainScreenOverviewItem;
@@ -59,8 +60,15 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     @ViewInject(R.id.imageView_avatar)
     ImageView avatar;
 
+    @ViewInject(R.id.textView_commentCount)
+    TextView mCommentCount;
+
+
     @ViewInject(R.id.btn_speak)
     Button btn_speak;
+
+
+
 
     ImageLoader imageLoader;
     User currentUser;
@@ -91,7 +99,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         currentUser = BmobUser.getCurrentUser(this, User.class);
         userID = currentUser.getObjectId();
         context = this;
-
+        imageLoader = ImageLoader.getInstance();
         initView();
 
 
@@ -122,14 +130,16 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     public void initData(){
 
 
-
-
     }
 
     public void initView(){
 
         if (messageEntity == null) return;
         // 在actionBar显示用户名
+
+//        mCommentCount
+        if (messageEntity.getCommentCount() != null)
+        mCommentCount.setText(String.valueOf(messageEntity.getCommentCount()));
 
         if (messageEntity.getOwnerUser() != null){
             final User user = messageEntity.getOwnerUser();
@@ -169,6 +179,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
         initVoiceAnimRes();
         initRecordManager();
+
     }
 
 
@@ -349,7 +360,18 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                     commentEntity.setComment(list.get(0).getUrl());
                     commentEntity.setOwnerMessage(messageEntity);
                     commentEntity.setOwnerUser(currentUser);
-                    commentEntity.save(context);//todo 检测更多动作
+                    commentEntity.save(context, new SaveListener() {
+                        @Override
+                        public void onSuccess() {
+                            messageEntity.increment("commentCount");
+                            messageEntity.update(context);
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+
+                        }
+                    });//todo 检测更多动作
                     //todo:save comment to comment list;
                     commentAdapter.addData(commentEntity);
                 }
