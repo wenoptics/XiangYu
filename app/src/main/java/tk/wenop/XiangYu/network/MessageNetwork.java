@@ -8,6 +8,7 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.manager.DBManager;
 
@@ -33,9 +34,10 @@ public class MessageNetwork {
             });
     }
 
-    public static void loadMessage(final Context context, final OnGetMessageEntities onGetMessageEntities){
+    public static void loadMessage(final Context context, final OnGetMessageEntities onGetMessageEntities,AreaEntity areaEntity){
 
         BmobQuery<MessageEntity> query = new BmobQuery<>();
+        query.addWhereEqualTo("ownerArea",areaEntity);
         query.include("ownerUser");
         query.findObjects(context,new FindListener<MessageEntity>(){
             @Override
@@ -48,12 +50,9 @@ public class MessageNetwork {
                 Toast.makeText(context,"get data failure",Toast.LENGTH_SHORT).show();
             }
         });
-
-
      }
 
     public interface  OnGetMessageEntities{
-
         public void onGetMessageEntities(List<MessageEntity> allMessageEntities);
     }
 

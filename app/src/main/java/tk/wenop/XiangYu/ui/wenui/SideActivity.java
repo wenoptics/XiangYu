@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.flyco.animation.BaseAnimatorSet;
 import com.flyco.animation.BounceEnter.BounceBottomEnter;
@@ -41,14 +42,17 @@ import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
+import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
+import tk.wenop.XiangYu.network.AreaNetwork;
 import tk.wenop.XiangYu.ui.SetMyInfoActivity;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
 import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
+import tk.wenop.XiangYu.ui.dialog.SelectAddressDialog;
 import tk.wenop.XiangYu.util.animatedDialogUtils.T;
 
 //import tk.wenop.XiangYu.R;
@@ -62,11 +66,12 @@ import tk.wenop.XiangYu.util.animatedDialogUtils.T;
 //import tk.wenop.testapp.R;
 
 public class SideActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NewContentBottomDialog.SelectImageInterface {
+        implements NavigationView.OnNavigationItemSelectedListener, NewContentBottomDialog.SelectImageInterface, SelectAddressDialog.OnGetAddressResult, AreaNetwork.OnGetAreaEntity {
 
     private MainScreenChatAdapter mainActRVAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mRVLayoutM;
+
 //    private ArrayList<MainScreenOverviewItem> mainActDataSet;
 private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
@@ -84,21 +89,26 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     OnGetImageFromResoult onGetImageFromResoult = null;
     NewContentBottomDialog.SelectImageInterface selectImageInterface;
     Context mContext;
+    SelectAddressDialog.OnGetAddressResult onGetAddressResult;
 
-    User user;
+
+    private User user;
+    private Toolbar toolbar;
+    private AreaEntity nowAreaEntity;
 
     void refreshItems() {
         // Load items
-        //TODO llwoll
-        dbManager.refreshMessageEntities();
+        if (nowAreaEntity == null){
+            Toast.makeText(mContext,"请选择群组",Toast.LENGTH_SHORT).show();
+        }
         // Load complete
         onItemsLoadComplete();
     }
 
     void onItemsLoadComplete() {
         // Update the adapter and notify data set changed
-        //TODO llwoll
-        dbManager.refreshMessageEntities();
+
+        dbManager.refreshMessageEntities(nowAreaEntity);
     }
 
     @Override
@@ -107,13 +117,14 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         setContentView(R.layout.activity_side);
         dbManager = DBManager.instance(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("天津市");
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("请选择当前位置");
         EventBus.getDefault().register(this);
         setSupportActionBar(toolbar);
 
         user = BmobUser.getCurrentUser(this,User.class);
         mContext =this;
+        onGetAddressResult = this;
         //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         //actionBar.setTitle("天天市");
 
@@ -141,17 +152,15 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
                 // TODO
                 //    如果没有登录，在这里跳转登录
 
-                //  在此处允许用户发内容
-                //    弹出窗口
+                if (nowAreaEntity == null){
+                    Toast.makeText(mContext,"请选择群组",Toast.LENGTH_SHORT).show();
+                }
 
                 if (selectImageInterface!= null){
-                    final NewContentBottomDialog dialog = new NewContentBottomDialog(SideActivity.this,selectImageInterface);
+                    final NewContentBottomDialog dialog = new NewContentBottomDialog(SideActivity.this,selectImageInterface,nowAreaEntity);
                     onGetImageFromResoult = dialog;
                             dialog.showAnim(bas_in)
                             .show();
@@ -172,7 +181,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         CircleImageView sidebarAvatar = (CircleImageView) findViewById(R.id.nav_iv_avatar);
 
-        /// TODO 设置侧边栏上的用户头像
+        ///  设置侧边栏上的用户头像
         // sidebarAvatar.setImageResource();
         ImageLoader.getInstance().displayImage(user.getAvatar(),sidebarAvatar);
 
@@ -244,8 +253,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search_place).getActionView();
 
-        // TODO llwoll:     searchView就是那个搜索框， 用来搜索、进入地区群组
-
         return true;
     }
 
@@ -258,6 +265,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }else if (id == R.id.search_place){
+
+                    SelectAddressDialog selectAddressDialog = new SelectAddressDialog(mContext,onGetAddressResult);
+                    selectAddressDialog.show();
             return true;
         }
 
@@ -294,7 +306,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO llwoll, 是不是在这里也要设置数据源，防止列表为空。 因为退出后台等
+        // todo: 是不是在这里也要设置数据源，防止列表为空。 因为退出后台等
+        //
     }
 
     protected void confirmLogout() {
@@ -440,5 +453,47 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         }
         startActivityForResult(intent, BmobConstants.REQUESTCODE_TAKE_LOCAL);
     }
+
+    @Override
+    public void onGetResult(String province, String city, String district) {
+
+
+        if (district != null){
+            //查询地理位置信息;
+            AreaNetwork.loadArea(mContext, this, district);
+            return;
+        }
+
+        if (city!=null){
+            AreaNetwork.loadArea(mContext,this,city);
+            return;
+        }
+
+        if (province!= null){
+            AreaNetwork.loadArea(mContext,this,province);
+            return;
+        }
+
+    }
+
+
+    @Override
+    public void onGetAreaEntity(AreaEntity areaEntity) {
+        /*
+            获得位置信息后 todo:更新当前列表
+         */
+
+        if (areaEntity== null){
+            //todo: 获取地理位置信息失败
+
+            return;
+        }
+
+        nowAreaEntity = areaEntity;
+        toolbar.setTitle(areaEntity.getArea());
+        DBManager.instance(this).refreshMessageEntities(areaEntity);
+
+    }
+
 
 }

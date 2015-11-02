@@ -55,7 +55,6 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         public TextView  mTime;
 
 
-
         public ViewHolder(View v) {
             super(v);
             mView = v;
@@ -73,6 +72,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );
 
 
+
         }
     }
 
@@ -85,9 +85,11 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 
 
     public void putDataSet(List<MessageEntity> myDataset){
-        myDataset.clear();
-        myDataset.addAll(myDataset);
+
+        mDataset.clear();
+        mDataset.addAll(myDataset);
         notifyDataSetChanged();
+
     }
 
 

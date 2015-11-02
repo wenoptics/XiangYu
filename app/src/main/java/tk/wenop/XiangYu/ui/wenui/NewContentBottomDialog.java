@@ -22,6 +22,7 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.network.MessageNetwork;
@@ -62,11 +63,20 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     private String AUDIO_PATH;
     private String IMAGE_PATH;
     private User loginUser;
+    private AreaEntity areaEntity;
+
+
+    public NewContentBottomDialog(Context context,SelectImageInterface selectImageInterface,AreaEntity areaEntity) {
+        super(context);
+        this.selectImageInterface = selectImageInterface;
+        this.areaEntity = areaEntity;
+    }
 
 
     public NewContentBottomDialog(Context context,SelectImageInterface selectImageInterface) {
         super(context);
         this.selectImageInterface = selectImageInterface;
+
     }
 
     public NewContentBottomDialog(Context context,View animateView) {
@@ -332,14 +342,10 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                 }
                 if (list.size() > 1) {
                     MessageEntity messageEntity = new MessageEntity();
+                    if (areaEntity!=null) messageEntity.setOwnerArea(areaEntity);
                     messageEntity.setAudio(list.get(1).getUrl());
                     messageEntity.setImage(list.get(0).getUrl());
                     messageEntity.setOwnerUser(loginUser);
-                    /*
-                        todo: 添加所属地点支持
-                        messageEntity.setOwnerArea();
-                     */
-
                     MessageNetwork.save(context, messageEntity);
                     dismiss();
                 }

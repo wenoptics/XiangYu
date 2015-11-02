@@ -1,6 +1,7 @@
 package tk.wenop.XiangYu.ui.wenui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.CommentNetwork;
+import tk.wenop.XiangYu.ui.ChatActivity;
 import tk.wenop.XiangYu.util.CommonUtils;
 import tk.wenop.XiangYu.util.WrappingRecyclerViewLayoutManager;
 
@@ -130,20 +132,31 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         // 在actionBar显示用户名
 
         if (messageEntity.getOwnerUser() != null){
-            User user = messageEntity.getOwnerUser();
+            final User user = messageEntity.getOwnerUser();
 
              if (user.getAvatar()!=null){
-                //todo:渲染用户头像
-
+                //渲染用户头像
+                 imageLoader.displayImage(user.getAvatar(), avatar);
+                 avatar.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+//                         Intent intent = new Intent(context, PeopleDetailActivity.class);
+                         Intent intent =  new Intent(context, ChatActivity.class);
+                         intent.putExtra("user", user);
+                         context.startActivity(intent);
+                     }
+                 });
              }
 
-            actionBar.setTitle(user.getNick());
+            actionBar.setTitle(user.getUsername());
         }
 
         if (messageEntity == null) return;
         imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), contentPhoto);
         String path = "http://file.bmob.cn/" + messageEntity.getAudio();
+
+
 //        audio.setOnClickListener(new NewRecordPlayClickListener(context, path, audio));
         initVoiceView();
 

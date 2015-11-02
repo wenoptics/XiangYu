@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.event.ConstantEvent;
@@ -42,13 +43,14 @@ public class DBManager implements MessageNetwork.OnGetMessageEntities {
     private static Map<String,ArrayList<CommentEntity>> messageId2CommentListMap = new HashMap<String,ArrayList<CommentEntity>>();
 
     public void initNetLogin(){
-        MessageNetwork.loadMessage(mContext,this);
+        //todo:开机定位，初始化位置后调用此方法并把位置传进来
+//        MessageNetwork.loadMessage(mContext,this,areaEntity);
 
     }
 
 
-    public void refreshMessageEntities(){
-        MessageNetwork.loadMessage(mContext,this);
+    public void refreshMessageEntities(AreaEntity areaEntity){
+        MessageNetwork.loadMessage(mContext,this,areaEntity);
     }
 
     @Override
@@ -56,7 +58,7 @@ public class DBManager implements MessageNetwork.OnGetMessageEntities {
             this.allMessageEntities.clear();
             this.allMessageEntities.addAll(allMessageEntities);
 
-        EventBus.getDefault().postSticky(ConstantEvent.MESSAGE_LOAD);
+        EventBus.getDefault().post(ConstantEvent.MESSAGE_LOAD);
     }
 
     public List<MessageEntity> getAllMessageEntities() {
