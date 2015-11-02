@@ -45,6 +45,9 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
     @ViewInject(R.id.iv_gender)
     ImageView mGender;
 
+    @ViewInject(R.id.textView_profileText)
+    TextView textView_profileText;
+
     User targetUser;
     String targetId;
 
@@ -69,7 +72,8 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
 
         sendMsgBtn.setOnClickListener(this);
         addFriendBtn.setOnClickListener(this);
-
+        if (targetUser.getUserDesc() != null)
+            textView_profileText.setText(targetUser.getUserDesc());
         // 获取用户信息
         initOtherData(targetUser.getUsername());
 
