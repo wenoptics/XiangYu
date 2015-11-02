@@ -134,7 +134,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         final MessageEntity data = mDataset.get(position);
 //        holder.mAvatar.setImageResource();
         if (data.getOwnerUser()!=null){
-            holder.mNickName.setText(data.getOwnerUser().getNick());
+            holder.mNickName.setText(data.getOwnerUser().getUsername());
             imageLoader.displayImage(data.getOwnerUser().getAvatar(), holder.mAvatar);
             //私聊
             holder.mAvatar.setOnClickListener(new View.OnClickListener() {

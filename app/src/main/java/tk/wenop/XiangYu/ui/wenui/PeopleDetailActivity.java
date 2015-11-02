@@ -20,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.ui.ActivityBase;
+import tk.wenop.XiangYu.ui.AddFriendActivity;
 import tk.wenop.XiangYu.ui.ChatActivity;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
 
@@ -153,6 +154,10 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
 
         }else if (id == addFriendBtn.getId()){
 
+            Intent intent =  new Intent(this, AddFriendActivity.class);
+            intent.putExtra("from", "contact");
+//            intent.putExtra("user",targetUser);
+            startActivity(intent);
 
         }
 

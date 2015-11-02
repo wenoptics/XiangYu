@@ -72,6 +72,7 @@
     </LinearLayout>
 
     <TextView
+        android:visibility="invisible"
          android:gravity="center"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -83,6 +84,7 @@
          android:textSize="15sp" />
 
     <AutoCompleteTextView
+        android:visibility="invisible"
         android:id="@+id/detail_address"
         android:layout_gravity="center"
         android:gravity="center"

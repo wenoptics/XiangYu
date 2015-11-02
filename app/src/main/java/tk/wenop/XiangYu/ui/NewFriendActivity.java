@@ -11,6 +11,7 @@ import cn.bmob.im.db.BmobDB;
 
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewFriendAdapter;
+import tk.wenop.XiangYu.ui.wenui.SideActivity;
 import tk.wenop.XiangYu.view.dialog.DialogTips;
 
 /** 新朋友
@@ -86,7 +87,7 @@ public class NewFriendActivity extends ActivityBase implements OnItemLongClickLi
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		if(from==null){
-			startAnimActivity(MainActivity.class);
+			startAnimActivity(SideActivity.class);
 		}
 	}
 	
