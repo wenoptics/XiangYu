@@ -197,7 +197,8 @@
                             android:textColor="#050505"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="36dp"
-                            android:alpha="0.7" />
+                            android:alpha="0.7"
+                            android:singleLine="false" />
 
                         <tk.wenop.XiangYu.ui.wenui.SoundWave
                             android:id="@+id/soundWave"

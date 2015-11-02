@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flyco.dialog.widget.base.BottomBaseDialog;
@@ -28,6 +29,7 @@ import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.network.MessageNetwork;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
 import tk.wenop.XiangYu.util.CommonUtils;
+import tk.wenop.XiangYu.util.animatedDialogUtils.T;
 import tk.wenop.XiangYu.util.animatedDialogUtils.ViewFindUtils;
 import tk.wenop.rippleanimation.RippleBackground;
 
@@ -53,6 +55,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     ImageView iv_photoTopShade;
     FloatingActionButton fab_send;
     ImageView audioControl;
+    TextView textTip;
 
     SelectImageInterface selectImageInterface;
 
@@ -104,6 +107,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         audio_wave = ViewFindUtils.find(inflate, R.id.audio_wave);
         audio_press_region = ViewFindUtils.find(inflate, R.id.audio_press_region);
         audioControl = ViewFindUtils.find(inflate,R.id.imageView10);
+        textTip = ViewFindUtils.find(inflate,R.id.textView_textTip);
 
 
         viewAddPhoto = ViewFindUtils.find(inflate,R.id.group_add_photo);
@@ -250,10 +254,6 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
     /**
      * 长按说话
-     * @ClassName: VoiceTouchListen
-     * @Description: TODO
-     * @author smile
-     * @date 2014-7-1 下午6:10:16
      */
     class VoiceTouchListen implements View.OnTouchListener {
         @Override
@@ -261,22 +261,23 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (!CommonUtils.checkSdCard()) {
-//                        ShowToast("发送语音需要sdcard支持！");
+                            T.show(context, "发送语音需要sdcard支持！", 1500);
                         return false;
                     }
                     try {
                         v.setPressed(true);
                         // 开始录音
                         recordManager.startRecording(userID);
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {}
                     return true;
                 case MotionEvent.ACTION_MOVE: {
                     if (event.getY() < 0) {
-                        //todo:提醒用户往上滑可以取消录音
+                        //提醒用户往上滑可以取消录音
+                        textTip.setText("松手取消录音");
 
                     } else {
-                        //todo:取消录音
+                        // 取消录音
+                        textTip.setText("正在录音...\n不松手上移\n取消录音");
 
                     }
                     return true;
@@ -286,20 +287,22 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                     v.setPressed(false);
                     try {
 
-                        float aa = event.getY();
                         if (event.getY() < 0) {// 放弃录音
                             recordManager.cancelRecording();
-                            BmobLog.i("voice", "放弃发送语音");
+                            BmobLog.i("voice", "放弃语音");
+                            textTip.setText("长按录音…");
                         } else {
                             int recordTime = recordManager.stopRecording();
                             if (recordTime > 1) {
                                 //获得录音文件的路径
                                 AUDIO_PATH = recordManager.getRecordFilePath(userID);
                                 BmobLog.i("voice", AUDIO_PATH);
+                                textTip.setText("已录音, 待发送");
 
                             } else {
-                                //todo： 录音时间过短，则提示录音过短的提示
-
+                                // 录音时间过短，则提示录音过短的提示
+                                T.show(context, "录音时间过短", 700);
+                                textTip.setText("长按录音…");
                             }
                         }
                     } catch (Exception e) {
