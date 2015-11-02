@@ -156,10 +156,8 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), contentPhoto);
         String path = "http://file.bmob.cn/" + messageEntity.getAudio();
 
-
 //        audio.setOnClickListener(new NewRecordPlayClickListener(context, path, audio));
         initVoiceView();
-
 
     }
     private void initVoiceView() {

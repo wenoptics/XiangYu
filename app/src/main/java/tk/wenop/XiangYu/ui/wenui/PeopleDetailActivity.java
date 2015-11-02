@@ -20,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.ui.ActivityBase;
+import tk.wenop.XiangYu.ui.AddFriendActivity;
 import tk.wenop.XiangYu.ui.ChatActivity;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
 
@@ -43,6 +44,9 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
 
     @ViewInject(R.id.iv_gender)
     ImageView mGender;
+
+    @ViewInject(R.id.textView_profileText)
+    TextView textView_profileText;
 
     User targetUser;
     String targetId;
@@ -68,7 +72,8 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
 
         sendMsgBtn.setOnClickListener(this);
         addFriendBtn.setOnClickListener(this);
-
+        if (targetUser.getUserDesc() != null)
+            textView_profileText.setText(targetUser.getUserDesc());
         // 获取用户信息
         initOtherData(targetUser.getUsername());
 
@@ -153,6 +158,10 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
 
         }else if (id == addFriendBtn.getId()){
 
+            Intent intent =  new Intent(this, AddFriendActivity.class);
+            intent.putExtra("from", "contact");
+//            intent.putExtra("user",targetUser);
+            startActivity(intent);
 
         }
 
