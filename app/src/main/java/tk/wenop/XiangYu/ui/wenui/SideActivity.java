@@ -155,7 +155,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 // TODO
                 //    如果没有登录，在这里跳转登录
 
-                if (nowAreaEntity == null){
+                if (nowAreaEntity == null) {
                     Toast.makeText(mContext,"请选择群组",Toast.LENGTH_SHORT).show();
                 }
 

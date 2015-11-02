@@ -118,7 +118,6 @@
                         android:layout_alignParentLeft="false"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="18dp"
                         android:layout_marginLeft="36dp"
                         android:alpha="0.8"
                         android:orientation="horizontal">
@@ -130,12 +129,14 @@
                             android:text="匿名发表"
                             android:textColor="#ffffff" />
 
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="12dp"
-                            android:src="@drawable/ic_check_box_outline_blank_white_48dp" />
+                            android:id="@+id/cb_isAnonymous"
+                            android:singleLine="true"
+                            android:buttonTint="#ffffff" />
                     </LinearLayout>
 
                 </RelativeLayout>
