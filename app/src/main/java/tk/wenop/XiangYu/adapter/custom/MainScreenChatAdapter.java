@@ -98,16 +98,28 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
     @Override
     public MainScreenChatAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent,
                                                    int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_received_list__main_screen_chat, parent, false);
+        // create a new view base on type(MessageEntity msgType)
+        View v;
+        switch (viewType) {
+            case MessageEntity.MSG_TYPE_ONLY_PHOTO:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_received_list_photo__main_screen_chat, parent, false);
+                break;
+            case MessageEntity.MSG_TYPE_ONLY_AUDIO:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_received_list_audio__main_screen_chat, parent, false);
+                break;
+            case MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_received_list_both__main_screen_chat, parent, false);
+                break;
+            default:
+                // TODO !!! debug here , should be deleted later. (wenop)
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_received_list_both__main_screen_chat, parent, false);
 
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: onClick在这里
-            }
-        });
+        }
+
 
         return new ViewHolder(v);
     }
@@ -123,6 +135,15 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         }
     };
 
+    private void setContentAudio(MessageEntity data, ViewHolder holder) {
+        String path = "http://file.bmob.cn/" + data.getAudio();
+        holder.audio_msg_bubble.setOnClickListener(
+                new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
+    }
+
+    private void setContentPhoto(MessageEntity data, ViewHolder holder) {
+        imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(), holder.mContentPhoto);
+    }
 
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -153,12 +174,25 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         }
 //        Time time =  Time.valueOf(data.getCreatedAt());
         String s =data.getCreatedAt().substring(11,19);
-
         holder.mTime.setText(s);
-        imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(), holder.mContentPhoto);
-        String path = "http://file.bmob.cn/" + data.getAudio();
-        holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext,path,holder.audio_animation));
 
+        switch (data.getMsgType()) {
+            case MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO:
+                setContentAudio(data, holder);
+                setContentPhoto(data, holder);
+                break;
+            case MessageEntity.MSG_TYPE_ONLY_AUDIO:
+                setContentAudio(data, holder);
+                break;
+            case MessageEntity.MSG_TYPE_ONLY_PHOTO:
+                setContentPhoto(data, holder);
+                break;
+            default:
+                /// TODO!!! debug here, should delete later (wenop)
+                setContentAudio(data, holder);
+                setContentPhoto(data, holder);
+                /// TODO !!! end
+        }
 
 //        holder.audio.setOnClickListener(new NewRecordPlayClickListener(context,path, messageHolder.audio));
         //评论按钮
@@ -166,11 +200,24 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(mContext, CommentActivity.class);
-                        CommentActivity.messageEntity = data;
-                        mContext.startActivity(intent);
+                        gotoComment(data);
                     }
                 });
+
+        // wenop-add
+        // 点击view 去到消息 (也去到评论页面)
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoComment(data);
+            }
+        });
+    }
+
+    private void gotoComment(MessageEntity data) {
+        Intent intent = new Intent(mContext, CommentActivity.class);
+        CommentActivity.messageEntity = data;
+        mContext.startActivity(intent);
     }
 
 
@@ -178,5 +225,11 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    // wenop-add : determine what kind of View will be used
+    @Override
+    public int getItemViewType(int position) {
+        return mDataset.get(position).getMsgType();
     }
 }

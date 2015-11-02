@@ -92,6 +92,8 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         userID = currentUser.getObjectId();
         context = this;
 
+        imageLoader = ImageLoader.getInstance();
+
         initView();
 
 
@@ -152,7 +154,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         }
 
         if (messageEntity == null) return;
-        imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), contentPhoto);
         String path = "http://file.bmob.cn/" + messageEntity.getAudio();
 

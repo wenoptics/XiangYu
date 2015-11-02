@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.flyco.dialog.widget.base.BottomBaseDialog;
 
@@ -115,12 +115,6 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         iv_photoTopShade = ViewFindUtils.find(inflate,R.id.iv_photoTopShade);
 
         fab_send = ViewFindUtils.find(inflate,R.id.fab_send);
-        fab_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage();
-            }
-        });
 
         //录音相关
         soundWave = ViewFindUtils.find(inflate, R.id.soundWave);
@@ -160,6 +154,13 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         audio_wave.startRippleAnimation();
 
         audioControl.setOnTouchListener(new VoiceTouchListen());
+
+        fab_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage();
+            }
+        });
 
         viewAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,7 +302,10 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
                             } else {
                                 // 录音时间过短，则提示录音过短的提示
-                                T.show(context, "录音时间过短", 700);
+//                                T.show(context, "录音时间过短", 700);
+                                Snackbar.make(v, "录音时间过短", Snackbar.LENGTH_SHORT)
+                                        .setAction("Action", null).show();
+
                                 textTip.setText("长按录音…");
                             }
                         }
@@ -317,14 +321,20 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     }
 
 
+    private void doWhenSendError() {
+
+    }
+
+    private void onSendProgress() {
+
+    }
 
     /*
         保存并且发送消息
      */
-
     public void sendMessage(){
 
-        if (IMAGE_PATH == null){
+        /*if (IMAGE_PATH == null){
             Toast.makeText(context,"请添加图片信息",Toast.LENGTH_SHORT).show();
             return;
         }
@@ -332,39 +342,116 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         if (AUDIO_PATH == null){
             Toast.makeText(context,"请添加语音信息",Toast.LENGTH_SHORT).show();
             return;
+        }*/
+
+        if (AUDIO_PATH != null && IMAGE_PATH == null)
+        {
+            // 只发送语音消息
+            String[] files = new String[]{AUDIO_PATH};
+
+            Bmob.uploadBatch(context, files, new cn.bmob.v3.listener.UploadBatchListener() {
+                @Override
+                public void onSuccess(List<BmobFile> list, List<String> list1) {
+
+                    if (list.size() > 0) {
+                        MessageEntity messageEntity = new MessageEntity();
+                        if (areaEntity!=null) messageEntity.setOwnerArea(areaEntity);
+                        messageEntity.setMsgType(MessageEntity.MSG_TYPE_ONLY_AUDIO);
+                        messageEntity.setAudio(list.get(0).getUrl());
+                        messageEntity.setOwnerUser(loginUser);
+                        MessageNetwork.save(context, messageEntity);
+                        dismiss();
+                    }
+
+                }
+
+                @Override
+                public void onProgress(int i, int i1, int i2, int i3) {
+
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    doWhenSendError();
+                }
+            });
         }
 
-        String[] files = new String[]{IMAGE_PATH,AUDIO_PATH};
+        else if (IMAGE_PATH != null && AUDIO_PATH == null)
+        {
+            // 只发送图片消息
+            String[] files = new String[]{IMAGE_PATH};
 
-        Bmob.uploadBatch(context, files, new cn.bmob.v3.listener.UploadBatchListener() {
-            @Override
-            public void onSuccess(List<BmobFile> list, List<String> list1) {
+            Bmob.uploadBatch(context, files, new cn.bmob.v3.listener.UploadBatchListener() {
+                @Override
+                public void onSuccess(List<BmobFile> list, List<String> list1) {
 
-                if (list.size() > 0) {
+                    if (list.size() > 0) {
+                        MessageEntity messageEntity = new MessageEntity();
+                        if (areaEntity!=null) messageEntity.setOwnerArea(areaEntity);
+                        messageEntity.setMsgType(MessageEntity.MSG_TYPE_ONLY_PHOTO);
+                        messageEntity.setImage(list.get(0).getUrl());
+                        messageEntity.setOwnerUser(loginUser);
+                        MessageNetwork.save(context, messageEntity);
+                        dismiss();
+                    }
 
                 }
-                if (list.size() > 1) {
-                    MessageEntity messageEntity = new MessageEntity();
-                    if (areaEntity!=null) messageEntity.setOwnerArea(areaEntity);
-                    messageEntity.setAudio(list.get(1).getUrl());
-                    messageEntity.setImage(list.get(0).getUrl());
-                    messageEntity.setOwnerUser(loginUser);
-                    MessageNetwork.save(context, messageEntity);
-                    dismiss();
+
+                @Override
+                public void onProgress(int i, int i1, int i2, int i3) {
+
                 }
 
-            }
+                @Override
+                public void onError(int i, String s) {
+                    doWhenSendError();
+                }
+            });
+        }
 
-            @Override
-            public void onProgress(int i, int i1, int i2, int i3) {
+        else if (IMAGE_PATH != null && AUDIO_PATH != null)
+        {
+            //语音+附图消息
+            String[] files = new String[]{IMAGE_PATH, AUDIO_PATH};
 
-            }
+            Bmob.uploadBatch(context, files, new cn.bmob.v3.listener.UploadBatchListener() {
+                @Override
+                public void onSuccess(List<BmobFile> list, List<String> list1) {
 
-            @Override
-            public void onError(int i, String s) {
+                    if (list.size() > 0) {
 
-            }
-        });
+                    }
+                    if (list.size() > 1) {
+                        MessageEntity messageEntity = new MessageEntity();
+                        if (areaEntity!=null) messageEntity.setOwnerArea(areaEntity);
+                        messageEntity.setMsgType(MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO);
+                        messageEntity.setAudio(list.get(1).getUrl());
+                        messageEntity.setImage(list.get(0).getUrl());
+                        messageEntity.setOwnerUser(loginUser);
+                        MessageNetwork.save(context, messageEntity);
+                        dismiss();
+                    }
+
+                }
+
+                @Override
+                public void onProgress(int i, int i1, int i2, int i3) {
+
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    doWhenSendError();
+                }
+            });
+
+        }
+
+        else {
+            T.show(context, "您可以发语音或者一张图片", 1000);
+        }
+
 
     }
 
