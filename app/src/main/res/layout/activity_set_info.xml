@@ -8,6 +8,38 @@
     android:orientation="vertical"
     tools:context=".ui.SetMyInfoActivity">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
+
+    <RelativeLayout
+        android:id="@+id/layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/about_mid_bg"
+        android:padding="10dp" >
+
+        <TextView
+            style="@style/Smile.TextView._Black"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/add_name" />
+
+        <TextView
+            android:id="@+id/tv_set_name"
+            style="@style/Smile.TextView._Black"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:drawablePadding="10dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"></LinearLayout>
+
     <RelativeLayout
         android:id="@+id/layout_head"
         android:layout_width="match_parent"
@@ -83,28 +115,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/about_mid_bg"
-        android:padding="10dp" >
-
-        <TextView
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/add_name" />
-
-        <TextView
-            android:id="@+id/tv_set_name"
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:drawablePadding="10dp" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/layout_gender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -130,7 +140,47 @@
                 style="@style/Smile.TextView._Black"
                 android:layout_marginRight="20dp"
                 android:drawablePadding="10dp" />
-            
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_userDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/about_mid_bg"
+        android:padding="10dp" >
+
+        <TextView
+            style="@style/Smile.TextView._Black"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/add_userDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:id="@+id/textView7"
+                android:drawablePadding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                style="@style/Smile.ImageView"
+                android:id="@+id/imageView9"
+                android:layout_width="20dp"
+                android:contentDescription="@string/action_settings"
+                android:src="@drawable/register_bottom_arrow"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </RelativeLayout>
 

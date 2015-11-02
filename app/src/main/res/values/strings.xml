@@ -87,5 +87,7 @@
     <string name="fragment_contact">联系人</string>
     <string name="fragment_recent">最近回话</string>
     <string name="fragment_setting">设置</string>
+    <string name="add_userDesc">个性签名</string>
+    <string name="add_userDesc_hint">我想说...</string>
 
 </resources>

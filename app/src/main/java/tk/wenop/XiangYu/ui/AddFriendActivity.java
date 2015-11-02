@@ -40,7 +40,7 @@ public class AddFriendActivity extends ActivityBase implements OnClickListener,I
 	AddFriendAdapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_contact);
 		initView();

@@ -65,7 +65,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
     ImageView iv_set_avator, iv_arraw, iv_nickarraw;
     LinearLayout layout_all;
 
-    RelativeLayout layout_head, layout_nick, layout_gender;
+    RelativeLayout layout_head, layout_nick, layout_gender, layout_userDesc;
 
     User user;
 
@@ -94,6 +94,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
         layout_head = (RelativeLayout) findViewById(R.id.layout_head);
         layout_nick = (RelativeLayout) findViewById(R.id.layout_nick);
         layout_gender = (RelativeLayout) findViewById(R.id.layout_gender);
+        layout_userDesc = (RelativeLayout) findViewById(R.id.layout_userDesc);
 
         tv_set_gender = (TextView) findViewById(R.id.tv_set_gender);
 
@@ -101,6 +102,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
         layout_head.setOnClickListener(this);
         layout_nick.setOnClickListener(this);
         layout_gender.setOnClickListener(this);
+        layout_userDesc.setOnClickListener(this);
         iv_nickarraw.setVisibility(View.VISIBLE);
         iv_arraw.setVisibility(View.VISIBLE);
 
@@ -174,11 +176,15 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
             showAvatarPop();
             break;
         case R.id.layout_nick:
-            startAnimActivity(UpdateInfoActivity.class);
+            startAnimActivity(UpdateNickNameActivity.class);
 //			addBlog();
             break;
         case R.id.layout_gender:// 性别
             showSexChooseDialog();
+            break;
+        case R.id.layout_userDesc:
+            /// 个性签名
+            startAnimActivity(UpdateUserDescActivity.class);
             break;
         }
     }
@@ -484,8 +490,6 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
 
     /**
      * 保存裁剪的头像
-     *
-     * @param data
      */
     private void saveCropAvator(Intent data) {
         Bundle extras = data.getExtras();
