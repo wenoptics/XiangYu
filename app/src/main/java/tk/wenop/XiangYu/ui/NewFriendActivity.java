@@ -71,10 +71,6 @@ public class NewFriendActivity extends ActivityBase implements OnItemLongClickLi
 	
 	/** 
 	 * 删除请求
-	  * deleteRecent
-	  * @param @param recent 
-	  * @return void
-	  * @throws
 	  */
 	private void deleteInvite(int position, BmobInvitation invite){
 		adapter.remove(position);

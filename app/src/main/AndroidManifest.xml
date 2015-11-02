@@ -112,7 +112,8 @@
     <activity android:name="tk.wenop.XiangYu.ui.NewFriendActivity" />
     <activity android:name="tk.wenop.XiangYu.ui.NearPeopleActivity" />
 
-    <activity android:name="tk.wenop.XiangYu.ui.UpdateInfoActivity" />
+    <activity android:name=".ui.UpdateNickNameActivity" />
+    <activity android:name=".ui.UpdateUserDescActivity" />
 
     <activity
         android:name="tk.wenop.XiangYu.ui.ChatActivity"
@@ -155,8 +156,8 @@
 
 
     <activity android:name=".ui.wenui.CommentActivity"
-        ></activity>
-<activity android:name=".ui.activity.OverallMessageListActivity"></activity>
+        />
+    <activity android:name=".ui.activity.OverallMessageListActivity"/>
 
     <!-- baidu map-->
     <meta-data
