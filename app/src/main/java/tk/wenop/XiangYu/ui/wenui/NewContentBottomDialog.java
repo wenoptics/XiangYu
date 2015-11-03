@@ -69,8 +69,8 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     String userID = "";
 
 
-    private String AUDIO_PATH;
-    private String IMAGE_PATH;
+    private String AUDIO_PATH = null;
+    private String IMAGE_PATH = null;
     private User loginUser;
     private AreaEntity areaEntity;
 
@@ -160,9 +160,9 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         fab_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage();
                 loadingDialog = new SpotsDialog(context);
                 loadingDialog.show();
+                sendMessage();
             }
         });
 

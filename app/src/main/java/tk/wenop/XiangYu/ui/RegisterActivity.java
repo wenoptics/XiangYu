@@ -16,6 +16,7 @@ import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.BmobConstants;
+import tk.wenop.XiangYu.ui.wenui.SideActivity;
 import tk.wenop.XiangYu.util.CommonUtils;
 
 public class RegisterActivity extends BaseActivity {
@@ -99,7 +100,8 @@ public class RegisterActivity extends BaseActivity {
 				//发广播通知登陆页面退出
 				sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
 				// 启动主页
-				Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
+//				Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+				Intent intent = new Intent(RegisterActivity.this, SideActivity.class);
 				startActivity(intent);
 				finish();
 				
