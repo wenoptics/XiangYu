@@ -147,6 +147,10 @@
             android:name=".ui.activity.OverallMessageListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity android:name=".ui.wenui.PostRegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <!-- baidu map -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -200,8 +204,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.wenui.PostRegisterActivity" >
-        </activity>
+
+
     </application>
 
 </manifest>

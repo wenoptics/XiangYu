@@ -16,13 +16,13 @@ import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.BmobConstants;
-import tk.wenop.XiangYu.ui.wenui.SideActivity;
+import tk.wenop.XiangYu.ui.wenui.PostRegisterActivity;
 import tk.wenop.XiangYu.util.CommonUtils;
 
 public class RegisterActivity extends BaseActivity {
 
     Button btn_register;
-    EditText et_username, et_password, et_pswAgain;
+    EditText et_username, et_password, et_pswAgain, et_nickName;
     BmobChatUser currentUser;
 
     @Override
@@ -36,7 +36,7 @@ public class RegisterActivity extends BaseActivity {
         et_username = (EditText) findViewById(R.id.et_phone);
         et_password = (EditText) findViewById(R.id.et_password);
         et_pswAgain = (EditText) findViewById(R.id.et_pswAgain);
-//		et_pswAgain = (EditText) findViewById(R.id.et_email);
+        et_nickName = (EditText) findViewById(R.id.et_nickName);
 
         btn_register = (Button) findViewById(R.id.btn_register);
         btn_register.setOnClickListener(new OnClickListener() {
@@ -49,11 +49,18 @@ public class RegisterActivity extends BaseActivity {
     }
     
     private void doRegister(){
-        String name = et_username.getText().toString();
+        String userName = et_username.getText().toString();
         String password = et_password.getText().toString();
         String pwd_again = et_pswAgain.getText().toString();
+        String nickName = et_nickName.getText().toString();
+
+        boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
+        if(!isNetConnected){
+            ShowToast(R.string.network_tips);
+            return;
+        }
         
-        if (TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(userName)) {
 //            ShowToast(R.string.toast_error_username_null);
             ShowToast("手机号不能为空哦");
             return;
@@ -67,11 +74,9 @@ public class RegisterActivity extends BaseActivity {
             ShowToast(R.string.toast_error_comfirm_password);
             return;
         }
-        
-        boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
-        if(!isNetConnected){
-            ShowToast(R.string.network_tips);
-            return;
+
+        if (TextUtils.isEmpty(nickName)) {
+            nickName = "";
         }
         
         final ProgressDialog progress = new ProgressDialog(RegisterActivity.this);
@@ -81,10 +86,11 @@ public class RegisterActivity extends BaseActivity {
         //由于每个应用的注册所需的资料都不一样，故IM sdk未提供注册方法，用户可按照bmod SDK的注册方式进行注册。
         //注册的时候需要注意两点：1、User表中绑定设备id和type，2、设备表中绑定username字段
         final User bu = new User();
-        bu.setUsername(name);
+        bu.setUsername(userName);
         bu.setPassword(password);
         //将user和设备id进行绑定aa
         bu.setSex(true);
+        bu.setNick(nickName);
         bu.setDeviceType("android");
         bu.setInstallId(BmobInstallation.getInstallationId(this));
         bu.signUp(RegisterActivity.this, new SaveListener() {
@@ -102,7 +108,8 @@ public class RegisterActivity extends BaseActivity {
                 sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
                 // 启动主页
 //				Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                Intent intent = new Intent(RegisterActivity.this, SideActivity.class);
+//                Intent intent = new Intent(RegisterActivity.this, SideActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, PostRegisterActivity.class);
                 startActivity(intent);
                 finish();
                 
