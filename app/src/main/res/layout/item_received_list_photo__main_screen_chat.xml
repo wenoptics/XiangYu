@@ -104,7 +104,8 @@
                     android:id="@+id/imageView_contentPhoto"
                     android:src="@drawable/l_0"
                     android:scaleType="centerCrop"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:alpha="0.8" />
             </LinearLayout>
 
             <RelativeLayout

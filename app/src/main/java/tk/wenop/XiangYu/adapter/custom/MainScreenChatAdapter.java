@@ -205,16 +205,22 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                 {
                     // 男
                     holder.mAvatar.setImageResource(R.drawable.avatar_a_m);
-                    holder.card_root_view
-                            .setBackgroundColor(ContextCompat.getColor(mContext,
+                    holder.mNickName
+                            .setTextColor(ContextCompat.getColor(mContext,
                                     R.color.anonymous_card_color_male));
+//                    holder.card_root_view
+//                            .setBackgroundColor(ContextCompat.getColor(mContext,
+//                                    R.color.anonymous_card_color_male));
 
                 } else {
                     // 女
                     holder.mAvatar.setImageResource(R.drawable.avatar_a_fm);
-                    holder.card_root_view
-                            .setBackgroundColor(ContextCompat.getColor(mContext,
+                    holder.mNickName
+                            .setTextColor(ContextCompat.getColor(mContext,
                                     R.color.anonymous_card_color_female));
+//                    holder.card_root_view
+//                            .setBackgroundColor(ContextCompat.getColor(mContext,
+//                                    R.color.anonymous_card_color_female));
                 }
             }
             else {

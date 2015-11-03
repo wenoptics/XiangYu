@@ -205,16 +205,22 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                 {
                     // 男
                     iv_avatar.setImageResource(R.drawable.avatar_a_m);
-                    card_root_view
-                            .setBackgroundColor(ContextCompat.getColor(context,
+                    tv_nickName
+                            .setTextColor(ContextCompat.getColor(context,
                                     R.color.anonymous_card_color_male));
+//                    card_root_view
+//                            .setBackgroundColor(ContextCompat.getColor(context,
+//                                    R.color.anonymous_card_color_male));
 
                 } else {
                     // 女
                     iv_avatar.setImageResource(R.drawable.avatar_a_fm);
-                    card_root_view
-                            .setBackgroundColor(ContextCompat.getColor(context,
+                    tv_nickName
+                            .setTextColor(ContextCompat.getColor(context,
                                     R.color.anonymous_card_color_female));
+//                    card_root_view
+//                            .setBackgroundColor(ContextCompat.getColor(context,
+//                                    R.color.anonymous_card_color_female));
                 }
 
                 // 在actionBar显示
