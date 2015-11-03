@@ -212,5 +212,9 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="FloatLabeledEditText">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
 </resources>
 
