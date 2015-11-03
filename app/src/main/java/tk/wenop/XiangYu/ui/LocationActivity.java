@@ -105,7 +105,6 @@ public class LocationActivity extends BaseActivity implements OnGetGeoCoderResul
 
 		mSearch = GeoCoder.newInstance();
 		mSearch.setOnGetGeoCodeResultListener(this);
-
 	}
 
 	/**
