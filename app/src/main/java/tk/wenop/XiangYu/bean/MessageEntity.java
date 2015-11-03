@@ -14,6 +14,8 @@ import cn.bmob.v3.BmobObject;
         private User ownerUser;
         private AreaEntity ownerArea;
         private Boolean anonymous;
+        //评论数量；
+        private Integer commentCount;
 
 
         //wenop-add 消息类型
@@ -62,5 +64,13 @@ import cn.bmob.v3.BmobObject;
 
         public void setMsgType(int msgType) {
             this.msgType = msgType;
+        }
+
+        public Integer getCommentCount() {
+            return commentCount;
+        }
+
+        public void setCommentCount(Integer commentCount) {
+            this.commentCount = commentCount;
         }
     }

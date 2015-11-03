@@ -65,8 +65,15 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     TextView tv_nickName;
     View card_root_view;
 
+    @ViewInject(R.id.textView_commentCount)
+    TextView mCommentCount;
+
+
     @ViewInject(R.id.btn_speak)
     Button btn_speak;
+
+
+
 
     ImageLoader imageLoader;
     User currentUser;
@@ -431,7 +438,18 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                     commentEntity.setComment(list.get(0).getUrl());
                     commentEntity.setOwnerMessage(messageEntity);
                     commentEntity.setOwnerUser(currentUser);
-                    commentEntity.save(context);//todo 检测更多动作
+                    commentEntity.save(context, new SaveListener() {
+                        @Override
+                        public void onSuccess() {
+                            messageEntity.increment("commentCount");
+                            messageEntity.update(context);
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+
+                        }
+                    });//todo 检测更多动作
                     //todo:save comment to comment list;
                     commentAdapter.addData(commentEntity);
                 }

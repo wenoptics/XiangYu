@@ -38,6 +38,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobRelation;
+import cn.bmob.v3.listener.UpdateListener;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.CustomApplcation;
@@ -266,6 +268,12 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //todo:设置按钮两种状态 状态1:已经关注    2:未关注
+            //todo:暂时用来做关注地理位置的此按钮
+
+            if (nowAreaEntity!=null)
+            addFollowArea(nowAreaEntity);
+
             return true;
         }else if (id == R.id.search_place){
 
@@ -276,6 +284,31 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    /*
+        添加地点关注
+     */
+    public void  addFollowArea(AreaEntity areaEntity){
+
+        BmobRelation relation = new BmobRelation();
+        relation.add(areaEntity);
+
+        user.setFollowAreas(relation);
+        user.update(mContext, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(mContext,"关注成功",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Toast.makeText(mContext,"关注失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
