@@ -20,6 +20,7 @@ import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
+import tk.wenop.XiangYu.util.ImageLoadOptions;
 
 //import tk.wenop.XiangYu.R;
 
@@ -57,7 +58,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             mNickName      = (TextView)  v.findViewById(R.id.tv_nickName);
             mAudioTimeSec  = (TextView)  v.findViewById(R.id.textView_audioLength     );
-            mAvatar        = (ImageView) v.findViewById(R.id.imageView_avatar         );
+            mAvatar        = (ImageView) v.findViewById(R.id.iv_comment_comment_item_avatar         );
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );
 
             //按气泡播放语音
@@ -139,10 +140,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 //        holder.mNickName.setText(data.mNickName);
 
         User user = data.getOwnerUser();
-        if (user!=null){
-            if (user.getAvatar()!=null) {
-                imageLoader.displayImage(data.getOwnerUser().getAvatar(), holder.mAvatar);
-            }
+        if (user!=null) {
+            refreshAvatar(data.getOwnerUser().getAvatar(), holder.mAvatar);
         }
 
         holder.mAvatar.setOnClickListener(onAvatarClickListener);
@@ -153,6 +152,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         String path = "http://file.bmob.cn/" + data.getComment();
         holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
 
+    }
+
+    private void refreshAvatar(String avatar, ImageView avatarView) {
+        if (avatar != null && !avatar.equals("")) {
+            ImageLoader.getInstance().displayImage(avatar, avatarView,
+                    ImageLoadOptions.getOptions());
+        } else {
+            avatarView.setImageResource(R.drawable.default_head);
+        }
     }
 
 

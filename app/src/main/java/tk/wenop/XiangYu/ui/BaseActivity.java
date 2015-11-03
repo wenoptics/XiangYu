@@ -25,7 +25,6 @@ import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.util.CollectionUtils;
 import tk.wenop.XiangYu.view.HeaderLayout;
-import tk.wenop.XiangYu.view.HeaderLayout.onLeftImageButtonClickListener;
 import tk.wenop.XiangYu.view.HeaderLayout.onRightImageButtonClickListener;
 import tk.wenop.XiangYu.view.dialog.DialogTips;
 
@@ -138,6 +137,7 @@ public class BaseActivity extends AppCompatActivity {
                 new OnLeftButtonClickListener());
         mHeaderLayout.setTitleAndRightButton(titleName, rightDrawableId,text,
                 listener);*/
+        initTopBar_withBackButton(titleName);
     }
     
     public void initTopBarForBoth(String titleName, int rightDrawableId,
@@ -200,17 +200,8 @@ public class BaseActivity extends AppCompatActivity {
         dialog.show();
         dialog = null;
     }
-    
-    // 左边按钮的点击事件
-    public class OnLeftButtonClickListener implements
-            onLeftImageButtonClickListener {
 
-        @Override
-        public void onClick() {
-            finish();
-        }
-    }
-    
+
     public void startAnimActivity(Class<?> cla) {
         this.startActivity(new Intent(this, cla));
     }

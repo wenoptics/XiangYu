@@ -3,14 +3,17 @@ package tk.wenop.XiangYu.ui.wenui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -55,10 +58,13 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     public static MessageEntity messageEntity = null;
     ActionBar actionBar;
 
-    @ViewInject(R.id.imageView_contentPhoto)
-    ImageView contentPhoto;
-    @ViewInject(R.id.imageView_avatar)
-    ImageView avatar;
+    // wenop-update 不能用inject了，因为我动态改变了View
+//    @ViewInject(R.id.imageView_contentPhoto)
+    ImageView iv_contentPhoto;
+//    @ViewInject(R.id.imageView_avatar)
+    ImageView iv_avatar;
+    TextView tv_nickName;
+    View card_root_view;
 
     @ViewInject(R.id.textView_commentCount)
     TextView mCommentCount;
@@ -83,6 +89,9 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     TextView tv_voice_tips;
     @ViewInject(R.id.iv_record)
     ImageView iv_record;
+    @ViewInject(R.id.comment_content)
+    ViewStub comment_content;
+
     private Drawable[] drawable_Anims;// 话筒动画
     BmobRecordManager recordManager;
 
@@ -91,6 +100,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+
         ViewUtils.inject(this);
 
         // 显示出返回按钮
@@ -99,7 +109,9 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         currentUser = BmobUser.getCurrentUser(this, User.class);
         userID = currentUser.getObjectId();
         context = this;
+
         imageLoader = ImageLoader.getInstance();
+
         initView();
 
 
@@ -127,44 +139,112 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
     }
 
-    public void initData(){
-
-
-    }
-
     public void initView(){
 
         if (messageEntity == null) return;
-        // 在actionBar显示用户名
 
-//        mCommentCount
-        if (messageEntity.getCommentCount() != null)
-        mCommentCount.setText(String.valueOf(messageEntity.getCommentCount()));
+        String audioPath;
+        // wenop-mod
+        // 根据messageEntity msgType来选择layout_include
+        switch (messageEntity.getMsgType()) {
+            case MessageEntity.MSG_TYPE_ONLY_PHOTO:
+                comment_content.setLayoutResource(R.layout.content_comment_photo);
+                break;
+            case MessageEntity.MSG_TYPE_ONLY_AUDIO:
+                comment_content.setLayoutResource(R.layout.content_comment_audio);
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+                break;
+            case MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO:
+                comment_content.setLayoutResource(R.layout.content_comment_both);
+                break;
+            default:
+                //TODO !!! debug here, should be deleted later
+                comment_content.setLayoutResource(R.layout.content_comment_both);
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+        }
+        comment_content.inflate();
 
-        if (messageEntity.getOwnerUser() != null){
-            final User user = messageEntity.getOwnerUser();
+        // inflate完 才绑定这个控件
+        iv_avatar = (ImageView) findViewById(R.id.imageView_avatar);
+        tv_nickName = (TextView) findViewById(R.id.tv_nickName);
+        card_root_view = findViewById(R.id.card_root_view);
 
-             if (user.getAvatar()!=null){
-                //渲染用户头像
-                 imageLoader.displayImage(user.getAvatar(), avatar);
-                 avatar.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View v) {
-//                         Intent intent = new Intent(context, PeopleDetailActivity.class);
-                         Intent intent =  new Intent(context, ChatActivity.class);
-                         intent.putExtra("user", user);
-                         context.startActivity(intent);
-                     }
-                 });
-             }
 
-            actionBar.setTitle(user.getUsername());
+        // 分消息类型来设置view
+        iv_contentPhoto = (ImageView) findViewById(R.id.imageView_contentPhoto);
+        switch (messageEntity.getMsgType()) {
+            case MessageEntity.MSG_TYPE_ONLY_PHOTO:
+                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
+                break;
+            case MessageEntity.MSG_TYPE_ONLY_AUDIO:
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+                break;
+            case MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO:
+                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+                break;
+            default:
+                //TODO !!! debug here, should be deleted later
+                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
+                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
         }
 
-        if (messageEntity == null) return;
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), contentPhoto);
-        String path = "http://file.bmob.cn/" + messageEntity.getAudio();
+        if (messageEntity.getOwnerUser() != null){
+
+            final User user = messageEntity.getOwnerUser();
+
+            if (messageEntity.getAnonymous() == true) {
+                // 匿名消息
+
+                tv_nickName.setText("匿名用户");
+                // 昵称样式
+                tv_nickName.setTypeface(null, Typeface.ITALIC);
+
+                // 消息的owner, 要根据性别设置样式
+                if (messageEntity.getOwnerUser().getSex() == true)
+                {
+                    // 男
+                    iv_avatar.setImageResource(R.drawable.avatar_a_m);
+                    card_root_view
+                            .setBackgroundColor(ContextCompat.getColor(context,
+                                    R.color.anonymous_card_color_male));
+
+                } else {
+                    // 女
+                    iv_avatar.setImageResource(R.drawable.avatar_a_fm);
+                    card_root_view
+                            .setBackgroundColor(ContextCompat.getColor(context,
+                                    R.color.anonymous_card_color_female));
+                }
+
+                // 在actionBar显示
+                actionBar.setTitle("匿名用户的消息");
+
+            }
+            else {
+                // 非匿名消息
+
+                if (user.getAvatar()!=null){
+                    //渲染用户头像
+                    imageLoader.displayImage(user.getAvatar(), iv_avatar);
+                    iv_avatar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                         Intent intent = new Intent(context, PeopleDetailActivity.class);
+                            Intent intent = new Intent(context, ChatActivity.class);
+                            intent.putExtra("user", user);
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+                tv_nickName.setText(user.getNick());
+
+                // 在actionBar显示
+                actionBar.setTitle(user.getNick() + "说");
+
+            }
+        }
+
 
 //        audio.setOnClickListener(new NewRecordPlayClickListener(context, path, audio));
         initVoiceView();
@@ -179,7 +259,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
         initVoiceAnimRes();
         initRecordManager();
-
     }
 
 
@@ -257,11 +336,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
     /**
      * 初始化语音动画资源
-     * @Title: initVoiceAnimRes
-     * @Description: TODO
-     * @param
-     * @return void
-     * @throws
      */
     private void initVoiceAnimRes() {
 
@@ -277,10 +351,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
     /**
      * 长按说话
-     * @ClassName: VoiceTouchListen
-     * @Description: TODO
-     * @author smile
-     * @date 2014-7-1 下午6:10:16
      */
     class VoiceTouchListen implements View.OnTouchListener {
         @Override

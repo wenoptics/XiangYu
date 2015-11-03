@@ -10,7 +10,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/imageView_avatar"
+            android:id="@+id/iv_comment_comment_item_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="16dp"

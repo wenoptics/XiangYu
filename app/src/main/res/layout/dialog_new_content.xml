@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:scrollbars="none">
 
@@ -98,11 +99,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
                 <RelativeLayout
                     android:id="@+id/_divider"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="3dp">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/imageView6"
@@ -118,7 +119,6 @@
                         android:layout_alignParentLeft="false"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="18dp"
                         android:layout_marginLeft="36dp"
                         android:alpha="0.8"
                         android:orientation="horizontal">
@@ -130,26 +130,17 @@
                             android:text="匿名发表"
                             android:textColor="#ffffff" />
 
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="12dp"
-                            android:src="@drawable/ic_check_box_outline_blank_white_48dp" />
+                            android:id="@+id/cb_isAnonymous"
+                            android:singleLine="true"
+                            android:buttonTint="#ffffff" />
                     </LinearLayout>
 
                 </RelativeLayout>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_send"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:src="@drawable/ic_send_white_48dp" />
-
 
                 <tk.wenop.rippleanimation.RippleBackground
                     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -196,7 +187,8 @@
                             android:textColor="#050505"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="36dp"
-                            android:alpha="0.7" />
+                            android:alpha="0.7"
+                            android:singleLine="false" />
 
                         <tk.wenop.XiangYu.ui.wenui.SoundWave
                             android:id="@+id/soundWave"
@@ -210,6 +202,18 @@
                     </RelativeLayout>
 
                 </tk.wenop.rippleanimation.RippleBackground>
+
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_send"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_send_white_48dp"
+                    />
 
             </RelativeLayout>
 
