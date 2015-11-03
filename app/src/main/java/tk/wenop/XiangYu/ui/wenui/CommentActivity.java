@@ -3,8 +3,10 @@ package tk.wenop.XiangYu.ui.wenui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -60,6 +62,8 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     ImageView iv_contentPhoto;
 //    @ViewInject(R.id.imageView_avatar)
     ImageView iv_avatar;
+    TextView tv_nickName;
+    View card_root_view;
 
     @ViewInject(R.id.btn_speak)
     Button btn_speak;
@@ -154,28 +158,9 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
         // inflate完 才绑定这个控件
         iv_avatar = (ImageView) findViewById(R.id.imageView_avatar);
+        tv_nickName = (TextView) findViewById(R.id.tv_nickName);
+        card_root_view = findViewById(R.id.card_root_view);
 
-        if (messageEntity.getOwnerUser() != null){
-            final User user = messageEntity.getOwnerUser();
-
-             if (user.getAvatar()!=null){
-                //渲染用户头像
-                 imageLoader.displayImage(user.getAvatar(), iv_avatar);
-                 iv_avatar.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View v) {
-//                         Intent intent = new Intent(context, PeopleDetailActivity.class);
-                         Intent intent = new Intent(context, ChatActivity.class);
-                         intent.putExtra("user", user);
-                         context.startActivity(intent);
-                     }
-                 });
-             }
-
-            // 在actionBar显示用户名
-            actionBar.setTitle(user.getUsername());
-
-        }
 
         // 分消息类型来设置view
         iv_contentPhoto = (ImageView) findViewById(R.id.imageView_contentPhoto);
@@ -195,6 +180,63 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                 imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
                 audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
         }
+
+        if (messageEntity.getOwnerUser() != null){
+
+            final User user = messageEntity.getOwnerUser();
+
+            if (messageEntity.getAnonymous() == true) {
+                // 匿名消息
+
+                tv_nickName.setText("匿名用户");
+                // 昵称样式
+                tv_nickName.setTypeface(null, Typeface.ITALIC);
+
+                // 消息的owner, 要根据性别设置样式
+                if (messageEntity.getOwnerUser().getSex() == true)
+                {
+                    // 男
+                    iv_avatar.setImageResource(R.drawable.avatar_a_m);
+                    card_root_view
+                            .setBackgroundColor(ContextCompat.getColor(context,
+                                    R.color.anonymous_card_color_male));
+
+                } else {
+                    // 女
+                    iv_avatar.setImageResource(R.drawable.avatar_a_fm);
+                    card_root_view
+                            .setBackgroundColor(ContextCompat.getColor(context,
+                                    R.color.anonymous_card_color_female));
+                }
+
+                // 在actionBar显示
+                actionBar.setTitle("匿名用户的消息");
+
+            }
+            else {
+                // 非匿名消息
+
+                if (user.getAvatar()!=null){
+                    //渲染用户头像
+                    imageLoader.displayImage(user.getAvatar(), iv_avatar);
+                    iv_avatar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                         Intent intent = new Intent(context, PeopleDetailActivity.class);
+                            Intent intent = new Intent(context, ChatActivity.class);
+                            intent.putExtra("user", user);
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+                tv_nickName.setText(user.getNick());
+
+                // 在actionBar显示
+                actionBar.setTitle(user.getNick() + "说");
+
+            }
+        }
+
 
 //        audio.setOnClickListener(new NewRecordPlayClickListener(context, path, audio));
         initVoiceView();

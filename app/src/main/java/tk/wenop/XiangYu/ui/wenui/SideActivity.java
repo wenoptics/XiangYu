@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import cn.bmob.v3.BmobUser;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
+import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
 import tk.wenop.XiangYu.bean.AreaEntity;
@@ -49,11 +50,11 @@ import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.AreaNetwork;
+import tk.wenop.XiangYu.ui.LoginActivity;
 import tk.wenop.XiangYu.ui.SetMyInfoActivity;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
 import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
 import tk.wenop.XiangYu.ui.dialog.SelectAddressDialog;
-import tk.wenop.XiangYu.util.animatedDialogUtils.T;
 
 //import tk.wenop.XiangYu.R;
 //import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
@@ -291,8 +292,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         } else if (id == R.id.nav_setting) {
 
-
             gotoSettingActivity();
+
         } else if (id == R.id.nav_logout) {
             // 退出登录
             confirmLogout();
@@ -306,8 +307,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     @Override
     protected void onResume() {
         super.onResume();
-        // todo: 是不是在这里也要设置数据源，防止列表为空。 因为退出后台等
-        //
     }
 
     protected void confirmLogout() {
@@ -340,10 +339,13 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                     @Override
                     public void onBtnClick() {
                         dialog.dismiss();
-                        // TODO llwoll
-                        BmobUser.logOut(mContext);
-                        finish();
-                        T.showShort(SideActivity.this, "确定");
+                        // wenop: 使用原版的Logout方法，不必自己写。也不必退出App
+                        CustomApplcation.getInstance().logout();
+                        startActivity(new Intent(SideActivity.this, LoginActivity.class));
+                        SideActivity.this.finish();
+//                        BmobUser.logOut(mContext);
+//                        finish();
+//                        T.showShort(SideActivity.this, "确定");
                     }
                 });
     }
@@ -364,6 +366,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 // Stop refresh animation
                 mSwipeRefreshLayout.setRefreshing(false);
                 break;
+
+            // TODO llwoll: 刷新失败时候 没有办法停止刷新动画
 
         }
 

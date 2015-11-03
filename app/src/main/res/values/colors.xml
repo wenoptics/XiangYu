@@ -31,6 +31,11 @@
     <color name="dialog_color_title">#f82c22</color>
     <color name="guide_color">#898989</color>
 
+    <color name="anonymous_card_color_male">#fdfdff</color>
+    <color name="anonymous_card_color_female">#fffdfd</color>
+    <color name="normal_card_color_male">#fbfbff</color>
+    <color name="normal_card_color_female">#fffbfb</color>
+
 
 
 </resources>

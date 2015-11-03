@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import dmax.dialog.SpotsDialog;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
@@ -56,6 +58,10 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     FloatingActionButton fab_send;
     ImageView audioControl;
     TextView textTip;
+    CheckBox cb_isAnonymous;
+//    FABProgressCircle fab_progress;
+
+    SpotsDialog loadingDialog;
 
     SelectImageInterface selectImageInterface;
 
@@ -104,11 +110,12 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
         View inflate = View.inflate(context, R.layout.dialog_new_content, null);
         com.lidroid.xutils.ViewUtils.inject(inflate);
+
         audio_wave = ViewFindUtils.find(inflate, R.id.audio_wave);
         audio_press_region = ViewFindUtils.find(inflate, R.id.audio_press_region);
         audioControl = ViewFindUtils.find(inflate,R.id.imageView10);
         textTip = ViewFindUtils.find(inflate,R.id.textView_textTip);
-
+        cb_isAnonymous = ViewFindUtils.find(inflate, R.id.cb_isAnonymous);
 
         viewAddPhoto = ViewFindUtils.find(inflate,R.id.group_add_photo);
         iv_photoHolder = ViewFindUtils.find(inflate,R.id.iv_photoHolder);
@@ -133,13 +140,8 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
     void onVolumnChangedH(int volume) {
 
-        Log.d("valueOf volume", String.valueOf(volume));
+//        Log.d("valueOf volume", String.valueOf(volume));
         soundWave.setCurrentVolume(volume);
-//        audio_wave.setRippleDurationTime(1000);
-//        audio_wave.setRippleAmount(2);
-//        audio_wave.setRippleRepeatCount(0);
-//        audio_wave.reloadAnimator();
-//        audio_wave.startRippleAnimation();
     }
 
 
@@ -159,6 +161,8 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
             @Override
             public void onClick(View v) {
                 sendMessage();
+                loadingDialog = new SpotsDialog(context);
+                loadingDialog.show();
             }
         });
 
@@ -169,14 +173,6 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
             }
         });
 
-        // TODO
-       /* ll_wechat_friend_circle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                T.showShort(context, "朋友圈");
-                dismiss();
-            }
-        });*/
     }
 
     /*
@@ -194,17 +190,23 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         iv_photoHolder.setMinimumWidth(tWidth);
         iv_photoHolder.setMaxWidth(tWidth);
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        try {
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeFile(path, options);
 
 //        int bitmapWidth = bitmap.getWidth();
 //        int bitmapHeight = bitmap.getHeight();
 
-        iv_photoHolder.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        iv_photoHolder.setImageBitmap(bitmap);
-        iv_photoHolder.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        iv_photoTopShade.setVisibility(View.VISIBLE);
+            iv_photoHolder.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            iv_photoHolder.setImageBitmap(bitmap);
+            iv_photoHolder.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            iv_photoTopShade.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            T.show(context, "增加图片失败", 1500);
+            IMAGE_PATH = null;
+        }
 
     }
 
@@ -252,6 +254,13 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         });
     }
 
+    void setViewIsRecording(boolean isRecording) {
+        if(isRecording) {
+            soundWave.setVisibility(View.VISIBLE);
+        } else {
+            soundWave.setVisibility(View.INVISIBLE);
+        }
+    }
 
     /**
      * 长按说话
@@ -269,6 +278,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         v.setPressed(true);
                         // 开始录音
                         recordManager.startRecording(userID);
+                        setViewIsRecording(true);
                     } catch (Exception e) {}
                     return true;
                 case MotionEvent.ACTION_MOVE: {
@@ -286,6 +296,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
                     v.setPressed(false);
+                    setViewIsRecording(false);
                     try {
 
                         if (event.getY() < 0) {// 放弃录音
@@ -322,7 +333,8 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
 
     private void doWhenSendError() {
-
+        T.show(context, "发送失败", 1500);
+        loadingDialog.dismiss();
     }
 
     private void onSendProgress() {
@@ -359,7 +371,9 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setMsgType(MessageEntity.MSG_TYPE_ONLY_AUDIO);
                         messageEntity.setAudio(list.get(0).getUrl());
                         messageEntity.setOwnerUser(loginUser);
+                        messageEntity.setAnonymous(cb_isAnonymous.isChecked());
                         MessageNetwork.save(context, messageEntity);
+                        loadingDialog.dismiss();
                         dismiss();
                     }
 
@@ -392,7 +406,9 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setMsgType(MessageEntity.MSG_TYPE_ONLY_PHOTO);
                         messageEntity.setImage(list.get(0).getUrl());
                         messageEntity.setOwnerUser(loginUser);
+                        messageEntity.setAnonymous(cb_isAnonymous.isChecked());
                         MessageNetwork.save(context, messageEntity);
+                        loadingDialog.dismiss();
                         dismiss();
                     }
 
@@ -400,7 +416,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
                 @Override
                 public void onProgress(int i, int i1, int i2, int i3) {
-
+                    Log.d("wenop-debug", String.format(":i=%d;i1=%d;i2=%d;i3=%d", i, i1, i2, i3));
                 }
 
                 @Override
@@ -429,7 +445,9 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setAudio(list.get(1).getUrl());
                         messageEntity.setImage(list.get(0).getUrl());
                         messageEntity.setOwnerUser(loginUser);
+                        messageEntity.setAnonymous(cb_isAnonymous.isChecked());
                         MessageNetwork.save(context, messageEntity);
+                        loadingDialog.dismiss();
                         dismiss();
                     }
 
@@ -450,6 +468,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
         else {
             T.show(context, "您可以发语音或者一张图片", 1000);
+            loadingDialog.dismiss();
         }
 
 

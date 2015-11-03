@@ -2,6 +2,8 @@ package tk.wenop.XiangYu.adapter.custom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.ui.wenui.CommentActivity;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
+import tk.wenop.XiangYu.util.ImageLoadOptions;
 
 //import tk.wenop.testapp.Overview.MainScreenOverviewItem;
 //import tk.wenop.testapp.R;
@@ -54,11 +57,14 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         public TextView  mLocation;
         public TextView  mCommentCount;
         public TextView  mTime;
+        public View card_root_view;
 
 
         public ViewHolder(View v) {
             super(v);
             mView = v;
+
+            card_root_view = v.findViewById(R.id.card_root_view);
             mNickName      = (TextView)  v.findViewById(R.id.tv_nickName);
             mAudioTimeSec  = (TextView)  v.findViewById(R.id.textView_audioLength     );
             mAvatar        = (ImageView) v.findViewById(R.id.imageView_avatar        );
@@ -154,20 +160,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 
         final MessageEntity data = mDataset.get(position);
 //        holder.mAvatar.setImageResource();
-        if (data.getOwnerUser()!=null){
-            holder.mNickName.setText(data.getOwnerUser().getUsername());
-            imageLoader.displayImage(data.getOwnerUser().getAvatar(), holder.mAvatar);
-            //私聊
-            holder.mAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, PeopleDetailActivity.class);
-//                    Intent intent =  new Intent(mContext, ChatActivity.class);
-                    intent.putExtra("user", data.getOwnerUser());
-                    mContext.startActivity(intent);
-                }
-            });
-        }
+
         AreaEntity areaEntity = data.getOwnerArea();
         if (areaEntity.getArea()!=null){
             holder.mLocation.setText(data.getOwnerArea().getArea());
@@ -194,13 +187,65 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                 /// TODO !!! end
         }
 
-        /// TODO wenop (评论页面也是如此)
-        if (消息匿名) {
-            set 匿名头像;
+        if (data.getOwnerUser()!=null) {
 
-            set R.id.card_root_view - backgroundColor = color/anonymous_card_color_male
-                    或
-            set R.id.card_root_view - backgroundColor = color/anonymous_card_color_female
+            if (data.getAnonymous() == true) {
+                // 匿名消息
+
+                holder.mNickName.setText("匿名用户");
+                // 昵称样式
+                holder.mNickName.setTypeface(null, Typeface.ITALIC);
+
+                // 消息的owner, 要根据性别设置样式
+                if (data.getOwnerUser().getSex() == true)
+                {
+                    // 男
+                    holder.mAvatar.setImageResource(R.drawable.avatar_a_m);
+                    holder.card_root_view
+                            .setBackgroundColor(ContextCompat.getColor(mContext,
+                                    R.color.anonymous_card_color_male));
+
+                } else {
+                    // 女
+                    holder.mAvatar.setImageResource(R.drawable.avatar_a_fm);
+                    holder.card_root_view
+                            .setBackgroundColor(ContextCompat.getColor(mContext,
+                                    R.color.anonymous_card_color_female));
+                }
+            }
+            else {
+
+                // 非匿名消息
+                holder.mNickName.setText(data.getOwnerUser().getNick());
+//                imageLoader.displayImage(data.getOwnerUser().getAvatar(), holder.mAvatar);
+                refreshAvatar(data.getOwnerUser().getAvatar(), holder.mAvatar);
+
+                // 点击头像去到用户详情
+                holder.mAvatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, PeopleDetailActivity.class);
+//                    Intent intent =  new Intent(mContext, ChatActivity.class);
+                        intent.putExtra("user", data.getOwnerUser());
+                        mContext.startActivity(intent);
+                    }
+                });
+
+                // 消息的owner, 要根据性别设置样式
+                if (data.getOwnerUser().getSex() == true)
+                {
+                    // 男
+                    holder.card_root_view
+                            .setBackgroundColor(ContextCompat.getColor(mContext,
+                                    R.color.normal_card_color_male));
+
+                } else {
+                    // 女
+                    holder.card_root_view
+                            .setBackgroundColor(ContextCompat.getColor(mContext,
+                                    R.color.normal_card_color_female));
+                }
+            }
         }
 
 //        holder.audio.setOnClickListener(new NewRecordPlayClickListener(context,path, messageHolder.audio));
@@ -227,6 +272,15 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         Intent intent = new Intent(mContext, CommentActivity.class);
         CommentActivity.messageEntity = data;
         mContext.startActivity(intent);
+    }
+
+    private void refreshAvatar(String avatar, ImageView avatarView) {
+        if (avatar != null && !avatar.equals("")) {
+            ImageLoader.getInstance().displayImage(avatar, avatarView,
+                    ImageLoadOptions.getOptions());
+        } else {
+            avatarView.setImageResource(R.drawable.default_head);
+        }
     }
 
 

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:scrollbars="none">
 
@@ -98,11 +99,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
                 <RelativeLayout
                     android:id="@+id/_divider"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="3dp">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/imageView6"
@@ -140,17 +141,6 @@
                     </LinearLayout>
 
                 </RelativeLayout>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_send"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:src="@drawable/ic_send_white_48dp" />
-
 
                 <tk.wenop.rippleanimation.RippleBackground
                     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -212,6 +202,18 @@
                     </RelativeLayout>
 
                 </tk.wenop.rippleanimation.RippleBackground>
+
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_send"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_send_white_48dp"
+                    />
 
             </RelativeLayout>
 
