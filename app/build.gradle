@@ -54,5 +54,11 @@ dependencies {
     //gif drawable
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
 
+    //progress fab
+    //compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
+
+    // dot progress dialog
+    compile 'com.github.d-max:spots-dialog:0.4@aar'
+
 
 }

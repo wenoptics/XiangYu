@@ -42,6 +42,7 @@ import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.UpdateListener;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
+import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
 import tk.wenop.XiangYu.bean.AreaEntity;
@@ -51,11 +52,11 @@ import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.AreaNetwork;
+import tk.wenop.XiangYu.ui.LoginActivity;
 import tk.wenop.XiangYu.ui.SetMyInfoActivity;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
 import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
 import tk.wenop.XiangYu.ui.dialog.SelectAddressDialog;
-import tk.wenop.XiangYu.util.animatedDialogUtils.T;
 
 //import tk.wenop.XiangYu.R;
 //import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
@@ -87,12 +88,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
     /*
       选取图片相关的声明
-   */
+    */
     OnGetImageFromResoult onGetImageFromResoult = null;
     NewContentBottomDialog.SelectImageInterface selectImageInterface;
     Context mContext;
     SelectAddressDialog.OnGetAddressResult onGetAddressResult;
-
 
     private User user;
     private Toolbar toolbar;
@@ -100,7 +100,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
     void refreshItems() {
         // Load items
-        if (nowAreaEntity == null){
+        if (nowAreaEntity == null) {
             Toast.makeText(mContext,"请选择群组",Toast.LENGTH_SHORT).show();
         }
         // Load complete
@@ -118,9 +118,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_side);
-        dbManager = DBManager.instance(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("请选择当前位置");
+
+        dbManager = DBManager.instance(this);
+
         EventBus.getDefault().register(this);
         setSupportActionBar(toolbar);
 
@@ -129,7 +131,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         onGetAddressResult = this;
         //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         //actionBar.setTitle("天天市");
-
 
         // 下拉刷新
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_screen_swipe_refresh);
@@ -157,7 +158,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 // TODO
                 //    如果没有登录，在这里跳转登录
 
-                if (nowAreaEntity == null){
+                if (nowAreaEntity == null) {
                     Toast.makeText(mContext,"请选择群组",Toast.LENGTH_SHORT).show();
                 }
 
@@ -324,8 +325,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         } else if (id == R.id.nav_setting) {
 
-
             gotoSettingActivity();
+
         } else if (id == R.id.nav_logout) {
             // 退出登录
             confirmLogout();
@@ -339,8 +340,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     @Override
     protected void onResume() {
         super.onResume();
-        // todo: 是不是在这里也要设置数据源，防止列表为空。 因为退出后台等
-        //
     }
 
     protected void confirmLogout() {
@@ -373,10 +372,13 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                     @Override
                     public void onBtnClick() {
                         dialog.dismiss();
-                        // TODO llwoll
-                        BmobUser.logOut(mContext);
-                        finish();
-                        T.showShort(SideActivity.this, "确定");
+                        // wenop: 使用原版的Logout方法，不必自己写。也不必退出App
+                        CustomApplcation.getInstance().logout();
+                        startActivity(new Intent(SideActivity.this, LoginActivity.class));
+                        SideActivity.this.finish();
+//                        BmobUser.logOut(mContext);
+//                        finish();
+//                        T.showShort(SideActivity.this, "确定");
                     }
                 });
     }
@@ -397,6 +399,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 // Stop refresh animation
                 mSwipeRefreshLayout.setRefreshing(false);
                 break;
+
+            // TODO llwoll: 刷新失败时候 没有办法停止刷新动画
 
         }
 

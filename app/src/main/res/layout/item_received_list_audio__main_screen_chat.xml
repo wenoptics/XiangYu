@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/card_root_view">
 
     <!-- A CardView that contains a TextView -->
 
@@ -10,7 +11,7 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="fill_parent"
-        android:layout_height="292dp"
+        android:layout_height="110dp"
         card_view:cardCornerRadius="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -111,25 +112,6 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:background="#dfdfdf"
-                android:baselineAligned="false"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/_tmpL1"
-                android:layout_above="@+id/_tmpL2">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/imageView_contentPhoto"
-                    android:src="@drawable/l_0"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true" />
             </LinearLayout>
 
             <RelativeLayout

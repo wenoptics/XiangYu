@@ -127,7 +127,7 @@ public class CustomApplcation extends Application {
 	/** 初始化ImageLoader */
 	public static void initImageLoader(Context context) {
 		File cacheDir = StorageUtils.getOwnCacheDirectory(context,
-				"bmobim/Cache");// 获取到缓存的目录地址
+				"XiangYu/Cache");// 获取到缓存的目录地址
 		// 创建配置ImageLoader(所有的选项都是可选的,只使用那些你真的想定制)，这个可以设定在APPLACATION里面，设置为全局的配置参数
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				context)
@@ -240,8 +240,6 @@ public class CustomApplcation extends Application {
 
 	/**
 	 * 获取内存中好友user list
-	 * 
-	 * @return
 	 */
 	public Map<String, BmobChatUser> getContactList() {
 		return contactList;
@@ -249,7 +247,6 @@ public class CustomApplcation extends Application {
 
 	/**
 	 * 设置好友user list到内存中
-	 * @param contactList
 	 */
 	public void setContactList(Map<String, BmobChatUser> contactList) {
 		if (this.contactList != null) {

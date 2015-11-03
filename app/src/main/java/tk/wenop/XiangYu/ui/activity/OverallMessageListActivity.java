@@ -2,13 +2,14 @@ package tk.wenop.XiangYu.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.ui.ActivityBase;
 import tk.wenop.XiangYu.ui.fragment.ContactFragment;
 import tk.wenop.XiangYu.ui.fragment.RecentFragment;
 import tk.wenop.XiangYu.ui.fragment.SettingsFragment;
@@ -16,24 +17,24 @@ import tk.wenop.XiangYu.ui.fragment.SettingsFragment;
 /**
  * Created by zysd on 15/11/1.
  */
-public class OverallMessageListActivity extends AppCompatActivity {
-
+public class OverallMessageListActivity extends ActivityBase {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actitity_overall_tab);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setTitle("llwoll");
-//        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        initTopBar_withBackButton("我的消息");
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add(R.string.fragment_recent, RecentFragment.class)
-                .add(R.string.fragment_contact, ContactFragment.class)
-                .add(R.string.fragment_setting, SettingsFragment.class)
+                .add("评论", RecentFragment.class)
+                .add("新朋友", ContactFragment.class)
+                .add("私信", SettingsFragment.class)
+                .add("关注的地方", SettingsFragment.class)
                 .create());
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -56,7 +57,9 @@ public class OverallMessageListActivity extends AppCompatActivity {
 //        }
 
 
-
-
     }
+
+
+
+
 }

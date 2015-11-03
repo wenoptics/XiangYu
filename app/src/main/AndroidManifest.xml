@@ -144,7 +144,9 @@
             android:name=".ui.wenui.PeopleDetailActivity"
             android:theme="@style/PeopleDetailTheme" />
         <activity android:name=".ui.wenui.CommentActivity" />
-        <activity android:name=".ui.activity.OverallMessageListActivity" />
+        <activity android:name=".ui.activity.OverallMessageListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
 
 
