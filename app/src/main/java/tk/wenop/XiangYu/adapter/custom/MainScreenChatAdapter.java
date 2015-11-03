@@ -168,9 +168,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 //        Time time =  Time.valueOf(data.getCreatedAt());
         String s =data.getCreatedAt().substring(11,19);
         holder.mTime.setText(s);
-        imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(), holder.mContentPhoto);
-        String path = "http://file.bmob.cn/" + data.getAudio();
-        holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
+
         if (data.getCommentCount()!=null){
             holder.mCommentCount.setText(String.valueOf(data.getCommentCount()));
         }

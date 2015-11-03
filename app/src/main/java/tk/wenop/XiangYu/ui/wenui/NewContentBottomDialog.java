@@ -371,6 +371,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setMsgType(MessageEntity.MSG_TYPE_ONLY_AUDIO);
                         messageEntity.setAudio(list.get(0).getUrl());
                         messageEntity.setOwnerUser(loginUser);
+                        messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
                         MessageNetwork.save(context, messageEntity);
                         loadingDialog.dismiss();
@@ -406,6 +407,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setMsgType(MessageEntity.MSG_TYPE_ONLY_PHOTO);
                         messageEntity.setImage(list.get(0).getUrl());
                         messageEntity.setOwnerUser(loginUser);
+                        messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
                         MessageNetwork.save(context, messageEntity);
                         loadingDialog.dismiss();
@@ -445,6 +447,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setAudio(list.get(1).getUrl());
                         messageEntity.setImage(list.get(0).getUrl());
                         messageEntity.setOwnerUser(loginUser);
+                        messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
                         MessageNetwork.save(context, messageEntity);
                         loadingDialog.dismiss();
