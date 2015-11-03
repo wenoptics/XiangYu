@@ -6,9 +6,11 @@ import android.widget.Toast;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.bean.AreaEntity;
+import tk.wenop.XiangYu.bean.User;
 
 public class AreaNetwork {
     public static void save(final Context context,AreaEntity entity){
@@ -123,5 +125,37 @@ public class AreaNetwork {
     public interface  OnGetAreaEntity{
         public void onGetAreaEntity(AreaEntity  areaEntity);
     }
+
+
+
+    public static void loadFollowAreas(final Context context, final OnGetFollowAreaEntities onGetAreaEntities,User user){
+
+        BmobQuery<AreaEntity> query = new BmobQuery<>();
+
+        query.addWhereRelatedTo("relation",new BmobPointer(user));
+
+        query.findObjects(context, new FindListener<AreaEntity>() {
+            @Override
+            public void onSuccess(List<AreaEntity> areaEntities) {
+                onGetAreaEntities.onGetFollowAreaEntities(areaEntities);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Toast.makeText(context, "get data failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public interface  OnGetFollowAreaEntities{
+
+        public void onGetFollowAreaEntities(List<AreaEntity> areaEntities);
+
+    }
+
+
+
+
+
 
 } 

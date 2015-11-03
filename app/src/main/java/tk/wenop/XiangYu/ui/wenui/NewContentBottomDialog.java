@@ -13,6 +13,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.flyco.dialog.widget.base.BottomBaseDialog;
 
 import java.util.List;
@@ -42,7 +54,7 @@ import tk.wenop.rippleanimation.RippleBackground;
 /*
 * 主屏发消息
 * */
-public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDialog> implements OnGetImageFromResoult {
+public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDialog> implements OnGetImageFromResoult, OnGetGeoCoderResultListener {
 
     /*
         语音有关
@@ -75,6 +87,14 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     private AreaEntity areaEntity;
 
 
+    //定位相关;
+    LocationClient mLocClient;
+    static BDLocation lastLocation = null;
+    GeoCoder mSearch = null; // 搜索模块，因为百度定位sdk能够得到经纬度，但是却无法得到具体的详细地址，因此需要采取反编码方式去搜索此经纬度代表的地址
+    public CommentLocationListenner myListener = new CommentLocationListenner();
+
+
+
     public NewContentBottomDialog(Context context,SelectImageInterface selectImageInterface,AreaEntity areaEntity) {
         super(context);
         this.selectImageInterface = selectImageInterface;
@@ -97,6 +117,8 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     }
 
 
+
+
     public interface SelectImageInterface{
         public void toSelectImageInterface();
     }
@@ -107,6 +129,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     public View onCreateView() {
 //        showAnim(new FlipVerticalSwingEnter());
 //        dismissAnim(null);
+
 
         View inflate = View.inflate(context, R.layout.dialog_new_content, null);
         com.lidroid.xutils.ViewUtils.inject(inflate);
@@ -128,11 +151,14 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
         userID = BmobUser.getCurrentUser(context).getObjectId();
         loginUser  = BmobUser.getCurrentUser(context,User.class);
+
+        //初始化定位
+        initLocClient();
+
         initRecordManager();
 
         return inflate;
     }
-
 
 
 
@@ -409,6 +435,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setOwnerUser(loginUser);
                         messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
+
                         MessageNetwork.save(context, messageEntity);
                         loadingDialog.dismiss();
                         dismiss();
@@ -480,6 +507,121 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 //    public void finish(){
 //        dismiss();
 //    }
+
+
+
+
+    /*
+
+        定位相关的代码
+
+     */
+    private void initLocClient() {
+        // 定位初始化
+        mLocClient = new LocationClient(getContext());
+        mLocClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        option.setProdName("bmobim");// 设置产品线
+        option.setOpenGps(true);// 打开gps
+        option.setCoorType("bd09ll"); // 设置坐标类型
+        option.setScanSpan(1000);
+        option.setOpenGps(true);
+        option.setIsNeedAddress(true);
+        option.setIgnoreKillProcess(true);
+        mLocClient.setLocOption(option);
+        mLocClient.start();
+        if (mLocClient != null && mLocClient.isStarted())
+            mLocClient.requestLocation();
+
+//        if (lastLocation != null) {
+//             显示在地图上
+//            LatLng ll = new LatLng(lastLocation.getLatitude(),
+//                    lastLocation.getLongitude());
+//            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+//            mBaiduMap.animateMapStatus(u);
+
+        //设置反地理编码问题
+        mSearch = GeoCoder.newInstance();
+        mSearch.setOnGetGeoCodeResultListener(this);
+
+
+
+        }
+
+    /**
+     * 定位SDK监听函数
+     */
+    public class CommentLocationListenner implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location == null)
+                return;
+
+            if (lastLocation != null) {
+                if (lastLocation.getLatitude() == location.getLatitude()
+                        && lastLocation.getLongitude() == location
+                        .getLongitude()) {
+                    BmobLog.i("获取坐标相同");// 若两次请求获取到的地理位置坐标是相同的，则不再定位
+                    mLocClient.stop();
+                    return;
+                }
+            }
+            lastLocation = location;
+
+            BmobLog.i("lontitude = " + location.getLongitude() + ",latitude = "
+                    + location.getLatitude() + ",地址 = "
+                    + lastLocation.getAddrStr());
+
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())
+                            // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .direction(100).latitude(location.getLatitude())
+                    .longitude(location.getLongitude()).build();
+//            mBaiduMap.setMyLocationData(locData);
+            LatLng ll = new LatLng(location.getLatitude(),
+                    location.getLongitude());
+
+            String address = location.getAddrStr();
+            if (address != null && !address.equals("")) {
+                lastLocation.setAddrStr(address);
+            } else {
+                // 反Geo搜索
+                mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
+            }
+            // 显示在地图上
+//            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+//            mBaiduMap.animateMapStatus(u);
+//            设置按钮可点击
+//            mHeaderLayout.getRightImageButton().setEnabled(true);
+        }
+
+    }
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+
+    }
+
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+//            ShowToast("抱歉，未能找到结果");
+            BmobLog.i("抱歉，未能找到结果：");
+            return;
+        }
+        BmobLog.i("反编码得到的地址：" + result.getAddress());
+        lastLocation.setAddrStr(result.getAddress());
+
+        //todo:确认当前得到的地理位置是 result.getAddress()  并补充在这里
+
+
+    }
+
+
+
+
 
 
 }

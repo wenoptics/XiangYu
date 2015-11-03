@@ -1,6 +1,7 @@
 package tk.wenop.XiangYu.bean;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobRelation;
 
 /**
  * Created by zysd on 15/10/20.
@@ -8,6 +9,8 @@ import cn.bmob.v3.BmobObject;
 public class AreaEntity extends BmobObject{
 
     private String area;
+
+    private BmobRelation relation;
 
     public String getArea() {
         return area;
@@ -17,5 +20,11 @@ public class AreaEntity extends BmobObject{
         this.area = area;
     }
 
+    public BmobRelation getRelation() {
+        return relation;
+    }
 
+    public void setRelation(BmobRelation relation) {
+        this.relation = relation;
+    }
 }

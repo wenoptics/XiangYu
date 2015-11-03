@@ -90,4 +90,7 @@
     <string name="add_userDesc">个性签名</string>
     <string name="add_userDesc_hint">我想说...</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
