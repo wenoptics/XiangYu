@@ -7,5 +7,5 @@ public enum ConstantEvent {
 
     MESSAGE_LOAD,
     MESSAGE_REFRESH,
-
+    LOGIN_LOCATION_GET,
 }

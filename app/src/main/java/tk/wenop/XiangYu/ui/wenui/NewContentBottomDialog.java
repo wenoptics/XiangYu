@@ -23,7 +23,6 @@ import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.flyco.dialog.widget.base.BottomBaseDialog;
 
@@ -40,6 +39,7 @@ import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
+import tk.wenop.XiangYu.network.AreaNetwork;
 import tk.wenop.XiangYu.network.MessageNetwork;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
 import tk.wenop.XiangYu.util.CommonUtils;
@@ -54,7 +54,7 @@ import tk.wenop.rippleanimation.RippleBackground;
 /*
 * 主屏发消息
 * */
-public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDialog> implements OnGetImageFromResoult, OnGetGeoCoderResultListener {
+public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDialog> implements OnGetImageFromResoult, OnGetGeoCoderResultListener, AreaNetwork.OnGetAreaEntity {
 
     /*
         语音有关
@@ -87,16 +87,23 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     private AreaEntity areaEntity;
 
 
+
+
     //定位相关;
     LocationClient mLocClient;
     static BDLocation lastLocation = null;
     GeoCoder mSearch = null; // 搜索模块，因为百度定位sdk能够得到经纬度，但是却无法得到具体的详细地址，因此需要采取反编码方式去搜索此经纬度代表的地址
     public CommentLocationListenner myListener = new CommentLocationListenner();
+    Context context;
+    AreaNetwork.OnGetAreaEntity onGetAreaEntity;
+    private AreaEntity nowAreaEntity = null;
 
 
 
     public NewContentBottomDialog(Context context,SelectImageInterface selectImageInterface,AreaEntity areaEntity) {
         super(context);
+        this.context = context;
+        onGetAreaEntity = this;
         this.selectImageInterface = selectImageInterface;
         this.areaEntity = areaEntity;
     }
@@ -104,16 +111,20 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
     public NewContentBottomDialog(Context context,SelectImageInterface selectImageInterface) {
         super(context);
+        this.context = context;
         this.selectImageInterface = selectImageInterface;
 
     }
 
     public NewContentBottomDialog(Context context,View animateView) {
+
         super(context, animateView);
+        this.context = context;
     }
 
     public NewContentBottomDialog(Context context) {
         super(context);
+        this.context = context;
     }
 
 
@@ -476,6 +487,11 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setOwnerUser(loginUser);
                         messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
+
+                        if (nowAreaEntity!=null){
+                            messageEntity.setFromLocation(nowAreaEntity.getArea());
+                        }
+
                         MessageNetwork.save(context, messageEntity);
                         loadingDialog.dismiss();
                         dismiss();
@@ -507,9 +523,6 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 //    public void finish(){
 //        dismiss();
 //    }
-
-
-
 
     /*
 
@@ -543,10 +556,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         //设置反地理编码问题
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
-
-
-
-        }
+    }
 
     /**
      * 定位SDK监听函数
@@ -558,17 +568,27 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
             // map view 销毁后不在处理新接收的位置
             if (location == null)
                 return;
+            String str =  location.getCity();
 
             if (lastLocation != null) {
                 if (lastLocation.getLatitude() == location.getLatitude()
                         && lastLocation.getLongitude() == location
                         .getLongitude()) {
                     BmobLog.i("获取坐标相同");// 若两次请求获取到的地理位置坐标是相同的，则不再定位
+
+                    //todo:设置当前的位置
+                    lastLocation.setAddrStr(location.getDistrict());
+                    AreaNetwork.loadArea(context, onGetAreaEntity, location.getDistrict());
+
                     mLocClient.stop();
                     return;
                 }
             }
             lastLocation = location;
+            //todo:设置当前的位置
+            lastLocation.setAddrStr(location.getDistrict());
+            AreaNetwork.loadArea(context, onGetAreaEntity, location.getDistrict());
+
 
             BmobLog.i("lontitude = " + location.getLongitude() + ",latitude = "
                     + location.getLatitude() + ",地址 = "
@@ -586,9 +606,11 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
             String address = location.getAddrStr();
             if (address != null && !address.equals("")) {
                 lastLocation.setAddrStr(address);
+
             } else {
                 // 反Geo搜索
-                mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
+                //todo 需要测试是否真正需要反地理编码的需要
+//                mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
             }
             // 显示在地图上
 //            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
@@ -615,12 +637,15 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
         lastLocation.setAddrStr(result.getAddress());
 
         //todo:确认当前得到的地理位置是 result.getAddress()  并补充在这里
-
-
     }
 
-
-
+    /*
+        从 bmob拉取数据
+     */
+    @Override
+    public void onGetAreaEntity(AreaEntity areaEntity) {
+        if (areaEntity != null) nowAreaEntity = areaEntity;
+    }
 
 
 

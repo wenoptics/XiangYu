@@ -17,6 +17,8 @@ import cn.bmob.v3.BmobObject;
         //评论数量；
         private Integer commentCount;
 
+        private String fromLocation;
+
 
         //wenop-add 消息类型
         private int msgType;
@@ -73,4 +75,14 @@ import cn.bmob.v3.BmobObject;
         public void setCommentCount(Integer commentCount) {
             this.commentCount = commentCount;
         }
+
+        public String getFromLocation() {
+            return fromLocation;
+        }
+
+        public void setFromLocation(String fromLocation) {
+            this.fromLocation = fromLocation;
+        }
+
+
     }
