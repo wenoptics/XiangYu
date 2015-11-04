@@ -27,7 +27,6 @@ import java.util.List;
 
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
-import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.ui.wenui.CommentActivity;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
@@ -215,11 +214,11 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         final MessageEntity data = mDataset.get(position);
 //        holder.mAvatar.setImageResource();
 
-        AreaEntity areaEntity = data.getOwnerArea();
-        if (areaEntity!=null)
-        if (areaEntity.getArea()!=null){
-            holder.mLocation.setText(data.getOwnerArea().getArea());
+        if (data.getFromLocation()!=null){
+            holder.mLocation.setText(data.getFromLocation());
         }
+
+
 
 //        Time time =  Time.valueOf(data.getCreatedAt());
         String s =data.getCreatedAt().substring(11,19);

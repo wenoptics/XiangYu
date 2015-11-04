@@ -84,6 +84,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
     private String AUDIO_PATH = null;
     private String IMAGE_PATH = null;
     private User loginUser;
+    //消息所属的位置
     private AreaEntity areaEntity;
 
 
@@ -410,6 +411,10 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setOwnerUser(loginUser);
                         messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
+                        if (nowAreaEntity!=null){
+                            messageEntity.setFromLocation(nowAreaEntity.getArea());
+                        }
+
                         MessageNetwork.save(context, messageEntity);
                         loadingDialog.dismiss();
                         dismiss();
@@ -446,7 +451,9 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setOwnerUser(loginUser);
                         messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
-
+                        if (nowAreaEntity!=null){
+                            messageEntity.setFromLocation(nowAreaEntity.getArea());
+                        }
                         MessageNetwork.save(context, messageEntity);
                         loadingDialog.dismiss();
                         dismiss();
@@ -487,7 +494,9 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setOwnerUser(loginUser);
                         messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
-
+                        if (nowAreaEntity!=null){
+                            messageEntity.setFromLocation(nowAreaEntity.getArea());
+                        }
                         if (nowAreaEntity!=null){
                             messageEntity.setFromLocation(nowAreaEntity.getArea());
                         }
