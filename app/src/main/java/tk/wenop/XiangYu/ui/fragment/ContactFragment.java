@@ -236,6 +236,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 				startAnimActivity(intent);
 			}
 		});
+		layout_near.setVisibility(View.GONE);
 		layout_near.setOnClickListener(new OnClickListener() {
 			
 			@Override
