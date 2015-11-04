@@ -1,7 +1,9 @@
 package tk.wenop.XiangYu.ui.wenui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -9,11 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -22,7 +24,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flyco.animation.BaseAnimatorSet;
@@ -37,12 +41,21 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.File;
 import java.util.ArrayList;
 
+import cn.bmob.im.BmobChat;
+import cn.bmob.im.BmobChatManager;
+import cn.bmob.im.BmobNotifyManager;
+import cn.bmob.im.bean.BmobInvitation;
+import cn.bmob.im.bean.BmobMsg;
+import cn.bmob.im.config.BmobConfig;
+import cn.bmob.im.db.BmobDB;
+import cn.bmob.im.inteface.EventListener;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.UpdateListener;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.CustomApplcation;
+import tk.wenop.XiangYu.MyMessageReceiver;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
 import tk.wenop.XiangYu.bean.AreaEntity;
@@ -52,11 +65,16 @@ import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.AreaNetwork;
+import tk.wenop.XiangYu.ui.ActivityBase;
 import tk.wenop.XiangYu.ui.LoginActivity;
+import tk.wenop.XiangYu.ui.NewFriendActivity;
 import tk.wenop.XiangYu.ui.SetMyInfoActivity;
 import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
 import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
 import tk.wenop.XiangYu.ui.dialog.SelectAddressDialog;
+import tk.wenop.XiangYu.ui.fragment.ContactFragment;
+import tk.wenop.XiangYu.ui.fragment.RecentFragment;
+import tk.wenop.XiangYu.ui.fragment.SettingsFragment;
 
 //import tk.wenop.XiangYu.R;
 //import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
@@ -68,8 +86,13 @@ import tk.wenop.XiangYu.ui.dialog.SelectAddressDialog;
 //import tk.wenop.testapp.Overview.MainScreenOverviewItem;
 //import tk.wenop.testapp.R;
 
-public class SideActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NewContentBottomDialog.SelectImageInterface, SelectAddressDialog.OnGetAddressResult, AreaNetwork.OnGetAreaEntity {
+public class SideActivity extends ActivityBase
+        implements
+            NavigationView.OnNavigationItemSelectedListener,
+            NewContentBottomDialog.SelectImageInterface,
+            SelectAddressDialog.OnGetAddressResult,
+            AreaNetwork.OnGetAreaEntity,
+            EventListener {
 
     private MainScreenChatAdapter mainActRVAdapter;
     private RecyclerView mRecyclerView;
@@ -122,6 +145,14 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         setContentView(R.layout.activity_side);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        ///
+        //开启定时检测服务（单位为秒）-在这里检测后台是否还有未读的消息，有的话就取出来
+        //如果你觉得检测服务比较耗流量和电量，你也可以去掉这句话-同时还有onDestory方法里面的stopPollService方法
+        BmobChat.getInstance(this).startPollService(10);
+        //开启广播接收器
+        initNewMessageBroadCast();
+        initTagMessageBroadCast();
+
         CustomApplcation customApplcation = CustomApplcation.getInstance();
         if (customApplcation.getLoginAreaEntity()!=null){
 
@@ -129,11 +160,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
             if ((area != null)&&(!area.equals(""))){
                 toolbar.setTitle(area);
             }else {
-                toolbar.setTitle("请选择当前位置");
+                toolbar.setTitle("未知地点");
             }
 
         }else {
-            toolbar.setTitle("请选择当前位置");
+            toolbar.setTitle("未知地点");
         }
 
 
@@ -200,9 +231,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         CircleImageView sidebarAvatar = (CircleImageView) findViewById(R.id.nav_iv_avatar);
 
-        ///  设置侧边栏上的用户头像
+        ///  设置侧边栏上的用户信息
         // sidebarAvatar.setImageResource();
         ImageLoader.getInstance().displayImage(user.getAvatar(),sidebarAvatar);
+        ((TextView) findViewById(R.id.nav_tv_nickName)).setText(user.getNick());
+        ((TextView) findViewById(R.id.nav_tv_selfDesc)).setText(user.getUserDesc());
 
         sidebarAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,14 +286,25 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         SideActivity.this.startActivity(intent);
     }
 
+
+    private static long firstTime=0;
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            // 连续按两次返回键就退出
+            if (firstTime + 2000 > System.currentTimeMillis()) {
+                super.onBackPressed();
+            } else {
+                ShowToast("再按一次退出程序");
+            }
+            firstTime = System.currentTimeMillis();
         }
+
     }
 
     @Override
@@ -283,9 +327,9 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_toggleFav) {
+            //关注地理位置的按钮
             //todo:设置按钮两种状态 状态1:已经关注    2:未关注
-            //todo:暂时用来做关注地理位置的此按钮
 
             if (nowAreaEntity!=null)
             addFollowArea(nowAreaEntity);
@@ -353,10 +397,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     protected void confirmLogout() {
         final NormalDialog dialog = new NormalDialog(SideActivity.this);
@@ -550,6 +590,196 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         nowAreaEntity = areaEntity;
         toolbar.setTitle(areaEntity.getArea());
         DBManager.instance(this).refreshMessageEntities(areaEntity);
+    }
+
+
+
+
+
+    /////////////// move from bmobIM original MainActivity
+
+
+    private Button[] mTabs;
+    private ContactFragment contactFragment;
+    private RecentFragment recentFragment;
+    private SettingsFragment settingFragment;
+    private Fragment[] fragments;
+    private int index;
+    private int currentTabIndex;
+
+//    ImageView iv_recent_tips,iv_contact_tips;//消息提示
+
+    @Override
+    protected void onResume() {
+        
+        super.onResume();
+        //小圆点提示
+        if(BmobDB.create(this).hasUnReadMsg()){
+            // TODO wenop
+//            iv_recent_tips.setVisibility(View.VISIBLE);
+        }else{
+            // TODO wenop
+//            iv_recent_tips.setVisibility(View.GONE);
+        }
+        if(BmobDB.create(this).hasNewInvite()){
+            // TODO wenop
+//            iv_contact_tips.setVisibility(View.VISIBLE);
+        }else{
+            // TODO wenop
+//            iv_contact_tips.setVisibility(View.GONE);
+        }
+        MyMessageReceiver.ehList.add(this);// 监听推送的消息
+        //清空
+        MyMessageReceiver.mNewNum=0;
+
+    }
+
+    @Override
+    protected void onPause() {
+        
+        super.onPause();
+        MyMessageReceiver.ehList.remove(this);// 取消监听推送的消息
+    }
+
+    @Override
+    public void onMessage(BmobMsg message) {
+        
+        refreshNewMsg(message);
+    }
+
+
+    /** 刷新界面
+     */
+    private void refreshNewMsg(BmobMsg message){
+        // 声音提示
+        boolean isAllow = CustomApplcation.getInstance().getSpUtil().isAllowVoice();
+        if(isAllow){
+            CustomApplcation.getInstance().getMediaPlayer().start();
+        }
+        // todo wenop 未读消息红点
+//        iv_recent_tips.setVisibility(View.VISIBLE);
+        //也要存储起来
+        if(message!=null){
+            BmobChatManager.getInstance(SideActivity.this).saveReceiveMessage(true,message);
+        }
+        if(currentTabIndex==0){
+            //当前页面如果为会话页面，刷新此页面
+            if(recentFragment != null){
+                recentFragment.refresh();
+            }
+        }
+    }
+
+    NewBroadcastReceiver  newReceiver;
+
+    private void initNewMessageBroadCast(){
+        // 注册接收消息广播
+        newReceiver = new NewBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(BmobConfig.BROADCAST_NEW_MESSAGE);
+        //优先级要低于ChatActivity
+        intentFilter.setPriority(3);
+        registerReceiver(newReceiver, intentFilter);
+    }
+
+    /**
+     * 新消息广播接收者
+     *
+     */
+    private class NewBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //刷新界面
+            refreshNewMsg(null);
+            // 记得把广播给终结掉
+            abortBroadcast();
+        }
+    }
+
+    TagBroadcastReceiver  userReceiver;
+
+    private void initTagMessageBroadCast(){
+        // 注册接收消息广播
+        userReceiver = new TagBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(BmobConfig.BROADCAST_ADD_USER_MESSAGE);
+        //优先级要低于ChatActivity
+        intentFilter.setPriority(3);
+        registerReceiver(userReceiver, intentFilter);
+    }
+
+    /**
+     * 标签消息广播接收者
+     */
+    private class TagBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            BmobInvitation message = (BmobInvitation) intent.getSerializableExtra("invite");
+            refreshInvite(message);
+            // 记得把广播给终结掉
+            abortBroadcast();
+        }
+    }
+
+    @Override
+    public void onNetChange(boolean isNetConnected) {
+        
+        if(isNetConnected){
+            ShowToast(R.string.network_tips);
+        }
+    }
+
+    @Override
+    public void onAddUser(BmobInvitation message) {
+        
+        refreshInvite(message);
+    }
+
+    /** 刷新好友请求
+     */
+    private void refreshInvite(BmobInvitation message){
+        boolean isAllow = CustomApplcation.getInstance().getSpUtil().isAllowVoice();
+        if(isAllow){
+            CustomApplcation.getInstance().getMediaPlayer().start();
+        }
+        // todo wenop 未读消息红点
+//        iv_contact_tips.setVisibility(View.VISIBLE);
+        if(currentTabIndex==1){
+            if(contactFragment != null){
+                contactFragment.refresh();
+            }
+        }else{
+            //同时提醒通知
+            String tickerText = message.getFromname()+"请求添加好友";
+            boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
+            BmobNotifyManager.getInstance(this).showNotify(isAllow,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),NewFriendActivity.class);
+        }
+    }
+
+    @Override
+    public void onOffline() {
+        
+        showOfflineDialog(this);
+    }
+
+    @Override
+    public void onReaded(String conversionId, String msgTime) {
+        
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        
+        super.onDestroy();
+        try {
+            unregisterReceiver(newReceiver);
+        } catch (Exception e) {
+        }
+        try {
+            unregisterReceiver(userReceiver);
+        } catch (Exception e) {
+        }
+        //取消定时检测服务
+        BmobChat.getInstance(this).stopPollService();
     }
 
 

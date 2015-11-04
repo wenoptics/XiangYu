@@ -12,7 +12,6 @@ import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.ui.ActivityBase;
 import tk.wenop.XiangYu.ui.fragment.ContactFragment;
 import tk.wenop.XiangYu.ui.fragment.RecentFragment;
-import tk.wenop.XiangYu.ui.fragment.SettingsFragment;
 
 /**
  * Created by zysd on 15/11/1.
@@ -32,9 +31,9 @@ public class OverallMessageListActivity extends ActivityBase {
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add("评论", RecentFragment.class)
-                .add("新朋友", ContactFragment.class)
-                .add("私信", SettingsFragment.class)
-                .add("关注的地方", SettingsFragment.class)
+                .add("私信", RecentFragment.class)
+                .add("好友", ContactFragment.class)
+                .add("关注", RecentFragment.class)
                 .create());
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);

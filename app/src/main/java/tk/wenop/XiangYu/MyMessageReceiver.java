@@ -24,7 +24,6 @@ import cn.bmob.im.inteface.OnReceiveListener;
 import cn.bmob.im.util.BmobJsonUtil;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.FindListener;
-import tk.wenop.XiangYu.ui.MainActivity;
 import tk.wenop.XiangYu.ui.NewFriendActivity;
 import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
 import tk.wenop.XiangYu.util.CollectionUtils;
@@ -202,8 +201,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
         CharSequence tickerText = msg.getBelongUsername() + ":" + trueMsg;
         String contentTitle = msg.getBelongUsername()+ " (" + mNewNum + "条新消息)";
 
-        // wenop-add TODO: 这里不该再去到MainActivity, 要去到消息列表
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, OverallMessageListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         
         boolean isAllowVoice = CustomApplcation.getInstance().getSpUtil().isAllowVoice();

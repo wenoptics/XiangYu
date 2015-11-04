@@ -35,7 +35,7 @@
                 android:background="@color/transparent"
                 android:drawableLeft="@drawable/login_icon_account"
                 android:drawablePadding="25dip"
-                android:hint="@string/login_username_hint"
+                android:hint="手机号或邮箱"
                 android:paddingLeft="15dip"
                 android:shadowDx="0.0"
                 android:shadowDy="1.0"
@@ -54,7 +54,7 @@
                 android:background="@color/transparent"
                 android:drawableLeft="@drawable/login_icon_password"
                 android:drawablePadding="25dip"
-                android:hint="@string/login_password_hint"
+                android:hint="密码"
                 android:inputType="textPassword"
                 android:paddingLeft="15dip"
                 android:textColorHint="#ffdddddd" />

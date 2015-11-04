@@ -18,8 +18,8 @@ import cn.bmob.im.bean.BmobRecent;
 import cn.bmob.im.db.BmobDB;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.MessageRecentAdapter;
+import tk.wenop.XiangYu.ui.ChatActivity;
 import tk.wenop.XiangYu.ui.FragmentBase;
-import tk.wenop.XiangYu.ui.MS_ChatActivity;
 import tk.wenop.XiangYu.view.ClearEditText;
 import tk.wenop.XiangYu.view.dialog.DialogTips;
 
@@ -124,9 +124,8 @@ public class RecentFragment extends FragmentBase implements OnItemClickListener,
 		user.setUsername(recent.getUserName());
 		user.setObjectId(recent.getTargetid());
 
-        // wenop-test
-		//Intent intent = new Intent(getActivity(), ChatActivity.class);
-		Intent intent = new Intent(getActivity(), MS_ChatActivity.class);
+		Intent intent = new Intent(getActivity(), ChatActivity.class);
+//		Intent intent = new Intent(getActivity(), MS_ChatActivity.class);
 
 		intent.putExtra("user", user);
 		startAnimActivity(intent);

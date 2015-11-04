@@ -196,9 +196,9 @@ public class NewRecordPlayClickListener implements View.OnClickListener {
 
 		if (voice_path != "")
 		{
-            // TODO : bug 这个动画没有能动起来
 			iv_voice.setImageResource(R.anim.anim_chat_voice_left);
-			return;		//todo: custom by llwoll
+            anim = (AnimationDrawable) iv_voice.getDrawable();
+            anim.start();
 		}
 
 		/*if (message.getBelongId().equals(currentObjectId)) {
@@ -206,8 +206,6 @@ public class NewRecordPlayClickListener implements View.OnClickListener {
 		} else {
 			iv_voice.setImageResource(R.anim.anim_chat_voice_left);
 		}*/
-		anim = (AnimationDrawable) iv_voice.getDrawable();
-		anim.start();
 
 	}
 
