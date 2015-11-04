@@ -54,7 +54,8 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param
+     * param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment AreaListFragment.
      */
@@ -109,6 +110,8 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_area_list, container, false);
+        listView = (ListView) view.findViewById(R.id.list);
+
         ViewUtils.inject(view);
 
 
@@ -138,6 +141,7 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
         super.onDetach();
         mListener = null;
     }
+
 
 
     /**
