@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.R;
@@ -22,6 +23,7 @@ import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.ui.ActivityBase;
 import tk.wenop.XiangYu.ui.AddFriendActivity;
 import tk.wenop.XiangYu.ui.ChatActivity;
+import tk.wenop.XiangYu.ui.SetMyInfoActivity;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
 
 //import tk.wenop.testapp.R;
@@ -60,6 +62,14 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
         // 组装聊天对象
         targetUser = (User) getIntent().getSerializableExtra("user");
         targetId = targetUser.getObjectId();
+
+        User currentUser = BmobUser.getCurrentUser(this, User.class);
+        if (currentUser.getUsername().equals(targetUser.getUsername())) {
+            // 如果是自己， 那就去设置页面
+            Intent intent =  new Intent(PeopleDetailActivity.this, SetMyInfoActivity.class);
+            this.startActivity(intent);
+            this.finish();
+        }
 
         // 显示出返回按钮
         ActionBar actionBar = getSupportActionBar();

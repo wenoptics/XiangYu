@@ -134,7 +134,7 @@ public class AreaNetwork {
         User user1 = new User();
         user1.setObjectId(user.getObjectId());
 
-        query.addWhereRelatedTo("relation", new BmobPointer(user1));
+        query.addWhereRelatedTo("relation", new BmobPointer(user));
 
         query.findObjects(context, new FindListener<AreaEntity>() {
             @Override

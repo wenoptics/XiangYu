@@ -42,7 +42,6 @@ import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.CommentNetwork;
-import tk.wenop.XiangYu.ui.ChatActivity;
 import tk.wenop.XiangYu.util.CommonUtils;
 import tk.wenop.XiangYu.util.WrappingRecyclerViewLayoutManager;
 
@@ -240,8 +239,8 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                     iv_avatar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                         Intent intent = new Intent(context, PeopleDetailActivity.class);
-                            Intent intent = new Intent(context, ChatActivity.class);
+                         Intent intent = new Intent(context, PeopleDetailActivity.class);
+//                            Intent intent = new Intent(context, ChatActivity.class);
                             intent.putExtra("user", user);
                             context.startActivity(intent);
                         }

@@ -40,7 +40,8 @@
                 android:shadowDx="0.0"
                 android:shadowDy="1.0"
                 android:shadowRadius="1.0"
-                android:textColorHint="#ffdddddd" />
+                android:textColorHint="#ffdddddd"
+                android:singleLine="true" />
 
             <View
                 android:layout_width="match_parent"
@@ -57,7 +58,8 @@
                 android:hint="密码"
                 android:inputType="textPassword"
                 android:paddingLeft="15dip"
-                android:textColorHint="#ffdddddd" />
+                android:textColorHint="#ffdddddd"
+                android:singleLine="true" />
         </LinearLayout>
 
         <Button
