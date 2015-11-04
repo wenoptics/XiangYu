@@ -98,6 +98,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     private Toolbar toolbar;
     private AreaEntity nowAreaEntity;
 
+
+
     void refreshItems() {
         // Load items
         if (nowAreaEntity == null) {
@@ -119,7 +121,21 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
         setContentView(R.layout.activity_side);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("请选择当前位置");
+
+        CustomApplcation customApplcation = CustomApplcation.getInstance();
+        if (customApplcation.getLoginAreaEntity()!=null){
+
+            String area = customApplcation.getLoginAreaEntity().getArea();
+            if ((area != null)&&(!area.equals(""))){
+                toolbar.setTitle(area);
+            }else {
+                toolbar.setTitle("请选择当前位置");
+            }
+
+        }else {
+            toolbar.setTitle("请选择当前位置");
+        }
+
 
         dbManager = DBManager.instance(this);
 
@@ -298,12 +314,12 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         user.update(mContext, new UpdateListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(mContext,"关注成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "关注成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int i, String s) {
-                Toast.makeText(mContext,"关注失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "关注失败", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -401,6 +417,12 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 break;
 
             // TODO llwoll: 刷新失败时候 没有办法停止刷新动画
+            case LOGIN_LOCATION_GET:
+                if (nowAreaEntity == null){
+                    CustomApplcation applcation = CustomApplcation.getInstance();
+                    String area =  applcation.getLoginAreaEntity().getArea();
+                    toolbar.setTitle(area);
+                }
 
         }
 
@@ -525,12 +547,15 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
             return;
         }
-
         nowAreaEntity = areaEntity;
         toolbar.setTitle(areaEntity.getArea());
         DBManager.instance(this).refreshMessageEntities(areaEntity);
-
     }
+
+
+
+
+
 
 
 }

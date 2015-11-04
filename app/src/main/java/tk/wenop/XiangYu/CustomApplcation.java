@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -28,9 +29,15 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import de.greenrobot.event.EventBus;
+import tk.wenop.XiangYu.bean.AreaEntity;
+import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
+import tk.wenop.XiangYu.network.AreaNetwork;
 import tk.wenop.XiangYu.util.CollectionUtils;
 import tk.wenop.XiangYu.util.SharePreferenceUtil;
+
+
 
 /**
  * 自定义全局Applcation类
@@ -39,13 +46,16 @@ import tk.wenop.XiangYu.util.SharePreferenceUtil;
  * @author smile
  * @date 2014-5-19 下午3:25:00
  */
-public class CustomApplcation extends Application {
+public class CustomApplcation extends Application implements AreaNetwork.OnGetAreaEntity {
 
 	public static CustomApplcation mInstance;
 	public LocationClient mLocationClient;
 	public MyLocationListener mMyLocationListener;
 
 	public static BmobGeoPoint lastPoint = null;// 上一次定位到的经纬度
+	AreaNetwork.OnGetAreaEntity onGetAreaEntity;
+	AreaEntity loginAreaEntity = null;
+
 
 	@Override
 	public void onCreate() {
@@ -54,6 +64,7 @@ public class CustomApplcation extends Application {
 		// 是否开启debug模式--默认开启状态
 		BmobChat.DEBUG_MODE = true;
 		mInstance = this;
+		onGetAreaEntity  = this;
 		init();
 
 		DBManager.instance(this).initNetLogin();
@@ -98,8 +109,31 @@ public class CustomApplcation extends Application {
 	 */
 	private void initBaiduLocClient() {
 		mLocationClient = new LocationClient(this.getApplicationContext());
+
 		mMyLocationListener = new MyLocationListener();
 		mLocationClient.registerLocationListener(mMyLocationListener);
+
+		LocationClientOption option = new LocationClientOption();
+		option.setProdName("bmobim");// 设置产品线
+		option.setOpenGps(true);// 打开gps
+		option.setCoorType("bd09ll"); // 设置坐标类型
+		option.setScanSpan(1000);
+		option.setOpenGps(true);
+		option.setIsNeedAddress(true);
+		option.setIgnoreKillProcess(true);
+		mLocationClient.setLocOption(option);
+		mLocationClient.start();
+	}
+
+	@Override
+	public void onGetAreaEntity(AreaEntity areaEntity) {
+		if (areaEntity != null){
+			this.loginAreaEntity = areaEntity;
+			EventBus.getDefault().post(ConstantEvent.LOGIN_LOCATION_GET);
+		}
+
+
+
 	}
 
 	/**
@@ -116,9 +150,14 @@ public class CustomApplcation extends Application {
 				if (lastPoint.getLatitude() == location.getLatitude()
 						&& lastPoint.getLongitude() == location.getLongitude()) {
 //					BmobLog.i("两次获取坐标相同");// 若两次请求获取到的地理位置坐标是相同的，则不再定位
+
+					if (location.getDistrict()!=null)
+					AreaNetwork.loadArea(getApplicationContext(), onGetAreaEntity, location.getDistrict());
 					mLocationClient.stop();
 					return;
 				}
+				if (location.getDistrict()!=null)
+				AreaNetwork.loadArea(getApplicationContext(), onGetAreaEntity, location.getDistrict());
 			}
 			lastPoint = new BmobGeoPoint(longtitude, latitude);
 		}
@@ -263,6 +302,15 @@ public class CustomApplcation extends Application {
 		setContactList(null);
 		setLatitude(null);
 		setLongtitude(null);
+	}
+
+
+	public AreaEntity getLoginAreaEntity() {
+		return loginAreaEntity;
+	}
+
+	public void setLoginAreaEntity(AreaEntity loginAreaEntity) {
+		this.loginAreaEntity = loginAreaEntity;
 	}
 
 }

@@ -162,9 +162,11 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 //        holder.mAvatar.setImageResource();
 
         AreaEntity areaEntity = data.getOwnerArea();
+        if (areaEntity!=null)
         if (areaEntity.getArea()!=null){
             holder.mLocation.setText(data.getOwnerArea().getArea());
         }
+
 //        Time time =  Time.valueOf(data.getCreatedAt());
         String s =data.getCreatedAt().substring(11,19);
         holder.mTime.setText(s);
@@ -261,6 +263,8 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                         gotoComment(data);
                     }
                 });
+
+        holder.mLocation.setText(data.getFromLocation());
 
         // wenop-add
         // 点击view 去到消息 (也去到评论页面)
