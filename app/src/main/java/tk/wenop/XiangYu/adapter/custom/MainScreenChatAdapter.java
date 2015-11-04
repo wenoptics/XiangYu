@@ -177,7 +177,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
     // add by wenop: item加载的动态效果， 防止item闪现
     private void beforeDataShown(ViewHolder holder, int position) {
 //        holder.mView.setVisibility(View.INVISIBLE);
-        setAnimation(holder.mView, position);
+//        setAnimation(holder.mView, position);
     }
 
     private void afterDataShown(ViewHolder holder) {

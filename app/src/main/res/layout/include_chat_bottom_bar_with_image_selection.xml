@@ -50,7 +50,7 @@
             android:layout_height="30dp"
             android:background="@drawable/btn_chat_send_selector"
             android:gravity="center"
-            android:visibility="visible"
+            android:visibility="gone"
             android:textColor="@color/base_color_text_black" >
         </Button>
         

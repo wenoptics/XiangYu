@@ -3,7 +3,6 @@ package tk.wenop.XiangYu.ui;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.ui.wenui.SideActivity;
 import tk.wenop.XiangYu.util.CommonUtils;
-import tk.wenop.XiangYu.view.dialog.DialogTips;
 
 /**
  * @ClassName: LoginActivity
@@ -50,19 +48,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 //		showNotice();
 	}
 
-	public void showNotice() {
-		DialogTips dialog = new DialogTips(this,"提示",getResources().getString(R.string.show_notice), "确定",true,true);
-		// 设置成功事件
-		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialogInterface, int userId) {
-				
-			}
-		});
-		// 显示确认对话框
-		dialog.show();
-		dialog = null;
-	}
-	
+
 	private void init() {
 		et_username = (EditText) findViewById(R.id.et_username);
 		et_password = (EditText) findViewById(R.id.et_password);
