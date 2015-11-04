@@ -62,7 +62,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );
 
             //按气泡播放语音
-            audio_msg_bubble = (RelativeLayout) v.findViewById(R.id.audio_msg_bubble);
+            audio_msg_bubble = (RelativeLayout) v.findViewById(R.id.audio_msg_bubble_item_in_comment);
             //声音按钮
             audio_animation = (ImageView) v.findViewById(R.id.imageView2);
         }
@@ -122,8 +122,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(mContext, PeopleDetailActivity.class);
-//            TODO 把用户信息传过去?
-//            intent.putExtra("BAR_CODE_RESULT", result);
             mContext.startActivity(intent);
         }
     };
@@ -146,9 +144,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         holder.mAvatar.setOnClickListener(onAvatarClickListener);
 
-        // TODO 长按头像可以at人
-
-        holder.mAvatar.setOnLongClickListener(null);
+        // TODO 长按头像可以at人     holder.mAvatar.setOnLongClickListener(null);
         String path = "http://file.bmob.cn/" + data.getComment();
         holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
 

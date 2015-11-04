@@ -2,17 +2,25 @@ package tk.wenop.XiangYu.adapter.custom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +48,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
     ImageLoader imageLoader;
 //    private ArrayList<MainScreenOverviewItem> mDataset;
     protected Context mContext;
+    private int lastPosition = -1;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -78,8 +87,6 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
             mCommentCount  = (TextView)  v.findViewById(R.id.textView_commentCount    );
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );
 
-
-
         }
     }
 
@@ -88,6 +95,10 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         mDataset.addAll(myDataset);
         mContext = context;
         imageLoader = ImageLoader.getInstance();
+
+        fadeIn = new AlphaAnimation(0, 0.8f);
+        fadeIn.setInterpolator(new LinearInterpolator()); //add this
+        fadeIn.setDuration(500);
     }
 
 
@@ -126,20 +137,10 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 
         }
 
-
         return new ViewHolder(v);
     }
 
-    // 点击头像要跳转到用户详情页
-    private final View.OnClickListener onAvatarClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(mContext, PeopleDetailActivity.class);
-//            TODO 把用户信息传过去?
-//            intent.putExtra("BAR_CODE_RESULT", result);
-            mContext.startActivity(intent);
-        }
-    };
+    Animation fadeIn;
 
     private void setContentAudio(MessageEntity data, ViewHolder holder) {
         String path = "http://file.bmob.cn/" + data.getAudio();
@@ -148,15 +149,68 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
     }
 
     private void setContentPhoto(MessageEntity data, ViewHolder holder) {
-        imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(), holder.mContentPhoto);
+        imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(),
+                holder.mContentPhoto,
+                DisplayImageOptions.createSimple(),
+                new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String s, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                        view.startAnimation(fadeIn);
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String s, View view) {
+
+                    }
+                });
     }
 
+    // add by wenop: item加载的动态效果， 防止item闪现
+    private void beforeDataShown(ViewHolder holder, int position) {
+//        holder.mView.setVisibility(View.INVISIBLE);
+        setAnimation(holder.mView, position);
+    }
+
+    private void afterDataShown(ViewHolder holder) {
+
+    }
+
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
+    }
+
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        super.onViewRecycled(holder);
+        if(holder.mContentPhoto!=null)
+        {
+            holder.mContentPhoto.setImageDrawable(null);
+        }
+    }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+
+        beforeDataShown(holder, position);
 
         final MessageEntity data = mDataset.get(position);
 //        holder.mAvatar.setImageResource();
@@ -200,6 +254,9 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                 // 昵称样式
                 holder.mNickName.setTypeface(null, Typeface.ITALIC);
 
+                // 匿名点击头像设置 点击事件为空（必须要有，不然view被recycle后重用会不一致）
+                holder.mAvatar.setOnClickListener(null);
+
                 // 消息的owner, 要根据性别设置样式
                 if (data.getOwnerUser().getSex() == true)
                 {
@@ -227,6 +284,10 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 
                 // 非匿名消息
                 holder.mNickName.setText(data.getOwnerUser().getNick());
+                holder.mNickName.setTypeface(null, Typeface.NORMAL);
+                holder.mNickName
+                        .setTextColor(ContextCompat.getColor(mContext,
+                                R.color.base_color_text_black));
 //                imageLoader.displayImage(data.getOwnerUser().getAvatar(), holder.mAvatar);
                 refreshAvatar(data.getOwnerUser().getAvatar(), holder.mAvatar);
 
@@ -235,7 +296,6 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, PeopleDetailActivity.class);
-//                    Intent intent =  new Intent(mContext, ChatActivity.class);
                         intent.putExtra("user", data.getOwnerUser());
                         mContext.startActivity(intent);
                     }
@@ -258,7 +318,6 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
             }
         }
 
-//        holder.audio.setOnClickListener(new NewRecordPlayClickListener(context,path, messageHolder.audio));
         //评论按钮
         holder.mView.findViewById(R.id.group_comment)
                 .setOnClickListener(new View.OnClickListener() {
@@ -276,6 +335,8 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                 gotoComment(data);
             }
         });
+
+        afterDataShown(holder);
     }
 
     private void gotoComment(MessageEntity data) {

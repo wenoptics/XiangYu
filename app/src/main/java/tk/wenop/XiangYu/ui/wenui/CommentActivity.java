@@ -34,6 +34,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.adapter.custom.CommentAdapter;
 import tk.wenop.XiangYu.adapter.custom.MainScreenOverviewItem;
 import tk.wenop.XiangYu.bean.CommentEntity;
@@ -61,28 +62,20 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     // wenop-update 不能用inject了，因为我动态改变了View
 //    @ViewInject(R.id.imageView_contentPhoto)
     ImageView iv_contentPhoto;
-//    @ViewInject(R.id.imageView_avatar)
     ImageView iv_avatar;
     TextView tv_nickName;
     View card_root_view;
-
-    @ViewInject(R.id.textView_commentCount)
     TextView mCommentCount;
-
-
-    @ViewInject(R.id.btn_speak)
-    Button btn_speak;
-
-
-
+    View audio_bubble;
 
     ImageLoader imageLoader;
     User currentUser;
     String userID;
     Context context;
 
-
     // 语音有关
+    @ViewInject(R.id.btn_speak)
+    Button btn_speak;
     @ViewInject(R.id.layout_record)
     RelativeLayout layout_record;
     @ViewInject(R.id.tv_voice_tips)
@@ -92,6 +85,8 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     @ViewInject(R.id.comment_content)
     ViewStub comment_content;
 
+    String audioPath;
+
     private Drawable[] drawable_Anims;// 话筒动画
     BmobRecordManager recordManager;
 
@@ -99,8 +94,10 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comment);
 
+        if (messageEntity == null) return; // TODO 完善?
+
+        setContentView(R.layout.activity_comment);
         ViewUtils.inject(this);
 
         // 显示出返回按钮
@@ -112,8 +109,8 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
         imageLoader = ImageLoader.getInstance();
 
+        inflateCommentLayout();
         initView();
-
 
         /// 设置评论数据
         //设置recyclerView
@@ -127,8 +124,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         mRVLayoutM = new WrappingRecyclerViewLayoutManager(this);
         mRecyclerView.setLayoutManager(mRVLayoutM);
 
-
-
         commentDataSet = new ArrayList<>();
         commentAdapter = new CommentAdapter(CommentActivity.this);
         mRecyclerView.setAdapter(commentAdapter);
@@ -139,11 +134,8 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
     }
 
-    public void initView(){
+    private void inflateCommentLayout() {
 
-        if (messageEntity == null) return;
-
-        String audioPath;
         // wenop-mod
         // 根据messageEntity msgType来选择layout_include
         switch (messageEntity.getMsgType()) {
@@ -163,25 +155,37 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                 audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
         }
         comment_content.inflate();
+    }
 
-        // inflate完 才绑定这个控件
+    private void initView(){
+
+        // inflate完 才绑定这些控件
         iv_avatar = (ImageView) findViewById(R.id.imageView_avatar);
         tv_nickName = (TextView) findViewById(R.id.tv_nickName);
         card_root_view = findViewById(R.id.card_root_view);
+        mCommentCount = (TextView) findViewById(R.id.tv_comment_count);
 
+        mCommentCount.setText(messageEntity.getCommentCount().toString());
 
         // 分消息类型来设置view
         iv_contentPhoto = (ImageView) findViewById(R.id.imageView_contentPhoto);
+        audio_bubble = findViewById(R.id.audio_msg_bubble);
+        ImageView iv_audioPlayAni = (ImageView) findViewById(R.id.iv_audio_play_ani);
+
         switch (messageEntity.getMsgType()) {
             case MessageEntity.MSG_TYPE_ONLY_PHOTO:
                 imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
                 break;
             case MessageEntity.MSG_TYPE_ONLY_AUDIO:
                 audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+                audio_bubble.setOnClickListener(
+                    new NewRecordPlayClickListener(context, audioPath, iv_audioPlayAni));
                 break;
             case MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO:
                 imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
                 audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+                audio_bubble.setOnClickListener(
+                        new NewRecordPlayClickListener(context, audioPath, iv_audioPlayAni));
                 break;
             default:
                 //TODO !!! debug here, should be deleted later
@@ -251,8 +255,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
             }
         }
 
-
-//        audio.setOnClickListener(new NewRecordPlayClickListener(context, path, audio));
         initVoiceView();
 
     }
@@ -266,8 +268,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         initVoiceAnimRes();
         initRecordManager();
     }
-
-
 
 
     @Override
@@ -450,6 +450,8 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                     });//todo 检测更多动作
                     //todo:save comment to comment list;
                     commentAdapter.addData(commentEntity);
+                    // TODO 更新View评论数
+
                 }
             }
 
