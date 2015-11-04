@@ -191,26 +191,21 @@ public class NewRecordPlayClickListener implements View.OnClickListener {
 
 	/**
 	 * 开启播放动画
-	 * 
-	 * @Title: startRecordAnimation
-	 * @Description: TODO
-	 * @param
-	 * @return void
-	 * @throws
 	 */
 	private void startRecordAnimation() {
 
 		if (voice_path != "")
 		{
+            // TODO : bug 这个动画没有能动起来
 			iv_voice.setImageResource(R.anim.anim_chat_voice_left);
 			return;		//todo: custom by llwoll
 		}
 
-		if (message.getBelongId().equals(currentObjectId)) {
+		/*if (message.getBelongId().equals(currentObjectId)) {
 			iv_voice.setImageResource(R.anim.anim_chat_voice_right);
 		} else {
 			iv_voice.setImageResource(R.anim.anim_chat_voice_left);
-		}
+		}*/
 		anim = (AnimationDrawable) iv_voice.getDrawable();
 		anim.start();
 
@@ -218,26 +213,20 @@ public class NewRecordPlayClickListener implements View.OnClickListener {
 
 	/**
 	 * 停止播放动画
-	 * 
-	 * @Title: stopRecordAnimation
-	 * @Description: TODO
-	 * @param
-	 * @return void
-	 * @throws
 	 */
 	private void stopRecordAnimation() {
 
 		if (voice_path!=""){
-			iv_voice.setImageResource(R.drawable.voice_left3);
+			iv_voice.setImageResource(R.drawable.voice_right3);
 			return;
 		}
 
-
-		if (message.getBelongId().equals(currentObjectId)) {
+		/*if (message.getBelongId().equals(currentObjectId)) {
 			iv_voice.setImageResource(R.drawable.voice_left3);
 		} else {
 			iv_voice.setImageResource(R.drawable.voice_right3);
-		}
+		}*/
+
 		if (anim != null) {
 			anim.stop();
 		}

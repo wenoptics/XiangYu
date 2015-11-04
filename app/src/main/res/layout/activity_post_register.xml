@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="tk.wenop.XiangYu.ui.wenui.PostRegisterActivity"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/_tmpR_FNELKIFEI">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我是女生"
+                android:id="@+id/textView14"
+                android:layout_alignLeft="@+id/iv_avatar_male"
+                android:layout_alignRight="@+id/iv_avatar_male"
+                android:layout_alignTop="@+id/iv_avatar_male"
+                android:layout_alignBottom="@+id/iv_avatar_male"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我是男生"
+                android:id="@+id/textView15"
+                android:layout_alignLeft="@+id/iv_avatar_female"
+                android:layout_alignRight="@+id/iv_avatar_female"
+                android:layout_alignTop="@+id/iv_avatar_female"
+                android:layout_alignBottom="@+id/iv_avatar_female"
+                android:gravity="center" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentTop="false"
+                app:civ_border_width="4dp"
+                app:civ_border_color="@android:color/white"
+                android:src="@drawable/avatar_fm"
+                android:layout_alignLeft="@+id/iv_avatar_male"
+                android:layout_marginLeft="90dp"
+                android:id="@+id/iv_avatar_female" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/iv_avatar_male"
+                android:layout_alignParentTop="false"
+                app:civ_border_width="4dp"
+                app:civ_border_color="@android:color/white"
+                android:src="@drawable/avatar_m" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/Register_Input"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_below="@+id/_tmpR_FNELKIFEI"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:id="@+id/_tmpR_FWLIN">
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="昵称"
+                android:textStyle="bold"
+                android:layout_width="wrap_content" />
+
+            <EditText
+                style="@style/Register_Edit"
+                android:id="@+id/et_nickName"
+                android:hint="请填写..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/Register_Input"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_below="@+id/_tmpR_FWLIN"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:id="@+id/_tmpR_EFVBQW">
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:paddingLeft="10dp"
+                android:text="个签"
+                android:textStyle="bold"
+                android:layout_width="wrap_content" />
+
+            <EditText
+                style="@style/Register_Edit"
+                android:id="@+id/et_userDesc"
+                android:hint="我想说..."
+                android:layout_width="wrap_content"
+                android:layout_height="109dp"
+                android:gravity="top"
+                android:singleLine="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@+id/_tmpR_EFVBQW"></LinearLayout>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:id="@+id/btn_ok"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+</RelativeLayout>

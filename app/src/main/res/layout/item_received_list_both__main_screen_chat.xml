@@ -118,7 +118,6 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:background="#dfdfdf"
                 android:baselineAligned="false"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/_tmpL1"
@@ -130,7 +129,8 @@
                     android:id="@+id/imageView_contentPhoto"
                     android:src="@drawable/l_0"
                     android:scaleType="centerCrop"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:alpha="0.8" />
             </LinearLayout>
 
             <RelativeLayout

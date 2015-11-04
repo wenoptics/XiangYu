@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
+    android:background="@color/theme_bg_color"
+    android:orientation="vertical"
+    tools:context=".ui.RegisterActivity"    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView17"
+                android:src="@drawable/ic_email_outline_black_24dp"
+                android:layout_gravity="bottom"
+                android:layout_margin="12dp" />
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPaddingBottom="10dp"
+                float:fletTextAppearance="@style/FloatLabeledEditText">
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="邮箱"
+                    android:inputType="textEmailAddress" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView16"
+                android:src="@drawable/ic_tag_faces_black_24dp"
+                android:layout_gravity="bottom"
+                android:layout_margin="12dp" />
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPaddingBottom="10dp"
+                float:fletTextAppearance="@style/FloatLabeledEditText">
+
+                <EditText
+                    android:id="@+id/et_nickName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="昵称"
+                    android:inputType="text" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView14"
+                android:src="@drawable/ic_key_black_24dp"
+                android:layout_gravity="bottom"
+                android:layout_margin="12dp" />
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPaddingBottom="10dp"
+                float:fletTextAppearance="@style/FloatLabeledEditText">
+
+                <EditText
+                    android:id="@id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="密码"
+                    android:inputType="textPassword" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView15"
+                android:src="@drawable/ic_key_black_24dp"
+                android:layout_gravity="bottom"
+                android:layout_margin="12dp" />
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                float:fletPaddingBottom="10dp"
+                float:fletTextAppearance="@style/FloatLabeledEditText">
+
+                <EditText
+                    android:id="@+id/et_pswAgain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="再输入一次密码"
+                    android:inputType="textPassword" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/base_action_bar_height"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:background="@drawable/btn_login_selector"
+        android:text="@string/register"
+        android:textColor="@color/base_color_text_white"
+        android:textSize="@dimen/text_size_large"
+        android:layout_alignParentBottom="true" />
+
+
+</RelativeLayout>

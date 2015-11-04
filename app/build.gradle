@@ -60,5 +60,8 @@ dependencies {
     // dot progress dialog
     compile 'com.github.d-max:spots-dialog:0.4@aar'
 
+    // material design EditView
+    compile 'com.wrapp.floatlabelededittext:library:0.0.6'
+
 
 }

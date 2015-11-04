@@ -343,11 +343,6 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener {
         avatorPop.showAtLocation(layout_all, Gravity.BOTTOM, 0, 0);
     }
 
-    /**
-     * @Title: startImageAction
-     * @return void
-     * @throws
-     */
     private void startImageAction(Uri uri, int outputX, int outputY,
             int requestCode, boolean isCrop) {
         Intent intent = null;
