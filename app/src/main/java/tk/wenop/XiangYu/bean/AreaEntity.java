@@ -10,7 +10,7 @@ public class AreaEntity extends BmobObject{
 
     private String area;
 
-    private BmobRelation relation;
+    private BmobRelation followingUsers;
 
     public String getArea() {
         return area;
@@ -20,11 +20,11 @@ public class AreaEntity extends BmobObject{
         this.area = area;
     }
 
-    public BmobRelation getRelation() {
-        return relation;
+    public BmobRelation getFollowingUsers() {
+        return followingUsers;
     }
 
-    public void setRelation(BmobRelation relation) {
-        this.relation = relation;
+    public void setFollowingUsers(BmobRelation followingUsers) {
+        this.followingUsers = followingUsers;
     }
 }

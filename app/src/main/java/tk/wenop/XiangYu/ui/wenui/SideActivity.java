@@ -354,7 +354,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         BmobRelation relation = new BmobRelation();
         relation.add(user);
 
-        areaEntity.setRelation(relation);
+        areaEntity.setFollowingUsers(relation);
         areaEntity.update(mContext, new UpdateListener() {
             @Override
             public void onSuccess() {
