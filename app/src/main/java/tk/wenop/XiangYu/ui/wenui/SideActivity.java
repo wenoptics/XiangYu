@@ -126,7 +126,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     void refreshItems() {
         // Load items
         if (nowAreaEntity == null) {
-            Toast.makeText(mContext,"请选择群组",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext,"no_group",Toast.LENGTH_SHORT).show();
         }
         // Load complete
         onItemsLoadComplete();
@@ -206,7 +206,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 //    如果没有登录，在这里跳转登录
 
                 if (nowAreaEntity == null) {
-                    Toast.makeText(mContext,"请选择群组",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,"no_group",Toast.LENGTH_SHORT).show();
                 }
 
                 if (selectImageInterface!= null){

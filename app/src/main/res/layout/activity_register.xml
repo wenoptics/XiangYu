@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content">
 
                     <com.wrapp.floatlabelededittext.FloatLabeledEditText
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         float:fletPaddingBottom="10dp"
                         float:fletTextAppearance="@style/FloatLabeledEditText"

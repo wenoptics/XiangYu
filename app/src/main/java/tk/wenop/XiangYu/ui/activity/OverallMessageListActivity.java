@@ -35,7 +35,7 @@ public class OverallMessageListActivity extends ActivityBase implements AreaList
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("评论", RecentFragment.class)
+                .add("评论", AreaListFragment.class)
                 .add("私信", RecentFragment.class)
                 .add("好友", ContactFragment.class)
                 .add("关注", AreaListFragment.class)
