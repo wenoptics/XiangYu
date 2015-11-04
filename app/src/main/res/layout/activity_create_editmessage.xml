@@ -33,12 +33,10 @@
                 android:layout_height="80dp"
                 android:scaleType="fitXY"
                 />
-                />
             <Button
                 android:background="@drawable/btn_chat_record_selector"
                 style="@style/Smile.TextView._Black"
                 android:id="@+id/image"
-                android:layout_weight="2"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_width="80dp"
@@ -76,7 +74,6 @@
             <Button
 
                 android:id="@+id/audio"
-                android:layout_weight="2"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_width="80dp"

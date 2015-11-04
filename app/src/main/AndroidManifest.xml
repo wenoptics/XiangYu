@@ -106,7 +106,8 @@
             android:name=".ui.MainActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.LocationActivity" />
         <activity android:name=".ui.BlackListActivity" />
         <activity android:name=".ui.ImageBrowserActivity" />

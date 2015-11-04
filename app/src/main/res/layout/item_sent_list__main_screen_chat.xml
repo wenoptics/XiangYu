@@ -68,7 +68,6 @@
                             android:id="@+id/textView4"
                             android:layout_marginLeft="2dp"
                             android:layout_gravity="left|center_vertical"
-                            android:layout_weight="2"
                             android:layout_centerVertical="true" />
 
                         <TextView
@@ -78,7 +77,6 @@
                             android:id="@+id/tv_nickName"
                             android:layout_marginLeft="2dp"
                             android:layout_gravity="left|center_vertical"
-                            android:layout_weight="2"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/textView4" />
 
@@ -89,7 +87,6 @@
                             android:id="@+id/textView5"
                             android:layout_marginLeft="2dp"
                             android:layout_gravity="left|center_vertical"
-                            android:layout_weight="2"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/tv_nickName" />
 
@@ -98,10 +95,8 @@
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:src="@drawable/voice_right3"
-                            android:contextClickable="false"
                             android:layout_gravity="center_vertical|right"
                             android:layout_marginRight="24dp"
-                            android:layout_weight="1"
                             android:layout_alignParentEnd="false"
                             android:layout_alignParentRight="false"
                             android:layout_centerVertical="true"
@@ -122,7 +117,6 @@
                     android:src="@drawable/avatar_m"
                     app:civ_border_width="2dp"
                     app:civ_border_color="#ffffff"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginRight="12dp" />
 
             </LinearLayout>
@@ -190,7 +184,6 @@
                         android:layout_height="20dp"
                         android:id="@+id/imageView5"
                         android:src="@drawable/ic_textsms_grey600_48dp"
-                        android:layout_alignParentEnd="true"
                         android:layout_gravity="center_vertical" />
 
                     <TextView
@@ -198,7 +191,6 @@
                         android:layout_height="wrap_content"
                         android:text="12"
                         android:id="@+id/textView_commentCount"
-                        android:layout_alignParentEnd="false"
                         android:layout_gravity="center_vertical" />
                 </LinearLayout>
 

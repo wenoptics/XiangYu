@@ -117,14 +117,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return new ViewHolder(v);
     }
 
-    // 点击头像要跳转到用户详情页
-    private final View.OnClickListener onAvatarClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(mContext, PeopleDetailActivity.class);
-            mContext.startActivity(intent);
-        }
-    };
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
@@ -142,7 +134,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             refreshAvatar(data.getOwnerUser().getAvatar(), holder.mAvatar);
         }
 
-        holder.mAvatar.setOnClickListener(onAvatarClickListener);
+        holder.mAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, PeopleDetailActivity.class);
+                intent.putExtra("user", data.getOwnerUser());
+                mContext.startActivity(intent);
+            }
+        });
 
         // TODO 长按头像可以at人     holder.mAvatar.setOnLongClickListener(null);
         String path = "http://file.bmob.cn/" + data.getComment();

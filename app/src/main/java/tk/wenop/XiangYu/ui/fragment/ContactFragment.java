@@ -43,6 +43,7 @@ import tk.wenop.XiangYu.ui.FragmentBase;
 import tk.wenop.XiangYu.ui.NearPeopleActivity;
 import tk.wenop.XiangYu.ui.NewFriendActivity;
 import tk.wenop.XiangYu.ui.SetMyInfoActivity;
+import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
 import tk.wenop.XiangYu.util.CharacterParser;
 import tk.wenop.XiangYu.util.CollectionUtils;
 import tk.wenop.XiangYu.util.PinyinComparator;
@@ -363,9 +364,8 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 		// TODO Auto-generated method stub
 		User user = (User) userAdapter.getItem(position-1);
 		//先进入好友的详细资料页面
-		Intent intent =new Intent(getActivity(),SetMyInfoActivity.class);
-		intent.putExtra("from", "other");
-		intent.putExtra("username", user.getUsername());
+		Intent intent =new Intent(getActivity(), PeopleDetailActivity.class);
+		intent.putExtra("user", user);
 		startAnimActivity(intent);
 		
 	}

@@ -1,5 +1,6 @@
 package tk.wenop.XiangYu.ui.wenui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -15,13 +16,15 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
+import cn.bmob.im.BmobChatManager;
+import cn.bmob.im.config.BmobConfig;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.PushListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.ui.ActivityBase;
-import tk.wenop.XiangYu.ui.AddFriendActivity;
 import tk.wenop.XiangYu.ui.ChatActivity;
 import tk.wenop.XiangYu.ui.SetMyInfoActivity;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
@@ -77,7 +80,7 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
             actionBar.setDisplayHomeAsUpEnabled(true);
 
             // 在actionBar显示用户名
-            actionBar.setTitle(targetUser.getUsername() + "的详细信息");
+            actionBar.setTitle(targetUser.getNick() + "的详细信息");
         }
 
         sendMsgBtn.setOnClickListener(this);
@@ -168,10 +171,35 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
 
         }else if (id == addFriendBtn.getId()){
 
-            Intent intent =  new Intent(this, AddFriendActivity.class);
-            intent.putExtra("from", "contact");
-//            intent.putExtra("user",targetUser);
-            startActivity(intent);
+//            Intent intent =  new Intent(this, AddFriendActivity.class);
+//            intent.putExtra("from", "contact");
+////            intent.putExtra("user",targetUser);
+//            startActivity(intent);
+            final ProgressDialog progress = new ProgressDialog(this);
+            progress.setMessage("正在添加...");
+            progress.setCanceledOnTouchOutside(false);
+            progress.show();
+
+            BmobChatManager.getInstance(this).sendTagMessage(
+                    BmobConfig.TAG_ADD_CONTACT,
+                    targetUser.getObjectId(),
+                    new PushListener() {
+
+                @Override
+                public void onSuccess() {
+                    // TODO Auto-generated method stub
+                    progress.dismiss();
+                    ShowToast("发送请求成功，等待对方验证!");
+                }
+
+                @Override
+                public void onFailure(int arg0, final String arg1) {
+                    // TODO Auto-generated method stub
+                    progress.dismiss();
+                    ShowToast("发送请求失败，请重新添加!");
+                    ShowLog("发送请求失败:"+arg1);
+                }
+            });
 
         }
 

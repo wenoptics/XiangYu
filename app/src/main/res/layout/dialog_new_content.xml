@@ -37,7 +37,6 @@
                     android:layout_margin="-2dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:scrollIndicators="none"
                     android:src="@drawable/content_add_top_bg" />
 
                 <ImageView

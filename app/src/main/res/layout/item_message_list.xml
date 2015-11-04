@@ -80,9 +80,7 @@
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="这是语音部分"
-                    android:layout_weight="1"
-                    />
+                    android:text="这是语音部分" />
 
                 <ImageView
                     android:background="@color/text_gray"
