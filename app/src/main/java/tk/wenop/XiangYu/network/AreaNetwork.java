@@ -82,7 +82,6 @@ public class AreaNetwork {
                     });
                 }
 
-
             }
 
             @Override
@@ -130,21 +129,24 @@ public class AreaNetwork {
 
     public static void loadFollowAreas(final Context context, final OnGetFollowAreaEntities onGetAreaEntities,User user){
 
-        BmobQuery<AreaEntity> query = new BmobQuery<>();
+        BmobQuery<AreaEntity> query = new BmobQuery<AreaEntity>();
 
-        query.addWhereRelatedTo("relation",new BmobPointer(user));
+        User user1 = new User();
+        user1.setObjectId(user.getObjectId());
+
+        query.addWhereRelatedTo("relation", new BmobPointer(user1));
 
         query.findObjects(context, new FindListener<AreaEntity>() {
             @Override
             public void onSuccess(List<AreaEntity> areaEntities) {
                 onGetAreaEntities.onGetFollowAreaEntities(areaEntities);
             }
-
             @Override
             public void onError(int i, String s) {
                 Toast.makeText(context, "get data failure", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     public interface  OnGetFollowAreaEntities{

@@ -352,10 +352,10 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     public void  addFollowArea(AreaEntity areaEntity){
 
         BmobRelation relation = new BmobRelation();
-        relation.add(areaEntity);
+        relation.add(user);
 
-        user.setFollowAreas(relation);
-        user.update(mContext, new UpdateListener() {
+        areaEntity.setRelation(relation);
+        areaEntity.update(mContext, new UpdateListener() {
             @Override
             public void onSuccess() {
                 Toast.makeText(mContext, "关注成功", Toast.LENGTH_SHORT).show();
@@ -462,6 +462,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                     CustomApplcation applcation = CustomApplcation.getInstance();
                     String area =  applcation.getLoginAreaEntity().getArea();
                     toolbar.setTitle(area);
+                    DBManager.instance(this).refreshMessageEntities(applcation.getLoginAreaEntity());
                 }
 
         }
@@ -764,7 +765,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     public void onReaded(String conversionId, String msgTime) {
         
     }
-
 
     @Override
     protected void onDestroy() {

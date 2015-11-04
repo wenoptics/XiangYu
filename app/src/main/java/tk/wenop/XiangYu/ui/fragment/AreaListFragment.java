@@ -109,6 +109,8 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_area_list, container, false);
+        listView = (ListView) view.findViewById(R.id.list);
+
         ViewUtils.inject(view);
 
 
@@ -138,6 +140,7 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
         super.onDetach();
         mListener = null;
     }
+
 
 
     /**
