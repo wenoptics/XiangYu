@@ -147,6 +147,9 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         String path = "http://file.bmob.cn/" + data.getAudio();
         holder.audio_msg_bubble.setOnClickListener(
                 new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
+        holder.mAudioTimeSec.setText( String.format(
+                "%d\'\'", data.getAudioLength())
+        );
     }
 
     private void setContentPhoto(MessageEntity data, ViewHolder holder) {

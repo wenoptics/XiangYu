@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,16 +7,16 @@
     >
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="tk.wenop.testapp.UI.CommentActivity">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="tk.wenop.testapp.UI.CommentActivity">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_above="@+id/add_audio">
+            android:layout_above="@+id/add_audio"
+            android:layout_alignParentTop="true">
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="fill_parent"
@@ -25,52 +24,51 @@
                 android:paddingTop="8dp">
 
                 <ViewStub
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
                     android:id="@+id/comment_content"
-                    layout="@layout/content_comment_both" />
+                    layout="@layout/content_comment_both"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
             </android.support.v4.widget.NestedScrollView>
 
         </LinearLayout>
 
-    <include
-        android:id="@+id/add_audio"
-        layout="@layout/include_chat_bottom_bar_with_image_selection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-</RelativeLayout>
-
+        <include
+            android:id="@+id/add_audio"
+            layout="@layout/include_chat_bottom_bar_with_image_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
 
     <RelativeLayout
-android:id="@+id/layout_record"
-android:layout_width="150dp"
-android:layout_height="150dp"
-android:layout_gravity="center"
-android:visibility="invisible"
-android:background="@drawable/chat_top_voice_bg"
-android:padding="10dp" >
+        android:id="@+id/layout_record"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:background="@drawable/chat_top_voice_bg"
+        android:padding="10dp"
+        android:visibility="invisible">
 
-<ImageView
-    android:id="@+id/iv_record"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:layout_centerHorizontal="true"
-    android:contentDescription="@string/action_settings"
-    android:src="@drawable/chat_icon_voice1" />
+        <ImageView
+            android:id="@+id/iv_record"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/action_settings"
+            android:src="@drawable/chat_icon_voice1" />
 
-<TextView
-    android:id="@+id/tv_voice_tips"
-    style="@style/Smile.TextView._White"
-    android:layout_below="@id/iv_record"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="10dp"
+        <TextView
+            android:id="@+id/tv_voice_tips"
+            style="@style/Smile.TextView._White"
+            android:layout_below="@id/iv_record"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
 
-    android:text="@string/voice_up_tips"
-    android:textSize="14sp" />
-</RelativeLayout>
+            android:text="@string/voice_up_tips"
+            android:textSize="14sp" />
+    </RelativeLayout>
 
 
 </FrameLayout>

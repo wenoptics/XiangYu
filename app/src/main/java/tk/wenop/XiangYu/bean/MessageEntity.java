@@ -19,6 +19,9 @@ import cn.bmob.v3.BmobObject;
 
         private String fromLocation;
 
+        //wenop-add 录音长度
+        private Integer audioLength;
+
 
         //wenop-add 消息类型
         private int msgType;
@@ -83,6 +86,15 @@ import cn.bmob.v3.BmobObject;
         public void setFromLocation(String fromLocation) {
             this.fromLocation = fromLocation;
         }
+
+        public Integer getAudioLength() {
+            return audioLength;
+        }
+
+        public void setAudioLength(Integer audioLength) {
+            this.audioLength = audioLength;
+        }
+
 
 
     }

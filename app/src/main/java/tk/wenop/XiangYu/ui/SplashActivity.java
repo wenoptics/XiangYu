@@ -8,15 +8,21 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 import com.baidu.mapapi.SDKInitializer;
 
+import java.util.List;
+
 import cn.bmob.im.BmobChat;
+import cn.bmob.im.BmobUserManager;
+import cn.bmob.v3.listener.FindListener;
 import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.Config;
 import tk.wenop.XiangYu.ui.wenui.SideActivity;
 
@@ -40,7 +46,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         //可设置调试模式，当为true的时候，会在logcat的BmobChat下输出一些日志，包括推送服务是否正常运行，如果服务端返回错误，也会一并打印出来。方便开发者调试
@@ -56,27 +62,69 @@ public class SplashActivity extends BaseActivity {
         iFilter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);
         mReceiver = new BaiduReceiver();
         registerReceiver(mReceiver, iFilter);
+
+
+    }
+
+    private void gotoHome() {
+        mHandler.sendEmptyMessageDelayed(GO_HOME, 2000);
+    }
+
+    private void gotoLogin() {
+        mHandler.sendEmptyMessageDelayed(GO_LOGIN, 2000);
+    }
+
+    // by wenop
+    private void checkUser() {
+        User currUser = BmobUserManager.getInstance(this).getCurrentUser(User.class);
+        if (currUser==null) {
+            gotoLogin();
+            return;
+        }
+        BmobUserManager.getInstance(this).queryUser(currUser.getObjectId(),
+                new FindListener<User>() {
+
+                    @Override
+                    public void onSuccess(List<User> list) {
+                        if (list.size() == 0) {
+                            gotoLogin();
+                            Toast.makeText(
+                                    SplashActivity.this,
+                                    "登录失效，请您重新登陆",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+                        } else {
+                            // 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
+                            updateUserInfos();
+                            gotoHome();
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        Toast.makeText(SplashActivity.this, s, Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
     }
 
     @Override
     protected void onResume() {
 
         super.onResume();
-        if (userManager.getCurrentUser() != null) {
+        checkUser();
+        /*if (userManager.getCurrentUser() != null) {
             // 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
             updateUserInfos();
             mHandler.sendEmptyMessageDelayed(GO_HOME, 2000);
         } else {
             mHandler.sendEmptyMessageDelayed(GO_LOGIN, 2000);
-        }
+        }*/
     }
+
     /**
      * 开启定位，更新当前用户的经纬度坐标
-     * @Title: initLocClient
-     * @Description: TODO
-     * @param
-     * @return void
-     * @throws
      */
     private void initLocClient() {
         mLocationClient = CustomApplcation.getInstance().mLocationClient;
