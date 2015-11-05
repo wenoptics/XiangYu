@@ -171,7 +171,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
     private void initView() {
         //mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
         mListView = (XListView) findViewById(R.id.mListView);
-        initTopBar_withBackButton("与" + targetUser.getUsername() + "对话");
+        initTopBar_withBackButton("与" + targetUser.getNick() + "对话");
         initBottomView();
         initXListView();
         initVoiceView();

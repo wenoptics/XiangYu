@@ -31,6 +31,8 @@ import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.ui.wenui.CommentActivity;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
+import tk.wenop.XiangYu.util.TimeUtil;
+import tk.wenop.XiangYu.util.wenop.DateTimeUtil;
 
 //import tk.wenop.testapp.Overview.MainScreenOverviewItem;
 //import tk.wenop.testapp.R;
@@ -221,7 +223,10 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 
 
 //        Time time =  Time.valueOf(data.getCreatedAt());
-        String s =data.getCreatedAt().substring(11,19);
+        String s = data.getCreatedAt();
+        s = DateTimeUtil.getTimeAgo(
+                TimeUtil.stringToLong(s, "yyyy-MM-dd HH:mm:ss")
+        );
         holder.mTime.setText(s);
 
         if (data.getCommentCount()!=null){
