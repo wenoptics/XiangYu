@@ -149,9 +149,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                 comment_content.setLayoutResource(R.layout.content_comment_both);
                 break;
             default:
-                //TODO !!! debug here, should be deleted later
-                comment_content.setLayoutResource(R.layout.content_comment_both);
-                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+
         }
         comment_content.inflate();
     }
@@ -187,9 +185,6 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                         new NewRecordPlayClickListener(context, audioPath, iv_audioPlayAni));
                 break;
             default:
-                //TODO !!! debug here, should be deleted later
-                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
-                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
         }
 
         if (messageEntity.getOwnerUser() != null){

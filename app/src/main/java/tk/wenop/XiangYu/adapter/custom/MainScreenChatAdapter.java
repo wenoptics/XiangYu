@@ -130,9 +130,9 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                         .inflate(R.layout.item_received_list_both__main_screen_chat, parent, false);
                 break;
             default:
-                // TODO !!! debug here , should be deleted later. (wenop)
+                // wenop: in case of error
                 v = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_received_list_both__main_screen_chat, parent, false);
+                        .inflate(R.layout.item_received_list_audio__main_screen_chat, parent, false);
 
         }
 
@@ -240,10 +240,6 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                 setContentPhoto(data, holder);
                 break;
             default:
-                /// TODO!!! debug here, should delete later (wenop)
-                setContentAudio(data, holder);
-                setContentPhoto(data, holder);
-                /// TODO !!! end
         }
 
         if (data.getOwnerUser()!=null) {
@@ -302,7 +298,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                     }
                 });
 
-                // 消息的owner, 要根据性别设置样式
+                /*// 消息的owner, 要根据性别设置样式
                 if (data.getOwnerUser().getSex() == true)
                 {
                     // 男
@@ -315,7 +311,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                     holder.card_root_view
                             .setBackgroundColor(ContextCompat.getColor(mContext,
                                     R.color.normal_card_color_female));
-                }
+                }*/
             }
         }
 
