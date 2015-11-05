@@ -19,6 +19,7 @@ import java.util.List;
 
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
+import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.listener.FindListener;
 import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
@@ -81,11 +82,10 @@ public class SplashActivity extends BaseActivity {
             gotoLogin();
             return;
         }
-        BmobUserManager.getInstance(this).queryUser(currUser.getObjectId(),
-                new FindListener<User>() {
-
+        BmobUserManager.getInstance(this).queryUserById(currUser.getObjectId(),
+                new FindListener<BmobChatUser>() {
                     @Override
-                    public void onSuccess(List<User> list) {
+                    public void onSuccess(List<BmobChatUser> list) {
                         if (list.size() == 0) {
                             gotoLogin();
                             Toast.makeText(
@@ -107,6 +107,7 @@ public class SplashActivity extends BaseActivity {
                     }
                 }
         );
+
     }
 
     @Override
