@@ -109,78 +109,13 @@
 
             </LinearLayout>
 
-            <RelativeLayout
+            <include layout="@layout/content_card_msg_info"
+                android:id="@+id/_tmpI_ENFLS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="7dp"
-                android:layout_alignParentBottom="true"
-                android:id="@+id/_tmpL2">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="false"
-                    android:id="@+id/location_view">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:id="@+id/imageView4"
-                        android:src="@drawable/ic_place_grey600_48dp"
-                        android:layout_gravity="center_vertical" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="天津市"
-                        android:id="@+id/textView_location"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="80dp"
-                    android:id="@+id/group_comment">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:id="@+id/imageView5"
-                        android:src="@drawable/ic_textsms_grey600_48dp"
-                        android:layout_gravity="center_vertical" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12"
-                        android:id="@+id/textView_commentCount"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="19:00"
-                        android:id="@+id/textView_time"
-                        android:layout_gravity="center_vertical" />
-
-                </LinearLayout>
-
-
-
-            </RelativeLayout>
+                android:layout_gravity="bottom"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
 
