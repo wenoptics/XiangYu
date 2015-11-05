@@ -1,7 +1,5 @@
 package tk.wenop.XiangYu.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
@@ -11,16 +9,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.List;
+
 import cn.bmob.im.bean.BmobRecent;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
-
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.base.ViewHolder;
 import tk.wenop.XiangYu.util.FaceTextUtils;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
 import tk.wenop.XiangYu.util.TimeUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /** 会话适配器
   * @ClassName: MessageRecentAdapter
@@ -43,7 +44,7 @@ public class MessageRecentAdapter extends ArrayAdapter<BmobRecent> implements Fi
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
+
 		final BmobRecent item = mData.get(position);
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_conversation, parent, false);
@@ -56,13 +57,13 @@ public class MessageRecentAdapter extends ArrayAdapter<BmobRecent> implements Fi
 		
 		//填充数据
 		String avatar = item.getAvatar();
-		if(avatar!=null&& !avatar.equals("")){
+		if(avatar!=null && !avatar.equals("")){
 			ImageLoader.getInstance().displayImage(avatar, iv_recent_avatar, ImageLoadOptions.getOptions());
 		}else{
 			iv_recent_avatar.setImageResource(R.drawable.head);
 		}
 		
-		tv_recent_name.setText(item.getUserName());
+		tv_recent_name.setText(item.getNick());
 		tv_recent_time.setText(TimeUtil.getChatTime(item.getTime()));
 		//显示内容
 		if(item.getType()==BmobConfig.TYPE_TEXT){

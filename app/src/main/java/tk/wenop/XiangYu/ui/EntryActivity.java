@@ -63,7 +63,7 @@ public class EntryActivity extends AppCompatActivity {
         }
 
         // Update the shared preferences with the current version code
-        prefs.edit().putInt(PREF_VERSION_CODE_KEY, currentVersionCode).commit();
+        prefs.edit().putInt(PREF_VERSION_CODE_KEY, currentVersionCode).apply();
 
     }
 

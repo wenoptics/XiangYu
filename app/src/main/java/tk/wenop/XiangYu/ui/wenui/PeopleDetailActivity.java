@@ -54,7 +54,8 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
     TextView textView_profileText;
 
     User targetUser;
-    String targetId;
+
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,6 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
 
         // 组装聊天对象
         targetUser = (User) getIntent().getSerializableExtra("user");
-        targetId = targetUser.getObjectId();
 
         User currentUser = BmobUser.getCurrentUser(this, User.class);
         if (currentUser.getUsername().equals(targetUser.getUsername())) {
@@ -75,19 +75,12 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
         }
 
         // 显示出返回按钮
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-
-            // 在actionBar显示用户名
-            actionBar.setTitle(targetUser.getNick() + "的详细信息");
         }
 
-        sendMsgBtn.setOnClickListener(this);
-        addFriendBtn.setOnClickListener(this);
-        if (targetUser.getUserDesc() != null)
-            textView_profileText.setText(targetUser.getUserDesc());
-        // 获取用户信息
+        // wenop: 在 获取(联网)得到用户之前不要 读targetUser (除了 .getUsername)
         initOtherData(targetUser.getUsername());
 
     }
@@ -105,12 +98,23 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
     }
 
     private void updateUser(User user) {
-        // 更改
+
+        targetUser = user;
+
         refreshAvatar(user.getAvatar());
+
+        // 在actionBar显示用户名
+        actionBar.setTitle(targetUser.getNick() + "的详细信息");
+
+        sendMsgBtn.setOnClickListener(this);
+        addFriendBtn.setOnClickListener(this);
+
         try {
 
 //            tv_set_name.setText(user.getUsername());
             mNickName.setText(user.getNick());
+
+            textView_profileText.setText(targetUser.getUserDesc());
 
 //            tv_set_gender.setText(user.getSex() == true ? "男" : "女");
             int _gender_resource = user.getSex() == true ?
@@ -166,7 +170,7 @@ public class PeopleDetailActivity extends ActivityBase implements View.OnClickLi
         if (id == sendMsgBtn.getId()){
 
             Intent intent =  new Intent(this, ChatActivity.class);
-            intent.putExtra("user",targetUser);
+            intent.putExtra("user", targetUser);
             startActivity(intent);
 
         }else if (id == addFriendBtn.getId()){

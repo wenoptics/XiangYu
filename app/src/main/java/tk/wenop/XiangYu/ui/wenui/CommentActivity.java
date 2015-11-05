@@ -66,6 +66,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     View card_root_view;
     TextView mCommentCount;
     View audio_bubble;
+    TextView tv_audio_length;
 
     ImageLoader imageLoader;
     User currentUser;
@@ -101,7 +102,10 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
         // 显示出返回按钮
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         currentUser = BmobUser.getCurrentUser(this, User.class);
         userID = currentUser.getObjectId();
         context = this;
@@ -149,11 +153,26 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                 comment_content.setLayoutResource(R.layout.content_comment_both);
                 break;
             default:
-                //TODO !!! debug here, should be deleted later
-                comment_content.setLayoutResource(R.layout.content_comment_both);
-                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+
         }
         comment_content.inflate();
+    }
+
+    private void setViewPhoto(MessageEntity data) {
+        iv_contentPhoto = (ImageView) findViewById(R.id.imageView_contentPhoto);
+        imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
+    }
+
+    private void setViewAudio(MessageEntity data) {
+        audio_bubble = findViewById(R.id.audio_msg_bubble);
+        ImageView iv_audioPlayAni = (ImageView) findViewById(R.id.iv_audio_play_ani);
+        audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
+        audio_bubble.setOnClickListener(
+                new NewRecordPlayClickListener(context, audioPath, iv_audioPlayAni));
+        tv_audio_length = (TextView) findViewById(R.id.textView_audioLength);
+        tv_audio_length.setText(String.format(
+                        "%d\'\'", data.getAudioLength())
+        );
     }
 
     private void initView(){
@@ -167,29 +186,19 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         mCommentCount.setText(messageEntity.getCommentCount().toString());
 
         // 分消息类型来设置view
-        iv_contentPhoto = (ImageView) findViewById(R.id.imageView_contentPhoto);
-        audio_bubble = findViewById(R.id.audio_msg_bubble);
-        ImageView iv_audioPlayAni = (ImageView) findViewById(R.id.iv_audio_play_ani);
 
         switch (messageEntity.getMsgType()) {
             case MessageEntity.MSG_TYPE_ONLY_PHOTO:
-                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
+                setViewPhoto(messageEntity);
                 break;
             case MessageEntity.MSG_TYPE_ONLY_AUDIO:
-                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
-                audio_bubble.setOnClickListener(
-                    new NewRecordPlayClickListener(context, audioPath, iv_audioPlayAni));
+                setViewAudio(messageEntity);
                 break;
             case MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO:
-                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
-                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
-                audio_bubble.setOnClickListener(
-                        new NewRecordPlayClickListener(context, audioPath, iv_audioPlayAni));
+                setViewPhoto(messageEntity);
+                setViewAudio(messageEntity);
                 break;
             default:
-                //TODO !!! debug here, should be deleted later
-                imageLoader.displayImage("http://file.bmob.cn/" + messageEntity.getImage(), iv_contentPhoto);
-                audioPath = "http://file.bmob.cn/" + messageEntity.getAudio();
         }
 
         if (messageEntity.getOwnerUser() != null){

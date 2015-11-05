@@ -35,13 +35,13 @@
             android:layout_marginRight="@dimen/margin_chat_top"
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@id/iv_avatar"
-            android:background="@drawable/chat_right_qp"
+            android:background="@drawable/chat_right_qp_ovo"
             android:minWidth="80dp"
             android:minHeight="45dp"
             android:gravity="right"
             android:paddingBottom="5dp"
             android:paddingLeft="5dp"
-            android:paddingRight="24dp"
+            android:paddingRight="25dp"
             android:paddingTop="5dp" >
 
             <ImageView

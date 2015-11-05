@@ -47,18 +47,9 @@ public class OverallMessageListActivity extends ActivityBase implements AreaList
         SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         viewPagerTab.setViewPager(viewPager);
 
+//        viewPager.getCurrentItem()
 
-//
-//        @Override
-//        public boolean onOptionsItemSelected(MenuItem item) {
-//            int id = item.getItemId();
-//            // 如果是返回按钮，那就finish这个activity
-//            if (id==android.R.id.home) {
-//                finish();
-//            }
-//
-//            return true;
-//        }
+
 
 
     }

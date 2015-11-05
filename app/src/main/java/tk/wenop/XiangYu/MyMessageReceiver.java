@@ -183,7 +183,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
     /** 
      *  显示与聊天消息的通知
       */
-    public void showMsgNotify(Context context,BmobMsg msg) {
+    public static void showMsgNotify(Context context,BmobMsg msg) {
         // 更新通知栏
         int icon = R.drawable.ic_launcher;
         String trueMsg = "";

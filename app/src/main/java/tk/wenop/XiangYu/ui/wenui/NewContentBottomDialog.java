@@ -82,6 +82,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
 
 
     private String AUDIO_PATH = null;
+    private Integer AUDIO_LENGTH = 0;
     private String IMAGE_PATH = null;
     private User loginUser;
     //消息所属的位置
@@ -273,6 +274,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                 if (recordTime >= BmobRecordManager.MAX_RECORD_TIME) {// 1分钟结束，发送消息
 
                     AUDIO_PATH = localPath;
+                    AUDIO_LENGTH = recordTime;
                     // 发送语音消息
 //                    sendVoiceMessage(localPath, recordTime);
                     //是为了防止过了录音时间后，会多发一条语音出去的情况。
@@ -346,6 +348,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                             if (recordTime > 1) {
                                 //获得录音文件的路径
                                 AUDIO_PATH = recordManager.getRecordFilePath(userID);
+                                AUDIO_LENGTH = recordTime;
                                 BmobLog.i("voice", AUDIO_PATH);
                                 textTip.setText("已录音, 待发送");
 
@@ -408,6 +411,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         if (areaEntity!=null) messageEntity.setOwnerArea(areaEntity);
                         messageEntity.setMsgType(MessageEntity.MSG_TYPE_ONLY_AUDIO);
                         messageEntity.setAudio(list.get(0).getUrl());
+                        messageEntity.setAudioLength(AUDIO_LENGTH);
                         messageEntity.setOwnerUser(loginUser);
                         messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());
@@ -491,6 +495,7 @@ public class NewContentBottomDialog extends BottomBaseDialog<NewContentBottomDia
                         messageEntity.setMsgType(MessageEntity.MSG_TYPE_AUDIO_wITH_PHOTO);
                         messageEntity.setAudio(list.get(1).getUrl());
                         messageEntity.setImage(list.get(0).getUrl());
+                        messageEntity.setAudioLength(AUDIO_LENGTH);
                         messageEntity.setOwnerUser(loginUser);
                         messageEntity.setCommentCount(0);
                         messageEntity.setAnonymous(cb_isAnonymous.isChecked());

@@ -76,6 +76,8 @@ import tk.wenop.XiangYu.ui.fragment.ContactFragment;
 import tk.wenop.XiangYu.ui.fragment.RecentFragment;
 import tk.wenop.XiangYu.ui.fragment.SettingsFragment;
 
+import static tk.wenop.XiangYu.MyMessageReceiver.showMsgNotify;
+
 //import tk.wenop.XiangYu.R;
 //import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
 //import tk.wenop.XiangYu.adapter.custom.MainScreenOverviewItem;
@@ -606,7 +608,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     private SettingsFragment settingFragment;
     private Fragment[] fragments;
     private int index;
-    private int currentTabIndex;
+//    private int currentTabIndex;
 
 //    ImageView iv_recent_tips,iv_contact_tips;//消息提示
 
@@ -663,12 +665,16 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         if(message!=null){
             BmobChatManager.getInstance(SideActivity.this).saveReceiveMessage(true,message);
         }
-        if(currentTabIndex==0){
+
+        // wenop-add 如果是SideActivity接收到消息了，那就要在通知栏显示了
+        showMsgNotify(this, message);
+
+        /*if(currentTabIndex==0){
             //当前页面如果为会话页面，刷新此页面
             if(recentFragment != null){
                 recentFragment.refresh();
             }
-        }
+        }*/
     }
 
     NewBroadcastReceiver  newReceiver;
@@ -743,16 +749,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         }
         // todo wenop 未读消息红点
 //        iv_contact_tips.setVisibility(View.VISIBLE);
-        if(currentTabIndex==1){
-            if(contactFragment != null){
-                contactFragment.refresh();
-            }
-        }else{
-            //同时提醒通知
-            String tickerText = message.getFromname()+"请求添加好友";
-            boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
-            BmobNotifyManager.getInstance(this).showNotify(isAllow,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),NewFriendActivity.class);
-        }
+        //同时提醒通知
+        String tickerText = message.getFromname()+"请求添加好友";
+        boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
+        BmobNotifyManager.getInstance(this).showNotify(isAllow,isAllowVibrate,R.drawable.ic_launcher, tickerText, message.getFromname(), tickerText.toString(),NewFriendActivity.class);
+
     }
 
     @Override

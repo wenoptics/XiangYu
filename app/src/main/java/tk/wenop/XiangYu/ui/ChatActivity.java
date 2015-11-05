@@ -171,7 +171,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
     private void initView() {
         //mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
         mListView = (XListView) findViewById(R.id.mListView);
-        initTopBar_withBackButton("与" + targetUser.getUsername() + "对话");
+        initTopBar_withBackButton("与" + targetUser.getNick() + "对话");
         initBottomView();
         initXListView();
         initVoiceView();
@@ -787,7 +787,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
         // 注册接收消息广播
         receiver = new NewBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(BmobConfig.BROADCAST_NEW_MESSAGE);
-        //设置广播的优先级别大于Mainacitivity,这样如果消息来的时候正好在chat页面，直接显示消息，而不是提示消息未读
+        //设置广播的优先级别大于MainActivity (SideActivity),这样如果消息来的时候正好在chat页面，直接显示消息，而不是提示消息未读
         intentFilter.setPriority(5);
         registerReceiver(receiver, intentFilter);
     }
@@ -885,7 +885,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
                 BmobLog.i("记录总数：" + total);
                 int currents = mAdapter.getCount();
                 if (total <= currents) {
-                    ShowToast("聊天记录加载完了哦!");
+                    ShowToast("聊天记录加载完了哦");
                 } else {
                     List<BmobMsg> msgList = initMsgData();
                     mAdapter.setList(msgList);
