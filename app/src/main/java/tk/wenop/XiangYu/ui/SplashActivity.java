@@ -55,6 +55,8 @@ public class SplashActivity extends BaseActivity {
         //BmobIM SDK初始化--只需要这一段代码即可完成初始化
         //请到Bmob官网(http://www.bmob.cn/)申请ApplicationId,具体地址:http://docs.bmob.cn/android/faststart/index.html?menukey=fast_start&key=start_android
         BmobChat.getInstance(this).init(Config.applicationId);
+//        BmobSMS.initialize(this, Config.applicationId);
+
         // 开启定位
         initLocClient();
         // 注册地图 SDK 广播监听者

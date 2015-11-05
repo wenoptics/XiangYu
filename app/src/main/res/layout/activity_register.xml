@@ -75,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="发送验证码"
-                        android:id="@+id/btn_sendSMS"
+                        android:id="@+id/tv_send"
                         android:layout_gravity="bottom" />
                 </LinearLayout>
 
@@ -95,18 +95,30 @@
                     android:layout_margin="12dp" />
 
                 <com.wrapp.floatlabelededittext.FloatLabeledEditText
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     float:fletPaddingBottom="10dp"
-                    float:fletTextAppearance="@style/FloatLabeledEditText">
+                    float:fletTextAppearance="@style/FloatLabeledEditText"
+                    android:layout_weight="1">
 
                     <EditText
                         android:id="@+id/et_smsCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="短信验证码"
+                        android:hint="请输入你收到的验证码"
                         android:inputType="text" />
                 </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
+
+                <Button
+                    android:visibility="invisible"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="确认"
+                    android:id="@+id/tv_bind"
+                    android:layout_gravity="bottom" />
 
             </LinearLayout>
         </LinearLayout>
