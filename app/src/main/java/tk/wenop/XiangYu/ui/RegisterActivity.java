@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.bmob.im.bean.BmobChatUser;
@@ -31,6 +32,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
     Button btn_register,tv_send,tv_bind;
     EditText et_username, et_password, et_pswAgain, et_nickName,et_smsCode;
+    TextView tv_RegisterUserEmail;
     BmobChatUser currentUser;
 
     MyCountTimer timer;
@@ -47,6 +49,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         et_pswAgain = (EditText) findViewById(R.id.et_pswAgain);
         et_nickName = (EditText) findViewById(R.id.et_nickName);
         et_smsCode = (EditText) findViewById(R.id.et_smsCode);
+        tv_RegisterUserEmail = (TextView) findViewById(R.id.tv_RegisterUserEmail);
+
 
         tv_bind = (Button) findViewById(R.id.tv_bind);
         tv_send = (Button) findViewById(R.id.tv_send);
@@ -64,6 +68,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
         tv_send.setOnClickListener(this);
         tv_bind.setOnClickListener(this);
+        tv_RegisterUserEmail.setOnClickListener(this);
     }
     
     private void doRegister(){
@@ -156,6 +161,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.tv_bind:
                 verifyOrBind();
+                break;
+            case R.id.tv_RegisterUserEmail:
+                Intent intent = new Intent(RegisterActivity.this,EmailRegisterActivity.class);
+                startActivity(intent);
                 break;
         }
 
