@@ -129,12 +129,33 @@ public class AreaNetwork {
 
     public static void loadFollowAreas(final Context context, final OnGetFollowAreaEntities onGetAreaEntities,User user){
 
+
+//        BmobQuery<User> query = new BmobQuery<User>();
+//        query.addWhereEqualTo("username", user.getUsername());
+////        query.include("followAreas");
+//        query.findObjects(context, new FindListener<User>() {
+//            @Override
+//            public void onSuccess(List<User> list) {
+//
+//                Toast.makeText(context, "get data success", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onError(int i, String s) {
+//                Toast.makeText(context, "get data failure", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
+
         BmobQuery<AreaEntity> query = new BmobQuery<AreaEntity>();
+
+        user.getFollowAreas();
 
         User user1 = new User();
         user1.setObjectId(user.getObjectId());
 
-        query.addWhereRelatedTo("followingUsers", new BmobPointer(user));
+        query.addWhereRelatedTo("followAreas", new BmobPointer(user));
 
         query.findObjects(context, new FindListener<AreaEntity>() {
             @Override

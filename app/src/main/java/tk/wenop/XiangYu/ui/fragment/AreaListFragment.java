@@ -86,7 +86,6 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
          areaListAdapter = new AreaListAdapter(getActivity());
         //todo: 加载arealist
         User user = BmobUser.getCurrentUser(getActivity(), User.class);

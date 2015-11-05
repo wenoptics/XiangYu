@@ -81,6 +81,7 @@ public class AreaListAdapter extends BaseAdapter implements
         if(convertView == null){
             areaHolder = new AreaHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_area_list,parent,false);
+            areaHolder.area = (TextView) convertView.findViewById(R.id.area);
 
             convertView.setTag(areaHolder);
         }else {

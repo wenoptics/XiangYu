@@ -354,10 +354,11 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     public void  addFollowArea(AreaEntity areaEntity){
 
         BmobRelation relation = new BmobRelation();
-        relation.add(user);
+        relation.add(areaEntity);
 
-        areaEntity.setFollowingUsers(relation);
-        areaEntity.update(mContext, new UpdateListener() {
+        user.setFollowAreas(relation);
+//        user.setFollowingUsers(relation);
+        user.update(mContext, new UpdateListener() {
             @Override
             public void onSuccess() {
                 Toast.makeText(mContext, "关注成功", Toast.LENGTH_SHORT).show();
