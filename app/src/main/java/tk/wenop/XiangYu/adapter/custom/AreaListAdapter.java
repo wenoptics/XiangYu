@@ -1,6 +1,7 @@
 package tk.wenop.XiangYu.adapter.custom;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,29 +18,29 @@ import java.util.Locale;
 
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.AreaEntity;
+import tk.wenop.XiangYu.ui.wenui.SideActivity;
 
 public class AreaListAdapter extends BaseAdapter implements
         AdapterView.OnItemClickListener,
-        AdapterView.OnItemLongClickListener{
+        AdapterView.OnItemLongClickListener {
 
     private List<AreaEntity> allAreaEntity = new ArrayList<>();
     private List<AreaEntity> filter_AreaEntity = new ArrayList<>();
-//    DBManager dbManager = DBManager.getInstance();
+    //    DBManager dbManager = DBManager.getInstance();
     ImageLoader imageLoader;
     HttpUtils http = new HttpUtils();
 
 
-
-    public void putAreaEntity(List<AreaEntity> allMessage){
+    public void putAreaEntity(List<AreaEntity> allMessage) {
 
         if (allMessage == null) return;
         if (allMessage.size() < 0) return;
 
-        if (allMessage.size()<=allAreaEntity.size()) {
+        if (allMessage.size() <= allAreaEntity.size()) {
             filter_AreaEntity.addAll(allAreaEntity);
             notifyDataSetChanged();
             return;
-        }else if (allMessage.size() > allAreaEntity.size()){
+        } else if (allMessage.size() > allAreaEntity.size()) {
             allAreaEntity.clear();
             allAreaEntity.addAll(allMessage);
             filter_AreaEntity.clear();
@@ -51,7 +52,7 @@ public class AreaListAdapter extends BaseAdapter implements
 
     Context context;
 
-    public AreaListAdapter(Context context){
+    public AreaListAdapter(Context context) {
         this.context = context;
         imageLoader = ImageLoader.getInstance();
 
@@ -75,21 +76,32 @@ public class AreaListAdapter extends BaseAdapter implements
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        final AreaEntity  areaEntity = (AreaEntity)getItem(position);
+        final AreaEntity areaEntity = (AreaEntity) getItem(position);
         final AreaHolder areaHolder;
 
-        if(convertView == null){
+        if (convertView == null) {
             areaHolder = new AreaHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_area_list,parent,false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_area_list, parent, false);
             areaHolder.area = (TextView) convertView.findViewById(R.id.area);
 
             convertView.setTag(areaHolder);
-        }else {
+        } else {
             areaHolder = (AreaHolder) convertView.getTag();
         }
 
-        if (areaEntity.getArea()!=null)
-        areaHolder.area.setText(areaEntity.getArea());
+        if (areaEntity.getArea() != null)
+            areaHolder.area.setText(areaEntity.getArea());
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, SideActivity.class);
+                intent.putExtra("area", areaEntity.getArea());
+                context.startActivity(intent);
+
+            }
+        });
 
         return convertView;
     }
@@ -99,10 +111,9 @@ public class AreaListAdapter extends BaseAdapter implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-
     }
 
-    public void delete(final int pos){
+    public void delete(final int pos) {
 
 
     }
@@ -112,17 +123,16 @@ public class AreaListAdapter extends BaseAdapter implements
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-
         return false;
     }
 
-    public static class AreaHolder{
+    public static class AreaHolder {
 
-        public TextView  area;
+        public TextView area;
 
     }
 
-    public static class ClickHolder{
+    public static class ClickHolder {
         int position;
         TextView numberTextView;
     }
@@ -134,21 +144,19 @@ public class AreaListAdapter extends BaseAdapter implements
         filter_AreaEntity.clear();
         if (charText.length() == 0) {
             filter_AreaEntity.addAll(allAreaEntity);
-        }
-        else
-        {
+        } else {
         }
         putAreaEntity(filter_AreaEntity);
     }
 
 
-        View.OnClickListener buttonListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    View.OnClickListener buttonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
             ClickHolder clickHolder = (ClickHolder) v.getTag();
-             final int position =  clickHolder.position;
+            final int position = clickHolder.position;
 
-            }
-        };
-    }
+        }
+    };
+}
     

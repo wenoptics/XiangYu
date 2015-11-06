@@ -3,10 +3,12 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:gravity="center"
         android:id="@+id/area"
         android:layout_width="match_parent"
 
-        android:layout_height="30dp" />
+        android:layout_height="72dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="72dp"
+        android:textSize="24sp" />
 
 </LinearLayout>
