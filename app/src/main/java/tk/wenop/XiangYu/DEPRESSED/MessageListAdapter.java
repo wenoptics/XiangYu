@@ -1,4 +1,4 @@
-package tk.wenop.XiangYu.adapter.custom;
+package tk.wenop.XiangYu.DEPRESSED;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +21,6 @@ import java.util.Locale;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.bean.MessageEntity;
-import tk.wenop.XiangYu.ui.activity.CommentCreateEditActivity;
 
 public class MessageListAdapter extends BaseAdapter implements
         AdapterView.OnItemClickListener,

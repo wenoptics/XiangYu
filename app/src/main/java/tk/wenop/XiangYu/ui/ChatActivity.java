@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -82,6 +83,8 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
             btn_speak;
             //btn_chat_voice
             //
+
+    private ImageButton btn_add_photo;
 
     XListView mListView;
 
@@ -352,6 +355,13 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
         // we don't need 匿名按钮 in 私聊
         ToggleButton _toggleAnonymous = (ToggleButton) findViewById(R.id.toggleButton_isAnonymous);
         _toggleAnonymous.setVisibility(View.GONE);
+
+        // we don't need Cancel-At 按钮 in 私聊
+        ImageButton btn_no_at = (ImageButton) findViewById(R.id.btn_cancel_at);
+        btn_no_at.setVisibility(View.GONE);
+
+        btn_add_photo = (ImageButton) findViewById(R.id.btn_picture);
+        // TODO wenop, btn_add_photo
 
         btn_chat_send = (Button) findViewById(R.id.btn_chat_send);
         btn_chat_send.setOnClickListener(this);

@@ -4,7 +4,9 @@ import cn.bmob.v3.BmobObject;
 
     public class CommentEntity extends BmobObject {
         private String comment;
+        private Integer audioLength;
         private User toUser;
+        private Boolean isToUserAnonymous;
         private User ownerUser;
         private MessageEntity ownerMessage;
         private Boolean anonymous;
@@ -42,6 +44,23 @@ import cn.bmob.v3.BmobObject;
 
         public void setAnonymous(Boolean anonymous) {
             this.anonymous = anonymous;
+        }
+
+
+        public Boolean getIsToUserAnonymous() {
+            return isToUserAnonymous;
+        }
+
+        public void setIsToUserAnonymous(Boolean isToUserAnonymous) {
+            this.isToUserAnonymous = isToUserAnonymous;
+        }
+
+        public Integer getAudioLength() {
+            return audioLength;
+        }
+
+        public void setAudioLength(Integer audioLength) {
+            this.audioLength = audioLength;
         }
 
     }

@@ -8,16 +8,17 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -42,11 +43,13 @@ import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.CommentNetwork;
+import tk.wenop.XiangYu.ui.ActivityBase;
 import tk.wenop.XiangYu.util.CommonUtils;
 import tk.wenop.XiangYu.util.WrappingRecyclerViewLayoutManager;
 
 
-public class CommentActivity extends AppCompatActivity implements CommentNetwork.OnGetCommentEntities {
+public class CommentActivity extends ActivityBase
+        implements CommentNetwork.OnGetCommentEntities, CommentAdapter.AtUserCallback {
 
     private CommentAdapter commentAdapter;
     private RecyclerView mRecyclerView;
@@ -73,7 +76,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     String userID;
     Context context;
 
-    // 语音有关
+    // 语音有关(这里可以Inject, 因为这里不是动态inflate的)
     @ViewInject(R.id.btn_speak)
     Button btn_speak;
     @ViewInject(R.id.layout_record)
@@ -84,6 +87,18 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     ImageView iv_record;
     @ViewInject(R.id.comment_content)
     ViewStub comment_content;
+    @ViewInject(R.id.toggleButton_isAnonymous)
+    ToggleButton tgBtn_isAnonymous;
+    @ViewInject(R.id.btn_picture)
+    ImageButton ib_photo;
+    @ViewInject(R.id.btn_cancel_at)
+    ImageButton ib_cancel_at;
+
+    // 评论要at的用户
+    private User readyAtUser = null;
+    private Boolean isReadyAtUserAnonymous;
+
+    private String TEXT_ON_SPEAK_BTN;
 
     String audioPath;
 
@@ -111,6 +126,9 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         context = this;
 
         imageLoader = ImageLoader.getInstance();
+
+        // wenop: no allow "add photo btn" display
+        ib_photo.setVisibility(View.GONE);
 
         inflateCommentLayout();
         initView();
@@ -184,6 +202,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         mCommentCount = (TextView) findViewById(R.id.tv_comment_count);
 
         mCommentCount.setText(messageEntity.getCommentCount().toString());
+
 
         // 分消息类型来设置view
 
@@ -268,6 +287,21 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     }
     private void initVoiceView() {
 
+        TEXT_ON_SPEAK_BTN = getResources().getString(R.string.longclick_speak);
+        ib_cancel_at.setVisibility(View.GONE);
+
+        readyAtUser = null;
+        ib_cancel_at.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 还原说话按钮文字显示
+                btn_speak.setText(TEXT_ON_SPEAK_BTN);
+                readyAtUser = null;
+                ib_cancel_at.setVisibility(View.GONE);
+            }
+        });
+
+
         layout_record = (RelativeLayout) findViewById(R.id.layout_record);
         tv_voice_tips = (TextView) findViewById(R.id.tv_voice_tips);
         iv_record = (ImageView) findViewById(R.id.iv_record);
@@ -277,6 +311,18 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         initRecordManager();
     }
 
+    @Override
+    public void onAtUserCallback(User toUser, Boolean isUserAnonymous) {
+        // wenop-add 设置要at的用户
+        readyAtUser = toUser;
+        isReadyAtUserAnonymous = isUserAnonymous;
+        if(isUserAnonymous) {
+            btn_speak.setText(String.format("对%s %s", "[已匿名]", TEXT_ON_SPEAK_BTN));
+        } else {
+            btn_speak.setText(String.format("对%s %s", toUser.getNick(), TEXT_ON_SPEAK_BTN));
+        }
+        ib_cancel_at.setVisibility(View.VISIBLE);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -372,7 +418,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (!CommonUtils.checkSdCard()) {
-//                        ShowToast("发送语音需要sdcard支持！");
+                        ShowToast("发送语音需要sdcard支持！");
                         return false;
                     }
                     try {
@@ -410,7 +456,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                             if (recordTime > 1) {
                                 // 发送语音文件
                                 BmobLog.i("voice", "发送语音");
-                                saveAudioFile(recordManager.getRecordFilePath(userID));
+                                saveAudioFile(recordManager.getRecordFilePath(userID), recordTime);
 
                             } else {// 录音时间过短，则提示录音过短的提示
                                 layout_record.setVisibility(View.GONE);
@@ -427,13 +473,9 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         }
     }
 
+    public void saveAudioFile(String getVoicePath, final Integer recordLength){
 
-
-    public void saveAudioFile(String getVoicePath){
-
-
-
-        String[] files = new String[]{getVoicePath};
+        final String[] files = new String[]{getVoicePath};
 
         Bmob.uploadBatch(context, files, new cn.bmob.v3.listener.UploadBatchListener() {
             @Override
@@ -442,8 +484,12 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
                 if (list.size() > 0) {
                     CommentEntity commentEntity = new CommentEntity();
                     commentEntity.setComment(list.get(0).getUrl());
+                    commentEntity.setAudioLength(recordLength);
                     commentEntity.setOwnerMessage(messageEntity);
                     commentEntity.setOwnerUser(currentUser);
+                    commentEntity.setToUser(readyAtUser);
+                    commentEntity.setIsToUserAnonymous(isReadyAtUserAnonymous);
+                    commentEntity.setAnonymous(tgBtn_isAnonymous.isChecked());
                     commentEntity.save(context, new SaveListener() {
                         @Override
                         public void onSuccess() {
@@ -470,8 +516,10 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
             @Override
             public void onError(int i, String s) {
-
+                BmobLog.i(s);
+                ShowToast("发送评论失败");
             }
+
         });
 
     }
