@@ -480,6 +480,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         final CommentEntity commentEntity = new CommentEntity();
         //如果是评论某个消息
 //        if (nowCommentEntity == null){
@@ -537,6 +538,11 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
     }
 =======
+>>>>>>> parent of abbeebb... 短信验证
+=======
+
+
+
 >>>>>>> parent of abbeebb... 短信验证
 
 

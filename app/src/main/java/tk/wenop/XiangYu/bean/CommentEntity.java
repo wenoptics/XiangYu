@@ -8,9 +8,12 @@ import cn.bmob.v3.BmobObject;
         private User ownerUser;
         //對消息的評論
         private MessageEntity ownerMessage;
+<<<<<<< HEAD
         //对评论的评论
         private CommentEntity owerComment;
 
+=======
+>>>>>>> parent of abbeebb... 短信验证
         private Boolean anonymous;
 
         public String getComment() {
@@ -49,6 +52,7 @@ import cn.bmob.v3.BmobObject;
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public List<CommentEntity> getMyComments() {
             return myComments;
         }
@@ -64,6 +68,8 @@ import cn.bmob.v3.BmobObject;
         public void setOwerComment(CommentEntity owerComment) {
             this.owerComment = owerComment;
         }
+=======
+>>>>>>> parent of abbeebb... 短信验证
 =======
 >>>>>>> parent of abbeebb... 短信验证
     }

@@ -161,6 +161,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         // TODO 长按头像可以at人     holder.mAvatar.setOnLongClickListener(null);
         holder.mAvatar.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -181,6 +182,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
 
+=======
+    }
+
+>>>>>>> parent of abbeebb... 短信验证
 =======
     }
 
