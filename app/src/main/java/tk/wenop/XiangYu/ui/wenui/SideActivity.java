@@ -147,6 +147,15 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         setContentView(R.layout.activity_side);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+
+
+        Intent intent = getIntent();
+        String area = intent.getStringExtra("area");
+        if (area!=null)
+        if (!area.isEmpty()){
+            AreaNetwork.loadArea(this, this, area);
+        }
+
         ///
         //开启定时检测服务（单位为秒）-在这里检测后台是否还有未读的消息，有的话就取出来
         //如果你觉得检测服务比较耗流量和电量，你也可以去掉这句话-同时还有onDestory方法里面的stopPollService方法
@@ -158,8 +167,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         CustomApplcation customApplcation = CustomApplcation.getInstance();
         if (customApplcation.getLoginAreaEntity()!=null){
 
-            String area = customApplcation.getLoginAreaEntity().getArea();
-            if ((area != null)&&(!area.equals(""))){
+            String area1 = customApplcation.getLoginAreaEntity().getArea();
+            if ((area1 != null)&&(!area1.equals(""))){
                 toolbar.setTitle(area);
             }else {
                 toolbar.setTitle("未知地点");
@@ -217,7 +226,6 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                             dialog.showAnim(bas_in)
                             .show();
                 }
-
             }
         });
 

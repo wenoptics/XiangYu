@@ -1,6 +1,7 @@
 package tk.wenop.XiangYu.adapter.custom;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.Locale;
 
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.AreaEntity;
+import tk.wenop.XiangYu.ui.wenui.SideActivity;
 
 public class AreaListAdapter extends BaseAdapter implements
         AdapterView.OnItemClickListener,
@@ -90,6 +92,17 @@ public class AreaListAdapter extends BaseAdapter implements
 
         if (areaEntity.getArea()!=null)
         areaHolder.area.setText(areaEntity.getArea());
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, SideActivity.class);
+                intent.putExtra("area",areaEntity.getArea());
+                context.startActivity(intent);
+
+            }
+        });
 
         return convertView;
     }
