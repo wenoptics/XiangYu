@@ -20,6 +20,7 @@ import java.util.List;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
+import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.FindListener;
 import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
@@ -89,12 +90,14 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void onSuccess(List<BmobChatUser> list) {
                         if (list.size() == 0) {
-                            gotoLogin();
+
                             Toast.makeText(
                                     SplashActivity.this,
                                     "登录失效，请您重新登陆",
                                     Toast.LENGTH_SHORT
                             ).show();
+
+                            gotoLogin();
 
                         } else {
                             // 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
@@ -166,7 +169,8 @@ public class SplashActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             String s = intent.getAction();
             if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR)) {
-                ShowToast("key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置");
+//                ShowToast("key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置");
+                BmobLog.e("BaiduReceiver", "key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置");
             } else if (s
                     .equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
                 ShowToast("当前网络连接不稳定，请检查您的网络设置!");

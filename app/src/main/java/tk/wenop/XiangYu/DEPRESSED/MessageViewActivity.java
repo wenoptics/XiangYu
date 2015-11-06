@@ -1,4 +1,4 @@
-package tk.wenop.XiangYu.ui.activity;
+package tk.wenop.XiangYu.DEPRESSED;
 
 import android.app.Activity;
 import android.content.Context;

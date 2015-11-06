@@ -1,4 +1,4 @@
-package tk.wenop.XiangYu.ui.activity;
+package tk.wenop.XiangYu.DEPRESSED;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -26,7 +26,6 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
-import tk.wenop.XiangYu.adapter.custom.CommentListAdapter;
 import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;

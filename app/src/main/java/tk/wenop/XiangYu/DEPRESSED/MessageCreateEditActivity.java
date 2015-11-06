@@ -1,4 +1,4 @@
-package tk.wenop.XiangYu.ui.activity;
+package tk.wenop.XiangYu.DEPRESSED;
 
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +40,7 @@ import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.config.BmobConstants;
 import tk.wenop.XiangYu.network.MessageNetwork;
 import tk.wenop.XiangYu.ui.ActivityBase;
+import tk.wenop.XiangYu.ui.activity.OnGetImageFromResoult;
 import tk.wenop.XiangYu.ui.wenui.NewContentBottomDialog;
 import tk.wenop.XiangYu.util.CommonUtils;
 

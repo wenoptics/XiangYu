@@ -1,4 +1,4 @@
-package tk.wenop.XiangYu.ui.activity;
+package tk.wenop.XiangYu.DEPRESSED;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,6 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import de.greenrobot.event.EventBus;
 import tk.wenop.XiangYu.R;
-import tk.wenop.XiangYu.adapter.custom.MessageListAdapter;
 import tk.wenop.XiangYu.event.ConstantEvent;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.ui.dialog.SelectAddressDialog;
