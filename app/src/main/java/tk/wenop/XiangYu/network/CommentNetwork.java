@@ -30,8 +30,22 @@ public class CommentNetwork {
     public static void loadComment(final Context context, final OnGetCommentEntities onGetCommentEntities,MessageEntity messageEntity){
 
         BmobQuery<CommentEntity> query = new BmobQuery<>();
-        query.include("ownerUser");
-        query.addWhereEqualTo("ownerMessage",messageEntity);
+        query.include("ownerUser,owerComment.ownerUser");
+        query.addWhereEqualTo("ownerMessage", messageEntity);
+
+//        BmobQuery<CommentEntity> query2 = new BmobQuery<>();
+//        query2.addWhereEqualTo("owerComment.ownerMessage", messageEntity);
+//
+//        List<BmobQuery<CommentEntity>> queries = new ArrayList<BmobQuery<CommentEntity>>();
+//        queries.add(query);
+//        queries.add(query2);
+
+//
+//
+//        BmobQuery<CommentEntity> mainQuery = new BmobQuery<CommentEntity>();
+//        mainQuery.or(queries);
+//        mainQuery.include("ownerUser,owerComment.ownerUser,ownerMessage");
+
         query.findObjects(context,new FindListener<CommentEntity>(){
             @Override
             public void onSuccess(List<CommentEntity> commentEntities) {

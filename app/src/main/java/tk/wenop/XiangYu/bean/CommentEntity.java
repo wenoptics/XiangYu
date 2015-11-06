@@ -8,7 +8,11 @@ import cn.bmob.v3.BmobObject;
         private String comment;
         private User toUser;
         private User ownerUser;
+        //對消息的評論
         private MessageEntity ownerMessage;
+        //对评论的评论
+        private CommentEntity owerComment;
+
         private Boolean anonymous;
 
         private List<CommentEntity> myComments;
@@ -59,4 +63,11 @@ import cn.bmob.v3.BmobObject;
             this.myComments = myComments;
         }
 
+        public CommentEntity getOwerComment() {
+            return owerComment;
+        }
+
+        public void setOwerComment(CommentEntity owerComment) {
+            this.owerComment = owerComment;
+        }
     }

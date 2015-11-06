@@ -484,9 +484,9 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
         final CommentEntity commentEntity = new CommentEntity();
         //如果是评论某个消息
-        if (nowCommentEntity == null){
+//        if (nowCommentEntity == null){
             commentEntity.setOwnerMessage(messageEntity);
-        }
+//        }
 
         commentEntity.setComment(url);
 
@@ -495,18 +495,24 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
             @Override
             public void onSuccess() {
 
+                //设置评论的对象（其他评论)
                 if (nowCommentEntity!=null){
-                    nowCommentEntity.add("myComments", commentEntity);
-                    updateComment(nowCommentEntity);
+//                    nowCommentEntity.add("myComments", commentEntity);todo:使用数组只能保存字符串吗？
+
+                    commentEntity.setOwerComment(nowCommentEntity);
+                    nowCommentEntity = null;
+//                    nowCommentEntity.setOwerComment(commentEntity);
+//                    updateComment(nowCommentEntity);
                     return;
                 }
                 messageEntity.increment("commentCount");
                 messageEntity.update(context);
+
             }
 
             @Override
             public void onFailure(int i, String s) {
-
+                nowCommentEntity = null;
             }
         });
 

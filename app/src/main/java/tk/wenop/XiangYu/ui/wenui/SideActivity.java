@@ -715,6 +715,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         registerReceiver(userReceiver, intentFilter);
     }
 
+
     /**
      * 标签消息广播接收者
      */

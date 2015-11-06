@@ -3,7 +3,9 @@ package tk.wenop.XiangYu.adapter.custom;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -47,6 +49,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         public View mView;
 
         public TextView  mNickName;
+        public TextView textView_callUser;
+
         public TextView  mAudioTimeSec;
         public ImageView mAvatar;
         public TextView  mTime;
@@ -59,9 +63,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             mView = v;
 
             mNickName      = (TextView)  v.findViewById(R.id.tv_nickName);
+            textView_callUser = (TextView) v.findViewById(R.id.textView_callUser);
             mAudioTimeSec  = (TextView)  v.findViewById(R.id.textView_audioLength     );
             mAvatar        = (ImageView) v.findViewById(R.id.iv_comment_comment_item_avatar         );
             mTime          = (TextView)  v.findViewById(R.id.textView_time            );
+
+
+
 
             //按气泡播放语音
             audio_msg_bubble = (RelativeLayout) v.findViewById(R.id.audio_msg_bubble_item_in_comment);
@@ -135,7 +143,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         User user = data.getOwnerUser();
         if (user!=null) {
             refreshAvatar(data.getOwnerUser().getAvatar(), holder.mAvatar);
+            holder.mNickName.setText(user.getUsername());
         }
+        if (data.getOwerComment()!=null){
+            holder.textView_callUser.setText("@"+data.getOwerComment().getOwnerUser().getUsername());
+        }
+
 
         holder.mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +168,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public boolean onLongClick(View v) {
                 onAtSomeOne.onAtSomeOne(data);
+
                 return false;
             }
         });
@@ -163,6 +177,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public interface OnAtSomeOne{
 
         public void onAtSomeOne(CommentEntity commentEntity);
+
 
     }
 
@@ -183,4 +198,62 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public int getItemCount() {
         return mDataset.size();
     }
+
+
+
+
+
+    //todo: 识别用户点击头像的动作,思路如下
+    /*
+            1:区别开用户单击时间而不影响计算录音的计时;(首次点击事计时开始，但是还不妨碍时间短时的单击时间触发跳转到用户详情页面)
+            2:通过接口将adapter avatar 获取的点击时间传递到activity,处理
+     */
+
+    class VoiceTouchListen implements View.OnTouchListener {
+
+        public VoiceTouchListen(){}
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+
+
+                case MotionEvent.ACTION_DOWN:
+
+                    return true;
+                case MotionEvent.ACTION_MOVE: {
+
+                    return true;
+                }
+                case MotionEvent.ACTION_UP:
+
+                default:
+                    return false;
+            }
+        }
+    }
+
+
+
+    class MyGestureListener extends GestureDetector.SimpleOnGestureListener{
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
