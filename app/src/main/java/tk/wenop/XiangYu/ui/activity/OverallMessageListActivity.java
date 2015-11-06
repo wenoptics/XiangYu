@@ -12,6 +12,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.ui.ActivityBase;
 import tk.wenop.XiangYu.ui.fragment.AreaListFragment;
+import tk.wenop.XiangYu.ui.fragment.CommentListFragment;
 import tk.wenop.XiangYu.ui.fragment.ContactFragment;
 import tk.wenop.XiangYu.ui.fragment.RecentFragment;
 
@@ -21,7 +22,8 @@ import tk.wenop.XiangYu.ui.fragment.RecentFragment;
  * tab
  *
  */
-public class OverallMessageListActivity extends ActivityBase implements AreaListFragment.OnFragmentInteractionListener {
+public class OverallMessageListActivity extends ActivityBase implements AreaListFragment.OnFragmentInteractionListener
+        ,CommentListFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +37,14 @@ public class OverallMessageListActivity extends ActivityBase implements AreaList
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("评论", AreaListFragment.class)
+                .add("评论", CommentListFragment.class)
                 .add("私信", RecentFragment.class)
                 .add("好友", ContactFragment.class)
                 .add("关注", AreaListFragment.class)
                 .create());
+
+
+        String str = getIntent().getStringExtra("message");
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
@@ -48,9 +53,6 @@ public class OverallMessageListActivity extends ActivityBase implements AreaList
         viewPagerTab.setViewPager(viewPager);
 
 //        viewPager.getCurrentItem()
-
-
-
 
     }
 

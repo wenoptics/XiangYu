@@ -2,6 +2,8 @@ package tk.wenop.XiangYu.manager;
 
 import android.content.Context;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,12 @@ public class DBManager implements MessageNetwork.OnGetMessageEntities {
         }
 
     }
+
+    //recent Comment
+    private static List<JSONObject> allRecentComment = new ArrayList<>();
+
+
+
 
     private static List<MessageEntity> allMessageEntities = new ArrayList<>();
 //    private static HashMap<String,List<CommentEntity>> messageId2CommentListMap = new HashMap<>();
@@ -97,7 +105,6 @@ public class DBManager implements MessageNetwork.OnGetMessageEntities {
 
         }
 
-
     }
 
     /*
@@ -113,13 +120,22 @@ public class DBManager implements MessageNetwork.OnGetMessageEntities {
         }
         else
         {
-            CommentNetwork.loadComment(mContext,onGetCommentEntities,messageEntity);
+            CommentNetwork.loadComment(mContext, onGetCommentEntities, messageEntity);
 //            .instance(mContext).getComments(messageEntity,onGetCommentEntities);
         }
 
     }
 
 
+    /*
 
+     */
+    public void addRecentComment(JSONObject jsonObject){
+        allRecentComment.add(jsonObject);
 
+    }
+
+    public static List<JSONObject> getAllRecentComment() {
+        return allRecentComment;
+    }
 }
