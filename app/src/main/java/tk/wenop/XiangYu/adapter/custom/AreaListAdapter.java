@@ -135,6 +135,7 @@ public class AreaListAdapter extends BaseAdapter implements
 
     }
 
+
     public static class ClickHolder{
         int position;
         TextView numberTextView;

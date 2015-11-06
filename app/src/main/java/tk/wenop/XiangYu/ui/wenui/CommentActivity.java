@@ -27,12 +27,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobRecordManager;
 import cn.bmob.im.inteface.OnRecordChangeListener;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
@@ -41,6 +43,7 @@ import tk.wenop.XiangYu.adapter.custom.MainScreenOverviewItem;
 import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
+import tk.wenop.XiangYu.config.Config;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.CommentNetwork;
 import tk.wenop.XiangYu.ui.ActivityBase;
@@ -495,6 +498,8 @@ public class CommentActivity extends ActivityBase
                         public void onSuccess() {
                             messageEntity.increment("commentCount");
                             messageEntity.update(context);
+                            //推送被评论用户
+                            notifyToUser();
                         }
 
                         @Override
@@ -521,6 +526,31 @@ public class CommentActivity extends ActivityBase
             }
 
         });
+
+    }
+
+    /*
+        推送被评论用户
+     */
+    public void notifyToUser(){
+        BmobChatManager.getInstance(this).sendTagMessage(
+                Config.TAG_NOTIFY_COMMENT,
+                readyAtUser.getObjectId(),
+                new PushListener() {
+                    @Override
+                    public void onSuccess() {
+                        // TODO Auto-generated method stub
+                        ShowToast("发送请求成功，等待对方验证!");
+                    }
+
+                    @Override
+                    public void onFailure(int arg0, final String arg1) {
+                        // TODO Auto-generated method stub
+
+                        ShowToast("发送请求失败，请重新添加!");
+                        ShowLog("发送请求失败:"+arg1);
+                    }
+                });
 
     }
 
