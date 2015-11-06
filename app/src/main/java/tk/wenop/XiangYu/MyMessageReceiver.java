@@ -24,6 +24,7 @@ import cn.bmob.im.inteface.OnReceiveListener;
 import cn.bmob.im.util.BmobJsonUtil;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.FindListener;
+import tk.wenop.XiangYu.config.Config;
 import tk.wenop.XiangYu.ui.NewFriendActivity;
 import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
 import tk.wenop.XiangYu.util.CollectionUtils;
@@ -123,6 +124,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
                                             for (EventListener handler : ehList)
                                                 handler.onAddUser(message);
                                         } else {
+
                                             showOtherNotify(context, message.getFromname(), toId, message.getFromname() + "请求添加好友", NewFriendActivity.class);
                                         }
                                     }
@@ -164,6 +166,10 @@ public class MyMessageReceiver extends BroadcastReceiver {
                                         }
                                     }
                                 }
+                            case Config.TAG_NOTIFY_COMMENT://评论自己的消息推送
+                                    //todo:现在有json数据 怎么把消息分发下去
+
+
                                 break;
                         }
                     }
