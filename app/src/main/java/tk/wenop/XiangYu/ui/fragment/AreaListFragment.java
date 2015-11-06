@@ -42,20 +42,17 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
     private OnFragmentInteractionListener mListener;
 
 
-
     @ViewInject(R.id.list)
     ListView listView;
 
     AreaListAdapter areaListAdapter;
 
 
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param
-     * param1 Parameter 1.
+     * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment AreaListFragment.
      */
@@ -86,7 +83,7 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-         areaListAdapter = new AreaListAdapter(getActivity());
+        areaListAdapter = new AreaListAdapter(getActivity());
         //todo: 加载arealist
         User user = BmobUser.getCurrentUser(getActivity(), User.class);
         AreaNetwork.loadFollowAreas(getActivity(), this, user);
@@ -100,7 +97,6 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
     public void onGetFollowAreaEntities(List<AreaEntity> areaEntities) {
         areaListAdapter.putAreaEntity(areaEntities);
     }
-
 
 
     @Override
@@ -140,7 +136,6 @@ public class AreaListFragment extends Fragment implements AreaNetwork.OnGetFollo
         super.onDetach();
         mListener = null;
     }
-
 
 
     /**

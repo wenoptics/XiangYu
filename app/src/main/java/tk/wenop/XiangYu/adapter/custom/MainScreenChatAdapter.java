@@ -250,7 +250,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
             default:
         }
 
-        if (data.getOwnerUser()!=null) {
+        if (data.getOwnerUser()!=null) { if (data.getOwnerUser().getObjectId()!=null) {
 
             if (data.getAnonymous() == true) {
                 // 匿名消息
@@ -321,7 +321,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                                     R.color.normal_card_color_female));
                 }*/
             }
-        }
+        } }
 
         //评论按钮
         holder.mView.findViewById(R.id.group_comment)

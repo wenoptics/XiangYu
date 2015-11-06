@@ -13,19 +13,20 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.EmailVerifyListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.config.BmobConstants;
+import tk.wenop.XiangYu.ui.wenui.PostRegisterActivity;
 import tk.wenop.XiangYu.util.CommonUtils;
 
 /**
  * Created by zysd on 15/11/6.
  */
 public class EmailRegisterActivity extends BaseActivity implements View.OnClickListener {
-
-
 
     @ViewInject(R.id.et_email)
     EditText et_email;
@@ -37,11 +38,14 @@ public class EmailRegisterActivity extends BaseActivity implements View.OnClickL
     EditText et_pswAgain;
     @ViewInject(R.id.btn_register)
     Button btn_register;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_email);
         ViewUtils.inject(this);
+
+        initTopBar_withBackButton("欢迎加入乡语!");
 
         init();
     }
@@ -60,7 +64,7 @@ public class EmailRegisterActivity extends BaseActivity implements View.OnClickL
     }
 
     private void doRegister(){
-//        String userName = et_username.getText().toString();
+        final String userEmail = et_email.getText().toString();
         String password = et_password.getText().toString();
         String pwd_again = et_pswAgain.getText().toString();
         String nickName = et_nickName.getText().toString();
@@ -71,9 +75,8 @@ public class EmailRegisterActivity extends BaseActivity implements View.OnClickL
             return;
         }
 
-        if (TextUtils.isEmpty(nickName)) {
-//            ShowToast(R.string.toast_error_username_null);
-            ShowToast("手机号不能为空哦");
+        if (TextUtils.isEmpty(userEmail)) {
+            ShowToast("请您输入邮箱哦");
             return;
         }
 
@@ -97,7 +100,7 @@ public class EmailRegisterActivity extends BaseActivity implements View.OnClickL
         //由于每个应用的注册所需的资料都不一样，故IM sdk未提供注册方法，用户可按照bmod SDK的注册方式进行注册。
         //注册的时候需要注意两点：1、User表中绑定设备id和type，2、设备表中绑定username字段
         final User bu = new User();
-        bu.setUsername(nickName);
+        bu.setUsername(userEmail);
         bu.setPassword(password);
         //将user和设备id进行绑定aa
         bu.setSex(true);
@@ -110,7 +113,7 @@ public class EmailRegisterActivity extends BaseActivity implements View.OnClickL
             public void onSuccess() {
 
                 progress.dismiss();
-                ShowToast("注册成功");
+                BmobLog.i("创建账号成功");
                 // 将设备与username进行绑定
                 userManager.bindInstallationForRegister(bu.getUsername());
                 //更新地理位置信息
@@ -118,15 +121,7 @@ public class EmailRegisterActivity extends BaseActivity implements View.OnClickL
                 //发广播通知登陆页面退出
                 sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
 
-                verifyOrBindEmail();
-                // 启动主页
-//				Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-//                Intent intent = new Intent(RegisterActivity.this, SideActivity.class);
-                //todo:
-//                Intent intent = new Intent(RegisterActivity.this, PostRegisterActivity.class);
-//                startActivity(intent);
-//                finish();
-
+                bindEmail(userEmail, bu);
             }
 
             @Override
@@ -139,49 +134,49 @@ public class EmailRegisterActivity extends BaseActivity implements View.OnClickL
         });
     }
 
-    public void verifyOrBindEmail(){
+    public void bindEmail(final String email, User user) {
 
-
-        final String email = et_email.getText().toString();
-        if (email.isEmpty() || email == null){
-            ShowToast("请输入邮箱");
-        }
-
-        User user = User.getCurrentUser(this, User.class);
         user.setEmail(email);
         user.update(this, new UpdateListener() {
             @Override
             public void onSuccess() {
-                ShowToast("发送邮箱验证");
+                // 发送邮箱验证
+                /// 不需要了 因为会自动发送
+//                sendEmailVerify(email);
+
+                ShowToast("注册成功!\n已发送验证邮件到您的邮箱" + email + ",请您查收~");
+
+                Intent intent = new Intent(EmailRegisterActivity.this, PostRegisterActivity.class);
+                startActivity(intent);
+                finish();
+
             }
 
             @Override
             public void onFailure(int i, String s) {
 
-                ShowToast("发送邮箱验证失败");
             }
         });
 
+    }
 
+    private void sendEmailVerify(final String email) {
+        BmobUser.requestEmailVerify(this, email, new EmailVerifyListener() {
+            @Override
+            public void onSuccess() {
+                ShowToast("注册成功!\n已发送验证邮件到您的邮箱" + email + ",请您查收~");
 
-//        BmobUser.requestEmailVerify(this, email, new EmailVerifyListener() {
-//            @Override
-//            public void onSuccess() {
-//                // TODO Auto-generated method stub
-//                ShowToast("请求验证邮件成功，请到" + email + "邮箱中进行激活。");
-//
-//                Intent intent = new Intent(EmailRegisterActivity.this, PostRegisterActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//
-//            @Override
-//            public void onFailure(int code, String e) {
-//                // TODO Auto-generated method stub
-//                ShowToast("请求验证邮件失败:" + e);
-//            }
-//        });
+                Intent intent = new Intent(EmailRegisterActivity.this, PostRegisterActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
+            @Override
+            public void onFailure(int code, String e) {
+                BmobLog.i("请求验证邮件失败:" + e);
+                ShowToast("注册成功, 但验证邮箱失败");
+            }
+        });
     }
 
 
