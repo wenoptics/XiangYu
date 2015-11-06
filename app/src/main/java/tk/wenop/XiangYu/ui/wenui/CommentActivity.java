@@ -32,6 +32,7 @@ import java.util.List;
 
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobRecordManager;
+import cn.bmob.im.config.BmobConstant;
 import cn.bmob.im.inteface.OnRecordChangeListener;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.Bmob;
@@ -46,6 +47,7 @@ import tk.wenop.XiangYu.adapter.custom.MainScreenOverviewItem;
 import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
+import tk.wenop.XiangYu.config.RouteConfig;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.CommentNetwork;
 import tk.wenop.XiangYu.ui.ActivityBase;
@@ -487,7 +489,7 @@ public class CommentActivity extends ActivityBase
             public void onSuccess(List<BmobFile> list, List<String> list1) {
 
                 if (list.size() > 0) {
-                    CommentEntity commentEntity = new CommentEntity();
+                    final CommentEntity commentEntity = new CommentEntity();
                     commentEntity.setComment(list.get(0).getUrl());
                     commentEntity.setAudioLength(recordLength);
                     commentEntity.setOwnerMessage(messageEntity);
@@ -501,7 +503,7 @@ public class CommentActivity extends ActivityBase
                             messageEntity.increment("commentCount");
                             messageEntity.update(context);
                             //推送被评论用户
-                            notifyToUser();
+                            notifyToUser(commentEntity.getObjectId());
                         }
 
                         @Override
@@ -534,32 +536,59 @@ public class CommentActivity extends ActivityBase
     /*
         推送被评论用户
      */
-    public void notifyToUser() {
+    public void notifyToUser(String commentID){
+
         if (readyAtUser == null) return;
 
-        JSONObject js = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         try {
-            js.put("hello", "wenop");
+            //接收方根据tag 做路由
+            jsonObject.put(BmobConstant.PUSH_KEY_TAG, RouteConfig.TAG_NOTIFY_COMMENT);
+            //fromuserid
+            jsonObject.put(BmobConstant.PUSH_KEY_TARGETID,currentUser.getObjectId());
+            //touserid
+            jsonObject.put(BmobConstant.PUSH_KEY_TOID,readyAtUser.getObjectId());
+            jsonObject.put(RouteConfig.FROM_USER_NAME,readyAtUser.getUsername());
+            jsonObject.put(RouteConfig.FROM_AVATAR_URL,readyAtUser.getAvatar());
+
+            String messageID = messageEntity.getObjectId();
+            jsonObject.put(RouteConfig.OWN_MESSAGE_ID,messageID);
+            jsonObject.put(RouteConfig.OWN_COMMENT_ID,commentID);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        BmobChatManager.getInstance(this).sendJsonMessage(
-                js.toString(),
-                readyAtUser.getObjectId(),
-                new PushListener() {
+        BmobChatManager.getInstance(this).sendJsonMessage(jsonObject.toString(), readyAtUser.getObjectId(), new PushListener() {
+            @Override
+            public void onSuccess() {
+                ShowToast("发送请求成功，等待对方验证!");
+            }
 
-                    @Override
-                    public void onSuccess() {
+            @Override
+            public void onFailure(int i, String s) {
+                ShowToast("发送请求失败，请重新添加!");
+            }
+        });
 
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-
-                    }
-                });
-
+//        BmobChatManager.getInstance(this).sendTagMessage(
+//                Config.TAG_NOTIFY_COMMENT,
+//                readyAtUser.getObjectId(),
+//                new PushListener() {
+//                    @Override
+//                    public void onSuccess() {
+//                         TODO Auto-generated method stub
+//                        ShowToast("发送请求成功，等待对方验证!");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(int arg0, final String arg1) {
+//                         TODO Auto-generated method stub
+//
+//                        ShowToast("发送请求失败，请重新添加!");
+//                        ShowLog("发送请求失败:"+arg1);
+//                    }
+//                });
 
     }
 

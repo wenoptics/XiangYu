@@ -24,7 +24,8 @@ import cn.bmob.im.inteface.OnReceiveListener;
 import cn.bmob.im.util.BmobJsonUtil;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.FindListener;
-import tk.wenop.XiangYu.config.Config;
+import tk.wenop.XiangYu.config.RouteConfig;
+import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.ui.NewFriendActivity;
 import tk.wenop.XiangYu.ui.activity.OverallMessageListActivity;
 import tk.wenop.XiangYu.util.CollectionUtils;
@@ -136,7 +137,6 @@ public class MyMessageReceiver extends BroadcastReceiver {
 
                                     @Override
                                     public void onError(int arg0, final String arg1) {
-                                        
 
                                     }
 
@@ -165,10 +165,13 @@ public class MyMessageReceiver extends BroadcastReceiver {
                                         }
                                     }
                                 }
-                            case Config.TAG_NOTIFY_COMMENT://评论自己的消息推送
+                            case RouteConfig.TAG_NOTIFY_COMMENT://评论自己的消息推送
                                     //todo:现在有json数据 怎么把消息分发下去
 
-
+                                String user_name = jo.optString(RouteConfig.FROM_USER_NAME);
+                                showOtherNotify(context, user_name, toId, user_name + "评论了你", OverallMessageListActivity.class);
+                                DBManager.instance(context).addRecentComment(jo);
+                                BmobLog.i("收到comment 信息啊：");
                                 break;
                         }
                     }
@@ -223,6 +226,30 @@ public class MyMessageReceiver extends BroadcastReceiver {
         boolean isAllow = CustomApplcation.getInstance().getSpUtil().isAllowPushNotify();
         boolean isAllowVoice = CustomApplcation.getInstance().getSpUtil().isAllowVoice();
         boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
+        if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
+            //同时提醒通知
+            BmobNotifyManager.getInstance(context)
+                    .showNotify(
+                            isAllowVoice,
+                            isAllowVibrate,
+                            R.drawable.ic_launcher,
+                            ticker,
+                            username,
+                            ticker.toString(),
+                            cls);
+        }
+    }
+
+
+
+    /** 显示其他Tag的通知
+     * showOtherNotify
+     */
+    public void showBeCommentedNotify(Context context,String username,String toId,String ticker,Class<?> cls){
+        boolean isAllow = CustomApplcation.getInstance().getSpUtil().isAllowPushNotify();
+        boolean isAllowVoice = CustomApplcation.getInstance().getSpUtil().isAllowVoice();
+        boolean isAllowVibrate = CustomApplcation.getInstance().getSpUtil().isAllowVibrate();
+
         if(isAllow && currentUser!=null && currentUser.getObjectId().equals(toId)){
             //同时提醒通知
             BmobNotifyManager.getInstance(context)
