@@ -1,7 +1,5 @@
 package tk.wenop.XiangYu.adapter;
 
-import java.util.List;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
@@ -10,16 +8,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.List;
+
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.v3.listener.PushListener;
-
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.base.BaseListAdapter;
 import tk.wenop.XiangYu.adapter.base.ViewHolder;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**查找好友
   * @ClassName: AddFriendAdapter
@@ -54,7 +55,7 @@ public class AddFriendAdapter extends BaseListAdapter<BmobChatUser> {
 			iv_avatar.setImageResource(R.drawable.default_head);
 		}
 
-		name.setText(contract.getUsername());
+		name.setText(contract.getNick());
 		btn_add.setText("添加");
 		btn_add.setOnClickListener(new OnClickListener() {
 			
