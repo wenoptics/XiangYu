@@ -252,7 +252,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
             @Override
             public void onSuccess() {
-                // TODO Auto-generated method stub
+
                 showToast("手机号码绑定成功");
 
                 //todo:绑定好手机号后才跳转
@@ -264,7 +264,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
             @Override
             public void onFailure(int arg0, String arg1) {
-                // TODO Auto-generated method stub
+
                 showToast("手机号码绑定失败：" + arg0 + "-" + arg1);
             }
         });
