@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -33,6 +34,7 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.adapter.custom.CommentAdapter;
@@ -46,7 +48,7 @@ import tk.wenop.XiangYu.util.CommonUtils;
 import tk.wenop.XiangYu.util.WrappingRecyclerViewLayoutManager;
 
 
-public class CommentActivity extends AppCompatActivity implements CommentNetwork.OnGetCommentEntities {
+public class CommentActivity extends AppCompatActivity implements CommentNetwork.OnGetCommentEntities, CommentAdapter.OnAtSomeOne {
 
     private CommentAdapter commentAdapter;
     private RecyclerView mRecyclerView;
@@ -90,6 +92,9 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
     private Drawable[] drawable_Anims;// 话筒动画
     BmobRecordManager recordManager;
 
+    CommentAdapter.OnAtSomeOne onAtSomeOne;
+    CommentEntity nowCommentEntity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +114,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         currentUser = BmobUser.getCurrentUser(this, User.class);
         userID = currentUser.getObjectId();
         context = this;
+        onAtSomeOne = this;
 
         imageLoader = ImageLoader.getInstance();
 
@@ -128,7 +134,7 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
         mRecyclerView.setLayoutManager(mRVLayoutM);
 
         commentDataSet = new ArrayList<>();
-        commentAdapter = new CommentAdapter(CommentActivity.this);
+        commentAdapter = new CommentAdapter(CommentActivity.this,onAtSomeOne);
         mRecyclerView.setAdapter(commentAdapter);
 
         //加载评论信息
@@ -439,28 +445,13 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
             @Override
             public void onSuccess(List<BmobFile> list, List<String> list1) {
 
+
+
                 if (list.size() > 0) {
-                    CommentEntity commentEntity = new CommentEntity();
-                    commentEntity.setComment(list.get(0).getUrl());
-                    commentEntity.setOwnerMessage(messageEntity);
-                    commentEntity.setOwnerUser(currentUser);
-                    commentEntity.save(context, new SaveListener() {
-                        @Override
-                        public void onSuccess() {
-                            messageEntity.increment("commentCount");
-                            messageEntity.update(context);
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-
-                        }
-                    });//todo 检测更多动作
-                    //todo:save comment to comment list;
-                    commentAdapter.addData(commentEntity);
-                    // TODO 更新View评论数
+                    saveComment(list.get(0).getUrl());
 
                 }
+
             }
 
             @Override
@@ -478,10 +469,71 @@ public class CommentActivity extends AppCompatActivity implements CommentNetwork
 
 
 
+    /*
+        评论某个人
+     */
+    @Override
+    public void onAtSomeOne(CommentEntity commentEntity) {
 
+        Toast.makeText(context,"请评论"+commentEntity.getOwnerUser().getUsername(),Toast.LENGTH_SHORT).show();
+        nowCommentEntity = commentEntity;
 
+    }
 
+    public void saveComment(String url){
 
+        final CommentEntity commentEntity = new CommentEntity();
+        //如果是评论某个消息
+        if (nowCommentEntity == null){
+            commentEntity.setOwnerMessage(messageEntity);
+        }
+
+        commentEntity.setComment(url);
+
+        commentEntity.setOwnerUser(currentUser);
+        commentEntity.save(context, new SaveListener() {
+            @Override
+            public void onSuccess() {
+
+                if (nowCommentEntity!=null){
+                    nowCommentEntity.add("myComments", commentEntity);
+                    updateComment(nowCommentEntity);
+                    return;
+                }
+                messageEntity.increment("commentCount");
+                messageEntity.update(context);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
+
+        //todo 检测更多动作
+        //todo:save comment to comment list;
+        commentAdapter.addData(commentEntity);
+        // TODO 更新View评论数
+    }
+
+    private void updateComment(final CommentEntity commentEntity){
+        if (commentEntity!=null){
+            commentEntity.update(context, new UpdateListener() {
+                @Override
+                public void onSuccess() {
+                    nowCommentEntity = null;
+                    Toast.makeText(context,"评论"+commentEntity.getOwnerUser().getUsername()+"成功",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    nowCommentEntity = null;
+                    Toast.makeText(context,"评论"+commentEntity.getOwnerUser().getUsername()+"失败",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
 
 
 }

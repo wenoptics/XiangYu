@@ -35,6 +35,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private LayoutInflater inflater;
     private ArrayList<CommentEntity> mDataset = new ArrayList<>();
     protected Context mContext;
+    OnAtSomeOne onAtSomeOne;
+
 
     ImageLoader imageLoader;
     // Provide a reference to the views for each data item
@@ -74,12 +76,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         mDataset = myDataset;
         mContext = context;
-        inflater = LayoutInflater.from(mContext);
 
+        inflater = LayoutInflater.from(mContext);
     }
-    public CommentAdapter(Context context){
+    public CommentAdapter(Context context,OnAtSomeOne onAtSomeOne){
 
         mContext = context;
+        this.onAtSomeOne = onAtSomeOne;
         inflater = LayoutInflater.from(mContext);
         imageLoader = ImageLoader.getInstance();
     }
@@ -143,11 +146,27 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
 
-        // TODO 长按头像可以at人     holder.mAvatar.setOnLongClickListener(null);
+
         String path = "http://file.bmob.cn/" + data.getComment();
         holder.audio_msg_bubble.setOnClickListener(new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
 
+        // TODO 长按头像可以at人     holder.mAvatar.setOnLongClickListener(null);
+        holder.mAvatar.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onAtSomeOne.onAtSomeOne(data);
+                return false;
+            }
+        });
     }
+
+    public interface OnAtSomeOne{
+
+        public void onAtSomeOne(CommentEntity commentEntity);
+
+    }
+
+
 
     private void refreshAvatar(String avatar, ImageView avatarView) {
         if (avatar != null && !avatar.equals("")) {

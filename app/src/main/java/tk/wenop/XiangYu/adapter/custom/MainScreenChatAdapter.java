@@ -334,6 +334,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 
         holder.mLocation.setText(data.getFromLocation());
 
+
         // wenop-add
         // 点击view 去到消息 (也去到评论页面)
         holder.mView.setOnClickListener(new View.OnClickListener() {

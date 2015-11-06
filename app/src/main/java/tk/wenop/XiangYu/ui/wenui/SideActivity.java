@@ -89,6 +89,7 @@ import static tk.wenop.XiangYu.MyMessageReceiver.showMsgNotify;
 //import tk.wenop.testapp.R;
 
 public class SideActivity extends ActivityBase
+
         implements
             NavigationView.OnNavigationItemSelectedListener,
             NewContentBottomDialog.SelectImageInterface,

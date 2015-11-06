@@ -1,5 +1,7 @@
 package tk.wenop.XiangYu.bean;
 
+import java.util.List;
+
 import cn.bmob.v3.BmobObject;
 
     public class CommentEntity extends BmobObject {
@@ -8,6 +10,11 @@ import cn.bmob.v3.BmobObject;
         private User ownerUser;
         private MessageEntity ownerMessage;
         private Boolean anonymous;
+
+        private List<CommentEntity> myComments;
+
+
+
 
         public String getComment() {
             return comment;
@@ -42,6 +49,14 @@ import cn.bmob.v3.BmobObject;
 
         public void setAnonymous(Boolean anonymous) {
             this.anonymous = anonymous;
+        }
+
+        public List<CommentEntity> getMyComments() {
+            return myComments;
+        }
+
+        public void setMyComments(List<CommentEntity> myComments) {
+            this.myComments = myComments;
         }
 
     }
