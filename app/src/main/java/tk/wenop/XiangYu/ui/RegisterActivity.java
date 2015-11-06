@@ -16,7 +16,6 @@ import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobSMS;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.RequestSMSCodeListener;
 import cn.bmob.v3.listener.SaveListener;
@@ -30,7 +29,7 @@ import tk.wenop.XiangYu.util.CommonUtils;
 
 public class RegisterActivity extends BaseActivity implements OnClickListener {
 
-    Button btn_register,tv_send,tv_bind;
+    Button btn_register,tv_send;
     EditText et_username, et_password, et_pswAgain, et_nickName,et_smsCode;
     TextView tv_RegisterUserEmail;
     BmobChatUser currentUser;
@@ -42,7 +41,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         
-        initTopBar_withBackButton("注册");
+        initTopBar_withBackButton("欢迎加入乡语!");
 
         et_username = (EditText) findViewById(R.id.et_phone);
         et_password = (EditText) findViewById(R.id.et_password);
@@ -51,8 +50,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         et_smsCode = (EditText) findViewById(R.id.et_smsCode);
         tv_RegisterUserEmail = (TextView) findViewById(R.id.tv_RegisterUserEmail);
 
-
-        tv_bind = (Button) findViewById(R.id.tv_bind);
         tv_send = (Button) findViewById(R.id.tv_send);
 
         btn_register = (Button) findViewById(R.id.btn_register);
@@ -64,18 +61,25 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             }
         });
 
-
-
         tv_send.setOnClickListener(this);
-        tv_bind.setOnClickListener(this);
         tv_RegisterUserEmail.setOnClickListener(this);
     }
-    
+
+    String userName;
+    String password;
+    String pwd_again;
+    String nickName;
+    String smsCode ;
+
     private void doRegister(){
-        String userName = et_username.getText().toString();
-        String password = et_password.getText().toString();
-        String pwd_again = et_pswAgain.getText().toString();
-        String nickName = et_nickName.getText().toString();
+
+        // 要走p1 p2 p3 3步
+
+        userName = et_username.getText().toString();
+        password = et_password.getText().toString();
+        pwd_again = et_pswAgain.getText().toString();
+        nickName = et_nickName.getText().toString();
+        smsCode = et_smsCode.getText().toString();
 
         boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
         if(!isNetConnected){
@@ -98,10 +102,23 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             return;
         }
 
+        if (TextUtils.isEmpty(smsCode)) {
+            ShowToast("请输入短信验证码");
+            return;
+        }
+
         if (TextUtils.isEmpty(nickName)) {
             nickName = "";
         }
-        
+
+        // 验证短信验证码
+        p1_verifySMS();
+
+    }
+
+    // 创建账号
+    private void p2_newAccount(final String phoneNum) {
+
         final ProgressDialog progress = new ProgressDialog(RegisterActivity.this);
         progress.setMessage("正在注册...");
         progress.setCanceledOnTouchOutside(false);
@@ -111,7 +128,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         final User bu = new User();
         bu.setUsername(userName);
         bu.setPassword(password);
-        //将user和设备id进行绑定aa
+        //将user和设备id进行绑定
         bu.setSex(true);
         bu.setNick(nickName);
         bu.setDeviceType("android");
@@ -120,9 +137,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
             @Override
             public void onSuccess() {
-                
+
                 progress.dismiss();
-                ShowToast("注册成功");
+//                ShowToast("注册成功");
+                BmobLog.i("创建账号成功");
                 // 将设备与username进行绑定
                 userManager.bindInstallationForRegister(bu.getUsername());
                 //更新地理位置信息
@@ -130,20 +148,22 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
                 //发广播通知登陆页面退出
                 sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
 
-                verifyOrBind();
                 // 启动主页
 //				Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
 //                Intent intent = new Intent(RegisterActivity.this, SideActivity.class);
-                //todo:
+
 //                Intent intent = new Intent(RegisterActivity.this, PostRegisterActivity.class);
 //                startActivity(intent);
 //                finish();
-                
+
+                // 绑定手机号
+                p3_bindMobilePhone(bu, phoneNum);
+
             }
 
             @Override
             public void onFailure(int arg0, String arg1) {
-                
+
                 BmobLog.i(arg1);
                 ShowToast("注册失败:" + arg1);
                 progress.dismiss();
@@ -159,9 +179,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             case R.id.tv_send:
                 requestSMSCode();
                 break;
-            case R.id.tv_bind:
-                verifyOrBind();
-                break;
+
             case R.id.tv_RegisterUserEmail:
                 Intent intent = new Intent(RegisterActivity.this,EmailRegisterActivity.class);
                 startActivity(intent);
@@ -179,10 +197,12 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
                 @Override
                 public void done(Integer smsId, BmobException ex) {
-                    // TODO Auto-generated method stub
+
                     if (ex == null) {// 验证码发送成功
-                        showToast("验证码发送成功");// 用于查询本次短信发送详情
-                    } else {//如果验证码发送错误，可停止计时
+                        showToast("验证码已经发送啦"); // 用于查询本次短信发送详情
+                        tv_send.setClickable(false);
+                    } else { //如果验证码发送错误，可停止计时
+                        BmobLog.i(ex.toString());
                         timer.cancel();
                     }
                 }
@@ -201,15 +221,16 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
         }
         @Override
         public void onTick(long millisUntilFinished) {
-            tv_send.setText((millisUntilFinished / 1000) +"秒后重发");
+            tv_send.setText((millisUntilFinished / 1000) +"秒可重发");
         }
         @Override
         public void onFinish() {
-            tv_send.setText("重新发送验证码");
+            tv_send.setText("重发验证码");
+            tv_send.setClickable(true);
         }
     }
 
-    private void verifyOrBind(){
+    private void p1_verifySMS(){
         final String phone = et_username.getText().toString();
         String code = et_smsCode.getText().toString();
         if (TextUtils.isEmpty(phone)) {
@@ -230,32 +251,38 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
             @Override
             public void done(BmobException ex) {
-                // TODO Auto-generated method stub
+
                 progress.dismiss();
-                if(ex==null){
-                    showToast("手机号码已验证");
-                    bindMobilePhone(phone);
-                }else{
-                    showToast("验证失败：code=" + ex.getErrorCode() + "，错误描述：" + ex.getLocalizedMessage());
+                if(ex==null) {
+                    BmobLog.i("手机号码已验证");
+                    p2_newAccount(phone);
+
+                } else {
+                    if(ex.getErrorCode()==9019) {
+                        showToast("您输入的验证码有误");
+                    } else {
+                        showToast("手机验证失败");
+                    }
+                    BmobLog.i("验证失败：code=" + ex.getErrorCode() + "，错误描述：" + ex.getLocalizedMessage());
                 }
             }
         });
     }
 
-    private void bindMobilePhone(String phone){
+    private void p3_bindMobilePhone(User user, String phone){
         //开发者在给用户绑定手机号码的时候需要提交两个字段的值：mobilePhoneNumber、mobilePhoneNumberVerified
-        User user =new User();
-        user.setMobilePhoneNumber(phone);
-        user.setMobilePhoneNumberVerified(true);
-        User cur = BmobUser.getCurrentUser(RegisterActivity.this, User.class);
-        user.update(RegisterActivity.this, cur.getObjectId(), new UpdateListener() {
+        User tmpUser =new User();
+        tmpUser.setMobilePhoneNumber(phone);
+        tmpUser.setMobilePhoneNumberVerified(true);
+        tmpUser.update(RegisterActivity.this, user.getObjectId(), new UpdateListener() {
 
             @Override
             public void onSuccess() {
 
-                showToast("手机号码绑定成功");
+                BmobLog.i("手机号码绑定成功");
+                showToast("注册成功~");
 
-                //todo:绑定好手机号后才跳转
+                // 走完3步，终于注册成功了。 可以去下一个页面了
                 Intent intent = new Intent(RegisterActivity.this, PostRegisterActivity.class);
                 startActivity(intent);
                 finish();
@@ -269,6 +296,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
             }
         });
     }
+
+
 
     public void showToast(String text) {
         if (!TextUtils.isEmpty(text)) {
