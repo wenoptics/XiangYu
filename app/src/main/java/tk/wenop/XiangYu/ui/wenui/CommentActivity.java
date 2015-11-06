@@ -562,12 +562,12 @@ public class CommentActivity extends ActivityBase
         BmobChatManager.getInstance(this).sendJsonMessage(jsonObject.toString(), readyAtUser.getObjectId(), new PushListener() {
             @Override
             public void onSuccess() {
-                ShowToast("发送请求成功，等待对方验证!");
+//                ShowToast("发送请求成功，等待对方验证!");
             }
 
             @Override
             public void onFailure(int i, String s) {
-                ShowToast("发送请求失败，请重新添加!");
+//                ShowToast("发送请求失败，请重新添加!");
             }
         });
 
