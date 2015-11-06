@@ -359,12 +359,6 @@ public class MainScreen_MessageChatAdapter extends BaseListAdapter<BmobMsg> {
         default:
             break;
         }
-
-
-        
-
-
-
         return convertView;
     }
 

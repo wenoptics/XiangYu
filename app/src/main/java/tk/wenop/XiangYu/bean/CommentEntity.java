@@ -1,7 +1,5 @@
 package tk.wenop.XiangYu.bean;
 
-import java.util.List;
-
 import cn.bmob.v3.BmobObject;
 
     public class CommentEntity extends BmobObject {
@@ -14,11 +12,6 @@ import cn.bmob.v3.BmobObject;
         private CommentEntity owerComment;
 
         private Boolean anonymous;
-
-        private List<CommentEntity> myComments;
-
-
-
 
         public String getComment() {
             return comment;
@@ -55,6 +48,7 @@ import cn.bmob.v3.BmobObject;
             this.anonymous = anonymous;
         }
 
+<<<<<<< HEAD
         public List<CommentEntity> getMyComments() {
             return myComments;
         }
@@ -70,4 +64,6 @@ import cn.bmob.v3.BmobObject;
         public void setOwerComment(CommentEntity owerComment) {
             this.owerComment = owerComment;
         }
+=======
+>>>>>>> parent of abbeebb... 短信验证
     }
