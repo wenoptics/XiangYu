@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lidroid.xutils.HttpUtils;
@@ -23,6 +24,7 @@ import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.config.RouteConfig;
 import tk.wenop.XiangYu.network.MessageNetwork;
 import tk.wenop.XiangYu.ui.wenui.CommentActivity;
+import tk.wenop.XiangYu.util.ImageLoadOptions;
 
 
 public class RecentCommentListAdapter extends BaseAdapter implements
@@ -86,21 +88,24 @@ public class RecentCommentListAdapter extends BaseAdapter implements
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         final JSONObject  jsonObject = (JSONObject)getItem(position);
-        final AreaHolder areaHolder;
+        final RecentCommentHolder recentCommentHolder;
 
         if(convertView == null){
-            areaHolder = new AreaHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_area_list,parent,false);
-            areaHolder.area = (TextView) convertView.findViewById(R.id.area);
+            recentCommentHolder = new RecentCommentHolder();
+            convertView = LayoutInflater.from(context).inflate(
+                    R.layout.item_recent_comment_list, parent, false);
+            recentCommentHolder.content = (TextView) convertView.findViewById(R.id.tv_content);
+            recentCommentHolder.avatar = (ImageView) convertView.findViewById(R.id.iv_avatar);
 
-            convertView.setTag(areaHolder);
+            convertView.setTag(recentCommentHolder);
         }else {
-            areaHolder = (AreaHolder) convertView.getTag();
+            recentCommentHolder = (RecentCommentHolder) convertView.getTag();
         }
 
-        String usermame = jsonObject.optString(RouteConfig.FROM_USER_NAME);
-        areaHolder.area.setText(usermame);
-
+        String username = jsonObject.optString(RouteConfig.FROM_NICK_NAME);
+        String fromAvatar = jsonObject.optString(RouteConfig.FROM_AVATAR_URL);
+        recentCommentHolder.content.setText(String.format("%s@了你", username));
+        refreshAvatar(fromAvatar, recentCommentHolder.avatar);
 
         final String message = jsonObject.optString(RouteConfig.OWN_MESSAGE_ID);
 
@@ -114,6 +119,15 @@ public class RecentCommentListAdapter extends BaseAdapter implements
         });
 
         return convertView;
+    }
+
+    private void refreshAvatar(String avatar, ImageView avatarView) {
+        if (avatar != null && !avatar.equals("")) {
+            ImageLoader.getInstance().displayImage(avatar, avatarView,
+                    ImageLoadOptions.getOptions());
+        } else {
+            avatarView.setImageResource(R.drawable.default_head);
+        }
     }
 
     @Override
@@ -150,9 +164,10 @@ public class RecentCommentListAdapter extends BaseAdapter implements
 
 
 
-    public static class AreaHolder{
+    public static class RecentCommentHolder {
 
-        public TextView  area;
+        public TextView content;
+        public ImageView avatar;
 
     }
 

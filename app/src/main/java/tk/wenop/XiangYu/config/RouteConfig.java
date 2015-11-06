@@ -12,6 +12,7 @@ public class RouteConfig {
     public static final String OWN_COMMENT_ID = "owncomment";
 
     public static final String FROM_USER_NAME = "fromUserName";
+    public static final String FROM_NICK_NAME = "fromNickName";
     public static final String FROM_AVATAR_URL = "from_Avatar_Url";
 
 }
