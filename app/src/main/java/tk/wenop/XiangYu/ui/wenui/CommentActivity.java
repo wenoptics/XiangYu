@@ -533,6 +533,7 @@ public class CommentActivity extends ActivityBase
         推送被评论用户
      */
     public void notifyToUser(){
+        if (readyAtUser == null) return;
         BmobChatManager.getInstance(this).sendTagMessage(
                 Config.TAG_NOTIFY_COMMENT,
                 readyAtUser.getObjectId(),
