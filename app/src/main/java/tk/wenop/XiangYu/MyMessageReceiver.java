@@ -124,7 +124,6 @@ public class MyMessageReceiver extends BroadcastReceiver {
                                             for (EventListener handler : ehList)
                                                 handler.onAddUser(message);
                                         } else {
-
                                             showOtherNotify(context, message.getFromname(), toId, message.getFromname() + "请求添加好友", NewFriendActivity.class);
                                         }
                                     }

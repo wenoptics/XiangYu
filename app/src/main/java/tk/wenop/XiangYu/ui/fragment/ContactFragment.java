@@ -231,7 +231,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+
 				Intent intent = new Intent(getActivity(), NewFriendActivity.class);
 				intent.putExtra("from", "contact");
 				startAnimActivity(intent);
@@ -242,7 +242,7 @@ public class ContactFragment extends FragmentBase implements OnItemClickListener
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+
 				Intent intent = new Intent(getActivity(), NearPeopleActivity.class);
 				startAnimActivity(intent);
 			}

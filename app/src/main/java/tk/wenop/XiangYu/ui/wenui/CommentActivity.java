@@ -24,6 +24,9 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +46,6 @@ import tk.wenop.XiangYu.adapter.custom.MainScreenOverviewItem;
 import tk.wenop.XiangYu.bean.CommentEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
 import tk.wenop.XiangYu.bean.User;
-import tk.wenop.XiangYu.config.Config;
 import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.CommentNetwork;
 import tk.wenop.XiangYu.ui.ActivityBase;
@@ -532,26 +534,32 @@ public class CommentActivity extends ActivityBase
     /*
         推送被评论用户
      */
-    public void notifyToUser(){
+    public void notifyToUser() {
         if (readyAtUser == null) return;
-        BmobChatManager.getInstance(this).sendTagMessage(
-                Config.TAG_NOTIFY_COMMENT,
+
+        JSONObject js = new JSONObject();
+        try {
+            js.put("hello", "wenop");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        BmobChatManager.getInstance(this).sendJsonMessage(
+                js.toString(),
                 readyAtUser.getObjectId(),
                 new PushListener() {
+
                     @Override
                     public void onSuccess() {
-                        // TODO Auto-generated method stub
-                        ShowToast("发送请求成功，等待对方验证!");
+
                     }
 
                     @Override
-                    public void onFailure(int arg0, final String arg1) {
-                        // TODO Auto-generated method stub
+                    public void onFailure(int i, String s) {
 
-                        ShowToast("发送请求失败，请重新添加!");
-                        ShowLog("发送请求失败:"+arg1);
                     }
                 });
+
 
     }
 
