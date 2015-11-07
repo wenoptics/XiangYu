@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
 import java.util.HashMap;
@@ -28,7 +29,6 @@ import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
-import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import de.greenrobot.event.EventBus;
 import tk.wenop.XiangYu.bean.AreaEntity;
@@ -37,7 +37,6 @@ import tk.wenop.XiangYu.manager.DBManager;
 import tk.wenop.XiangYu.network.AreaNetwork;
 import tk.wenop.XiangYu.util.CollectionUtils;
 import tk.wenop.XiangYu.util.SharePreferenceUtil;
-
 
 
 /**
@@ -60,8 +59,12 @@ public class CustomApplcation extends Application implements AreaNetwork.OnGetAr
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
+
 		super.onCreate();
+
+		// 腾讯bugly
+		CrashReport.initCrashReport(getBaseContext(), "900012238", false);
+
 		// 是否开启debug模式--默认开启状态
 		BmobChat.DEBUG_MODE = true;
 
