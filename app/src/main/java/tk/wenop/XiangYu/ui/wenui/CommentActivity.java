@@ -548,8 +548,9 @@ public class CommentActivity extends ActivityBase
             jsonObject.put(BmobConstant.PUSH_KEY_TARGETID,currentUser.getObjectId());
             //touserid
             jsonObject.put(BmobConstant.PUSH_KEY_TOID,readyAtUser.getObjectId());
-            jsonObject.put(RouteConfig.FROM_USER_NAME,readyAtUser.getUsername());
-            jsonObject.put(RouteConfig.FROM_AVATAR_URL,readyAtUser.getAvatar());
+            jsonObject.put(RouteConfig.FROM_USER_NAME,currentUser.getUsername());
+            jsonObject.put(RouteConfig.FROM_NICK_NAME,currentUser.getNick());
+            jsonObject.put(RouteConfig.FROM_AVATAR_URL,currentUser.getAvatar());
 
             String messageID = messageEntity.getObjectId();
             jsonObject.put(RouteConfig.OWN_MESSAGE_ID,messageID);
@@ -562,12 +563,12 @@ public class CommentActivity extends ActivityBase
         BmobChatManager.getInstance(this).sendJsonMessage(jsonObject.toString(), readyAtUser.getObjectId(), new PushListener() {
             @Override
             public void onSuccess() {
-                ShowToast("发送请求成功，等待对方验证!");
+//                ShowToast("发送请求成功，等待对方验证!");
             }
 
             @Override
             public void onFailure(int i, String s) {
-                ShowToast("发送请求失败，请重新添加!");
+//                ShowToast("发送请求失败，请重新添加!");
             }
         });
 

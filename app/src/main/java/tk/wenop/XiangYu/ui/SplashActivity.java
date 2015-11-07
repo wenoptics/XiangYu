@@ -22,6 +22,8 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.FindListener;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
@@ -51,6 +53,12 @@ public class SplashActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        GifImageView gif_iv = (GifImageView) findViewById(R.id.gif_splashbg);
+        GifDrawable gif_drawable = (GifDrawable) gif_iv.getDrawable();
+        gif_drawable.setLoopCount(1);
+        gif_drawable.start();
+
         //可设置调试模式，当为true的时候，会在logcat的BmobChat下输出一些日志，包括推送服务是否正常运行，如果服务端返回错误，也会一并打印出来。方便开发者调试
         BmobChat.DEBUG_MODE = true;
         //BmobIM SDK初始化--只需要这一段代码即可完成初始化

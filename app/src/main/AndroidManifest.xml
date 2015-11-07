@@ -110,7 +110,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.LocationActivity" />
         <activity android:name=".ui.BlackListActivity" />
-        <activity android:name=".ui.ImageBrowserActivity" />
+        <activity android:name=".ui.ImageBrowserActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.AddFriendActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />

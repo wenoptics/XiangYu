@@ -40,6 +40,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobChatManager;
@@ -94,6 +95,7 @@ public class SideActivity extends ActivityBase
             NewContentBottomDialog.SelectImageInterface,
             SelectAddressDialog.OnGetAddressResult,
             AreaNetwork.OnGetAreaEntity,
+            AreaNetwork.OnGetFollowAreaEntities,
             EventListener {
 
     private MainScreenChatAdapter mainActRVAdapter;
@@ -118,6 +120,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     NewContentBottomDialog.SelectImageInterface selectImageInterface;
     Context mContext;
     SelectAddressDialog.OnGetAddressResult onGetAddressResult;
+
+    Menu mActionBarMenu;
 
     private User user;
     private Toolbar toolbar;
@@ -217,17 +221,21 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 //    如果没有登录，在这里跳转登录
 
                 if (nowAreaEntity == null) {
-                    Toast.makeText(mContext,"no_group",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "no_group", Toast.LENGTH_SHORT).show();
                 }
 
-                if (selectImageInterface!= null){
-                    final NewContentBottomDialog dialog = new NewContentBottomDialog(SideActivity.this,selectImageInterface,nowAreaEntity);
+                if (selectImageInterface != null) {
+                    final NewContentBottomDialog dialog = new NewContentBottomDialog(SideActivity.this, selectImageInterface, nowAreaEntity);
                     onGetImageFromResoult = dialog;
-                            dialog.showAnim(bas_in)
+                    dialog.showAnim(bas_in)
                             .show();
                 }
             }
         });
+
+        ///////////////////////// ActionBar ///////////////////////////////////////////
+
+        ///////////////////////// ActionBar //end//////////////////////////////////////
 
         ///////////////////////// 侧滑Nav Drawer ///////////////////////////////////////////
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -317,10 +325,47 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
     }
 
+    MenuItem favItem;
+
+    // 设置关注地点的按钮状态
+    private void setFollowAreaBtnIcon(Boolean followed) {
+
+        if(followed) {
+            favItem.setIcon(R.drawable.ic_heart_white_24dp);
+        } else {
+            favItem.setIcon(R.drawable.ic_heart_broken_white_24dp);
+        }
+    }
+
+    @Override
+    public void onGetFollowAreaEntities(List<AreaEntity> areaEntities) {
+
+        if (nowAreaEntity == null) return;
+
+        ///areaEntities.contains(nowAreaEntity)
+        //遍历查找
+        Boolean found = false;
+        for(AreaEntity ae:areaEntities) {
+            if (ae.getObjectId().equals( nowAreaEntity.getObjectId() )) {
+                found = true;
+                break;
+            }
+        }
+
+        // 设置关注图标样式
+        setFollowAreaBtnIcon(found);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_actionbar_main_screen, menu);
+
+        mActionBarMenu = menu;
+        favItem = mActionBarMenu.findItem(R.id.action_toggleFav);
+
+        //  在menu创建好之后  去查关注列表
+        AreaNetwork.loadFollowAreas(mContext, this, user);
 
         // Associate searchable configuration with the SearchView
         SearchView searchView =
@@ -339,16 +384,14 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_toggleFav) {
             //关注地理位置的按钮
-            //todo:设置按钮两种状态 状态1:已经关注    2:未关注
-
             if (nowAreaEntity!=null)
             addFollowArea(nowAreaEntity);
 
             return true;
         }else if (id == R.id.search_place){
 
-                    SelectAddressDialog selectAddressDialog = new SelectAddressDialog(mContext,onGetAddressResult);
-                    selectAddressDialog.show();
+            SelectAddressDialog selectAddressDialog = new SelectAddressDialog(mContext,onGetAddressResult);
+            selectAddressDialog.show();
             return true;
         }
 
@@ -359,7 +402,7 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
     /*
         添加地点关注
      */
-    public void  addFollowArea(AreaEntity areaEntity){
+    public void  addFollowArea(final AreaEntity areaEntity){
 
         BmobRelation relation = new BmobRelation();
         relation.add(areaEntity);
@@ -369,12 +412,13 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         user.update(mContext, new UpdateListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(mContext, "关注成功", Toast.LENGTH_SHORT).show();
+                ShowToast(String.format("关注%s成功", areaEntity.getArea()));
+                setFollowAreaBtnIcon(true);
             }
 
             @Override
             public void onFailure(int i, String s) {
-                Toast.makeText(mContext, "关注失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "关注地点失败", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -600,6 +644,10 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
             return;
         }
         nowAreaEntity = areaEntity;
+
+        // 去查关注列表, 因为要知道有没有关注这个地点，因为要改followIcon的状态
+        AreaNetwork.loadFollowAreas(mContext, this, user);
+
         toolbar.setTitle(areaEntity.getArea());
         DBManager.instance(this).refreshMessageEntities(areaEntity);
     }

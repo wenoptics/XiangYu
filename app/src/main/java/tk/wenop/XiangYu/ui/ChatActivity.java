@@ -1,6 +1,8 @@
 package tk.wenop.XiangYu.ui;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -11,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -26,9 +29,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -264,19 +269,18 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
                     @Override
                     public void onStart(BmobMsg msg) {
-                        
+
                         refreshMessage(msg);
                     }
 
                     @Override
                     public void onSuccess() {
-                        
                         mAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onFailure(int error, String arg1) {
-                        
+
                         ShowLog("上传语音失败 -->arg1：" + arg1);
                         mAdapter.notifyDataSetChanged();
                     }
@@ -340,7 +344,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
             mListView.setAdapter(mAdapter);
         }
     }
-
+/*
     private void initAddView() {
         tv_picture = (TextView) findViewById(R.id.tv_picture);
         tv_camera = (TextView) findViewById(R.id.tv_camera);
@@ -348,7 +352,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
         tv_picture.setOnClickListener(this);
         tv_location.setOnClickListener(this);
         tv_camera.setOnClickListener(this);
-    }
+    }*/
 
     private void initBottomView() {
 
@@ -361,7 +365,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
         btn_no_at.setVisibility(View.GONE);
 
         btn_add_photo = (ImageButton) findViewById(R.id.btn_picture);
-        // TODO wenop, btn_add_photo
+        btn_add_photo.setOnClickListener(new selectPhotoOnClickListener());
 
         btn_chat_send = (Button) findViewById(R.id.btn_chat_send);
         btn_chat_send.setOnClickListener(this);
@@ -527,6 +531,8 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
         mAdapter.notifyDataSetChanged();
     }
 
+
+
     @Override
     public void onClick(View v) {
         
@@ -628,7 +634,56 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
     private String localCameraPath = "";// 拍照后得到的图片地址
 
 
-    // TODO 加一个Dialog, 提示图片是拍照还是选择
+
+    private class selectPhotoOnClickListener implements OnClickListener {
+        @Override
+        public void onClick(View viewBtn) {
+            View view = LayoutInflater.from(ChatActivity.this).inflate(R.layout.pop_showavator,
+                    null);
+            RelativeLayout layout_choose = (RelativeLayout) view.findViewById(R.id.layout_choose);
+            RelativeLayout layout_photo = (RelativeLayout) view.findViewById(R.id.layout_photo);
+            layout_photo.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    ShowLog("点击拍照");
+                    selectImageFromCamera();
+                }
+            });
+            layout_choose.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    ShowLog("点击相册");
+                    selectImageFromLocal();
+
+                }
+            });
+
+            final PopupWindow avatorPop = new PopupWindow(view, mScreenWidth, 600);
+            avatorPop.setTouchInterceptor(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                        avatorPop.dismiss();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+            avatorPop.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+            avatorPop.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+            avatorPop.setTouchable(true);
+            avatorPop.setFocusable(true);
+            avatorPop.setOutsideTouchable(true);
+            avatorPop.setBackgroundDrawable(new BitmapDrawable());
+            // 动画效果 从底部弹起
+            avatorPop.setAnimationStyle(R.style.Animations_GrowFromBottom);
+            avatorPop.showAtLocation(findViewById(R.id.chat_root_view), Gravity.BOTTOM, 0, 0);
+        }
+    }
 
     /**
      * 启动相机拍照 startCamera

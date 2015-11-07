@@ -1,7 +1,5 @@
 package tk.wenop.XiangYu.adapter;
 
-import java.util.List;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
@@ -10,20 +8,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.List;
+
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.UpdateListener;
-
 import tk.wenop.XiangYu.CustomApplcation;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.base.BaseListAdapter;
 import tk.wenop.XiangYu.adapter.base.ViewHolder;
 import tk.wenop.XiangYu.util.CollectionUtils;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /** 新的好友请求
   * @ClassName: NewFriendAdapter
@@ -78,6 +79,7 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 			btn_add.setTextColor(mContext.getResources().getColor(R.color.base_color_text_black));
 			btn_add.setEnabled(false);
 		}
+		// TODO: wenop 这里应该用nickName
 		name.setText(msg.getFromname());
 		
 		return convertView;

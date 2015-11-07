@@ -1,7 +1,5 @@
 package tk.wenop.XiangYu.adapter;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
@@ -13,10 +11,13 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.List;
+
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.bean.User;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /** 好友列表
   * @ClassName: UserFriendAdapter
@@ -84,7 +85,8 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 		}
 
 		User friend = data.get(position);
-		final String name = friend.getUsername();
+		// wenop 这里使用昵称
+		final String name = friend.getNick();
 		final String avatar = friend.getAvatar();
 
 		if (!TextUtils.isEmpty(avatar)) {

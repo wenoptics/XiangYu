@@ -125,7 +125,6 @@ public class MyMessageReceiver extends BroadcastReceiver {
                                             for (EventListener handler : ehList)
                                                 handler.onAddUser(message);
                                         } else {
-
                                             showOtherNotify(context, message.getFromname(), toId, message.getFromname() + "请求添加好友", NewFriendActivity.class);
                                         }
                                     }
@@ -167,10 +166,10 @@ public class MyMessageReceiver extends BroadcastReceiver {
                                     }
                                 }
                             case RouteConfig.TAG_NOTIFY_COMMENT://评论自己的消息推送
-                                    //todo:现在有json数据 怎么把消息分发下去
 
                                 String user_name = jo.optString(RouteConfig.FROM_USER_NAME);
-                                showOtherNotify(context, user_name, toId, user_name + "评论了你", OverallMessageListActivity.class);
+                                String nick_name = jo.optString(RouteConfig.FROM_NICK_NAME);
+                                showOtherNotify(context, user_name, toId, nick_name + "评论了你", OverallMessageListActivity.class);
                                 DBManager.instance(context).addRecentComment(jo);
                                 BmobLog.i("收到comment 信息啊：");
                                 break;

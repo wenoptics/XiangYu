@@ -353,11 +353,6 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
     }
 
     /** 获取图片的地址--
-      * @Description: TODO
-      * @param @param item
-      * @param @return
-      * @return String
-      * @throws
       */
     private String getImageUrl(BmobMsg item){
         String showUrl = "";
