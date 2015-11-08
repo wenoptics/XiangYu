@@ -28,8 +28,8 @@ import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
-import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+import cn.bmob.v3.update.BmobUpdateAgent;
 import de.greenrobot.event.EventBus;
 import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.event.ConstantEvent;
@@ -64,6 +64,7 @@ public class CustomApplcation extends Application implements AreaNetwork.OnGetAr
 		super.onCreate();
 		// 是否开启debug模式--默认开启状态
 		BmobChat.DEBUG_MODE = true;
+
 
 
 		mInstance = this;

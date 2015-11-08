@@ -30,7 +30,7 @@ public class CommentNetwork {
     public static void loadComment(final Context context, final OnGetCommentEntities onGetCommentEntities,MessageEntity messageEntity){
 
         BmobQuery<CommentEntity> query = new BmobQuery<>();
-        query.include("ownerUser,owerComment.ownerUser");
+        query.include("ownerUser,owerComment.ownerUser,toUser");
         query.addWhereEqualTo("ownerMessage", messageEntity);
 
 //        BmobQuery<CommentEntity> query2 = new BmobQuery<>();
@@ -40,7 +40,7 @@ public class CommentNetwork {
 //        queries.add(query);
 //        queries.add(query2);
 
-//
+
 //
 //        BmobQuery<CommentEntity> mainQuery = new BmobQuery<CommentEntity>();
 //        mainQuery.or(queries);

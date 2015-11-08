@@ -5,12 +5,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import cn.bmob.v3.update.BmobUpdateAgent;
+
 /// 决定是不是第一次启动
 public class EntryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //自动更新组件
+        BmobUpdateAgent.update(this);
+
 
         checkFirstRun();
         this.finish();
