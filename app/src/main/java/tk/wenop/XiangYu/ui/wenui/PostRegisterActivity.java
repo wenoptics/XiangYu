@@ -260,7 +260,7 @@ public class PostRegisterActivity extends ActivityBase {
                     // Toast.makeText(this, "取消选择", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    saveCropAvator(data);
+                    saveCropAvatar(data);
                 }
                 // 初始化文件路径
                 filePath = "";
@@ -340,7 +340,7 @@ public class PostRegisterActivity extends ActivityBase {
 
             @Override
             public void onSuccess() {
-                ShowToast("您已设置性别为 " + (u.getSex() ? "男" : "女"));
+                ShowToast(String.format("您已设置性别为 %s\n上传一个头像吧~", u.getSex() ? "男" : "女"));
             }
 
             @Override
@@ -359,7 +359,7 @@ public class PostRegisterActivity extends ActivityBase {
 
             @Override
             public void onSuccess() {
-                ShowToast("成功~");
+//                ShowToast("成功~");
                 // 跳转到 主屏
                 Intent intent = new Intent(PostRegisterActivity.this, SideActivity.class);
                 startActivity(intent);
@@ -387,7 +387,6 @@ public class PostRegisterActivity extends ActivityBase {
 
             @Override
             public void onFailure(int code, String msg) {
-
                 ShowToast("头像更新失败：" + msg);
             }
         });
@@ -398,7 +397,7 @@ public class PostRegisterActivity extends ActivityBase {
     /**
      * 保存裁剪的头像
      */
-    private void saveCropAvator(Intent data) {
+    private void saveCropAvatar(Intent data) {
         Bundle extras = data.getExtras();
         if (extras != null) {
             Bitmap bitmap = extras.getParcelable("data");

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="D:\WorkSpace\Android\Project\XiangYu\mTAreaPicker\src\main\assets"><file name="meituan_cities.db" path="D:\WorkSpace\Android\Project\XiangYu\mTAreaPicker\src\main\assets\meituan_cities.db"/></source></dataSet><dataSet config="debug"><source path="D:\WorkSpace\Android\Project\XiangYu\mTAreaPicker\src\debug\assets"/></dataSet></merger>

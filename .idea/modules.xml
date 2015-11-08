@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/XiangYu.iml" filepath="$PROJECT_DIR$/XiangYu.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libProcessBtn/libProcessBtn.iml" filepath="$PROJECT_DIR$/libProcessBtn/libProcessBtn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libWaveView/libWaveView.iml" filepath="$PROJECT_DIR$/libWaveView/libWaveView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mTAreaPicker/mTAreaPicker.iml" filepath="$PROJECT_DIR$/mTAreaPicker/mTAreaPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/rippleanimation/rippleanimation.iml" filepath="$PROJECT_DIR$/rippleanimation/rippleanimation.iml" />
     </modules>
   </component>

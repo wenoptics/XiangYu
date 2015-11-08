@@ -220,6 +220,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     return true;
                 }
             });
+
             User userBeingAt = data.getToUser();
             if (userBeingAt != null) {
                 //有人被at
