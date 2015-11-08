@@ -26,8 +26,11 @@ dependencies {
     //其中<version>替换为当前最新的Bugly SDK版本号
 }
 bugly {
-    appId = '900012238'    //注册时分配的App ID
-    appKey = 'qE49vPQBdEdIK90a'  //注册时分配的App Key
+    appId '900012238'    //注册时分配的App ID
+    appKey 'qE49vPQBdEdIK90a'  //注册时分配的App Key
+    execute true
+    upload true
+
 }
 
 dependencies {
