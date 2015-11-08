@@ -1,2 +1,2 @@
-include ':app', ':rippleanimation', ':libWaveView', ':libProcessBtn'
+include ':app', 'rippleanimation', ':libWaveView', ':libProcessBtn'
 include ':mTAreaPicker'
