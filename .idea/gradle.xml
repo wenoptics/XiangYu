@@ -10,6 +10,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/libProcessBtn" />
+            <option value="$PROJECT_DIR$/libWaveView" />
+            <option value="$PROJECT_DIR$/mTAreaPicker" />
             <option value="$PROJECT_DIR$/rippleanimation" />
           </set>
         </option>
