@@ -57,16 +57,20 @@ dependencies {
     ///// 环形波浪动画
     //compile 'com.skyfishjy.ripplebackground:library:1.0.1'
     compile project(':rippleanimation')
+
     //tablayout
     compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
-    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
-    //Optional: for V4 Fragment
+    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'//Optional: for V4 Fragment
+
     //gif drawable
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
+
     //progress fab
     //compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
+
     // dot progress dialog
     compile 'com.github.d-max:spots-dialog:0.4@aar'
+
     // material design EditView
     compile 'com.wrapp.floatlabelededittext:library:0.0.6'
 
