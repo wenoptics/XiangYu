@@ -52,9 +52,8 @@ public class FirstRunActivity extends AppCompatActivity {
         });
 
         gif_drawable.setLoopCount(1);
-        gif_drawable.start();
-
         gif_drawable.addAnimationListener(new AnimationListener() {
+
             /**
              * Called when a single loop of the animation is completed.
              *
@@ -68,6 +67,7 @@ public class FirstRunActivity extends AppCompatActivity {
             }
 
         });
+        gif_drawable.start();
     }
 
 }

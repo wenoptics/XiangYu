@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_toggleFav"
         android:title="关注地点"
-        android:icon="@drawable/ic_heart_white_24dp"
+        android:icon="@drawable/ic_heart_broken_white_24dp"
         android:orderInCategory="100"
         app:showAsAction="always" />
 

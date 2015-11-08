@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SaveListener;
 import tk.wenop.XiangYu.bean.AreaEntity;
 import tk.wenop.XiangYu.bean.MessageEntity;
@@ -40,7 +41,7 @@ public class MessageNetwork {
         query.addWhereEqualTo("ownerArea",areaEntity);
         query.include("ownerUser,ownerArea");
 //        query.include("");
-        query.findObjects(context,new FindListener<MessageEntity>(){
+        query.findObjects(context, new FindListener<MessageEntity>() {
             @Override
             public void onSuccess(List<MessageEntity> messageEntities) {
                 onGetMessageEntities.onGetMessageEntities(messageEntities);
@@ -48,7 +49,7 @@ public class MessageNetwork {
 
             @Override
             public void onError(int i, String s) {
-                Toast.makeText(context,"get data failure",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "get data failure", Toast.LENGTH_SHORT).show();
             }
         });
      }
@@ -56,6 +57,29 @@ public class MessageNetwork {
     public interface  OnGetMessageEntities{
         public void onGetMessageEntities(List<MessageEntity> allMessageEntities);
     }
+
+
+    public static void loadOneMessage(final Context context, final OnGetOneMessageEntitiy onGetOneMessageEntity,String objectID){
+
+        BmobQuery<MessageEntity> query = new BmobQuery<>();
+        query.getObject(context, objectID, new GetListener<MessageEntity>() {
+            @Override
+            public void onSuccess(MessageEntity messageEntity) {
+                onGetOneMessageEntity.onGetMessageEntity(messageEntity);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
+    }
+
+    public interface  OnGetOneMessageEntitiy{
+        public void onGetMessageEntity(MessageEntity messageEntity);
+    }
+
+
 
 
 

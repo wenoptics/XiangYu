@@ -28,6 +28,7 @@ import java.util.List;
 import tk.wenop.XiangYu.R;
 import tk.wenop.XiangYu.adapter.NewRecordPlayClickListener;
 import tk.wenop.XiangYu.bean.MessageEntity;
+import tk.wenop.XiangYu.ui.ImageBrowserActivity;
 import tk.wenop.XiangYu.ui.wenui.CommentActivity;
 import tk.wenop.XiangYu.ui.wenui.PeopleDetailActivity;
 import tk.wenop.XiangYu.util.ImageLoadOptions;
@@ -147,13 +148,14 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
         String path = "http://file.bmob.cn/" + data.getAudio();
         holder.audio_msg_bubble.setOnClickListener(
                 new NewRecordPlayClickListener(mContext, path, holder.audio_animation));
-        holder.mAudioTimeSec.setText( String.format(
-                "%d\'\'", data.getAudioLength())
+        holder.mAudioTimeSec.setText(String.format(
+                        "%d\'\'", data.getAudioLength())
         );
     }
 
     private void setContentPhoto(MessageEntity data, ViewHolder holder) {
-        imageLoader.displayImage("http://file.bmob.cn/" + data.getImage(),
+        final String picURL = "http://file.bmob.cn/" + data.getImage();
+        imageLoader.displayImage(picURL,
                 holder.mContentPhoto,
                 DisplayImageOptions.createSimple(),
                 new ImageLoadingListener() {
@@ -176,7 +178,21 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
 
                     }
                 });
+
+        // 点击图片全屏显示
+        holder.mContentPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, ImageBrowserActivity.class);
+                ArrayList<String> photos = new ArrayList<String>();
+                photos.add(picURL);
+                intent.putStringArrayListExtra("photos", photos);
+                intent.putExtra("position", 0);
+                mContext.startActivity(intent);
+            }
+        });
     }
+
 
     // add by wenop: item加载的动态效果， 防止item闪现
     private void beforeDataShown(ViewHolder holder, int position) {
@@ -250,7 +266,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
             default:
         }
 
-        if (data.getOwnerUser()!=null) {
+        if (data.getOwnerUser()!=null) { if (data.getOwnerUser().getObjectId()!=null) {
 
             if (data.getAnonymous() == true) {
                 // 匿名消息
@@ -321,7 +337,7 @@ public class MainScreenChatAdapter extends RecyclerView.Adapter<MainScreenChatAd
                                     R.color.normal_card_color_female));
                 }*/
             }
-        }
+        } }
 
         //评论按钮
         holder.mView.findViewById(R.id.group_comment)

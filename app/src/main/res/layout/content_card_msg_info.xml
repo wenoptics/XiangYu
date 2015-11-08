@@ -38,9 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="false"
-            android:layout_marginRight="80dp"
+            android:layout_marginRight="100dp"
             android:id="@+id/group_comment"
-            android:layout_toLeftOf="@+id/group_time">
+            android:layout_alignParentRight="true">
 
             <ImageView
                 android:layout_width="20dp"
