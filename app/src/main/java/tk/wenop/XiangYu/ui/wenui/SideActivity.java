@@ -79,15 +79,6 @@ import tk.wenop.XiangYu.ui.fragment.SettingsFragment;
 
 import static tk.wenop.XiangYu.MyMessageReceiver.showMsgNotify;
 
-//import tk.wenop.XiangYu.R;
-//import tk.wenop.XiangYu.adapter.custom.MainScreenChatAdapter;
-//import tk.wenop.XiangYu.adapter.custom.MainScreenOverviewItem;
-//import tk.wenop.XiangYu.util.animatedDialogUtils.ViewFindUtils;
-//import tk.wenop.testapp.Util.animatedDialogUtils.ViewFindUtils;
-//
-//import tk.wenop.testapp.Adapter.MainScreenChatAdapter;
-//import tk.wenop.testapp.Overview.MainScreenOverviewItem;
-//import tk.wenop.testapp.R;
 
 public class SideActivity extends ActivityBase
         implements
@@ -112,6 +103,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
 
     // 下拉刷新
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    View view_empty_content_notice;
 
     /*
       选取图片相关的声明
@@ -193,6 +186,8 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         onGetAddressResult = this;
         //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         //actionBar.setTitle("天天市");
+
+        view_empty_content_notice = findViewById(R.id.view_empty_content_notice);
 
         // 下拉刷新
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_screen_swipe_refresh);
@@ -303,9 +298,20 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
                 super.onChanged();
 //                Log.d("====== onChanged",
 //                        String.format("count:%d", mainActRVAdapter.getItemCount()));
-                // TODO : wenop
+                refreshContentEmptyCheck();
             }
         });
+    }
+
+
+    // wenop-add
+    //   当列表没有item的时候，显示"空"View
+    void refreshContentEmptyCheck() {
+        if (mainActRVAdapter.getItemCount() == 0) {
+            view_empty_content_notice.setVisibility(View.VISIBLE);
+        } else {
+            view_empty_content_notice.setVisibility(View.GONE);
+        }
     }
 
 

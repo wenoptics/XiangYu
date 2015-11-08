@@ -1,8 +1,5 @@
 package tk.wenop.XiangYu.ui;
 
-import java.util.ArrayList;
-
-import uk.co.senab.photoview.PhotoView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,12 +11,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import tk.wenop.XiangYu.R;
-import tk.wenop.XiangYu.util.ImageLoadOptions;
-import tk.wenop.XiangYu.view.CustomViewPager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import java.util.ArrayList;
+
+import tk.wenop.XiangYu.R;
+import tk.wenop.XiangYu.util.ImageLoadOptions;
+import tk.wenop.XiangYu.view.CustomViewPager;
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**图片浏览
   * @ClassName: ImageBrowserActivity
@@ -27,7 +29,15 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
   * @author smile
   * @date 2014-6-19 下午8:22:49
   */
-public class ImageBrowserActivity extends BaseActivity implements OnPageChangeListener{
+
+
+// wenop-add
+interface OnPictureClickCallback {
+    void onPictureClick();
+}
+
+public class ImageBrowserActivity extends BaseActivity
+        implements OnPageChangeListener, OnPictureClickCallback {
 
 	private CustomViewPager mSvpPager;
 	private ImageBrowserAdapter mAdapter;
@@ -55,7 +65,7 @@ public class ImageBrowserActivity extends BaseActivity implements OnPageChangeLi
 		mSvpPager.setAdapter(mAdapter);
 		mSvpPager.setCurrentItem(mPosition, false);
 		mSvpPager.setOnPageChangeListener(this);
-		
+
 	}
 
 	@Override
@@ -73,61 +83,89 @@ public class ImageBrowserActivity extends BaseActivity implements OnPageChangeLi
 		mPosition = arg0;
 	}
 
-	private class ImageBrowserAdapter extends PagerAdapter{
+    @Override
+    public void onPictureClick() {
+        // wenop-add
+        // 点击图片返回
+        finish();
+    }
+
+    private class ImageBrowserAdapter extends PagerAdapter{
+
+        OnPictureClickCallback mPictureClickCallback;
 		
 		private LayoutInflater inflater;
+        Context mContext;
 		
 		public ImageBrowserAdapter (Context context){
 			this.inflater = LayoutInflater.from(context);
+            mContext = context;
+            mPictureClickCallback = (OnPictureClickCallback) context;
 		}
 		
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
+			
 			return mPhotos.size();
 		}
 
 		@Override
 		public boolean isViewFromObject(View view, Object object) {
-			// TODO Auto-generated method stub
+			
 			return view == object;
 		}
 
 		@Override
 		public View instantiateItem(ViewGroup container, int position) {
+
+
 			
 			View imageLayout = inflater.inflate(R.layout.item_show_picture,
 	                container, false);
 	        final PhotoView photoView = (PhotoView) imageLayout
 	                .findViewById(R.id.photoview);
 	        final ProgressBar progress = (ProgressBar)imageLayout.findViewById(R.id.progress);
+
+            photoView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+                @Override
+                public void onViewTap(View view, float v, float v1) {
+                    mPictureClickCallback.onPictureClick();
+                }
+            });
+
+            /*photoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPictureClickCallback.onPictureClick();
+                }
+            });*/
 	        
 	        final String imgUrl = mPhotos.get(position);
 	        ImageLoader.getInstance().displayImage(imgUrl, photoView, ImageLoadOptions.getOptions(),new SimpleImageLoadingListener() {
 				
 				@Override
 				public void onLoadingStarted(String imageUri, View view) {
-					// TODO Auto-generated method stub
+					
 					progress.setVisibility(View.VISIBLE);
 				}
 				
 				@Override
 				public void onLoadingFailed(String imageUri, View view,
 						FailReason failReason) {
-					// TODO Auto-generated method stub
+					
 					progress.setVisibility(View.GONE);
 					
 				}
 				
 				@Override
 				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-					// TODO Auto-generated method stub
+					
 					progress.setVisibility(View.GONE);
 				}
 				
 				@Override
 				public void onLoadingCancelled(String imageUri, View view) {
-					// TODO Auto-generated method stub
+					
 					progress.setVisibility(View.GONE);
 					
 				}
@@ -141,7 +179,9 @@ public class ImageBrowserActivity extends BaseActivity implements OnPageChangeLi
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			container.removeView((View) object);
 		}
+
 		
 	}
+
 	
 }

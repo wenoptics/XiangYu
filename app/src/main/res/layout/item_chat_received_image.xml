@@ -28,8 +28,8 @@
             android:background="@drawable/head"
             android:scaleType="fitXY" />
 
-        <ImageView
-            android:id="@+id/iv_picture"
+        <RelativeLayout
+            android:id="@+id/_tmpI_VNIELW"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:paddingLeft="27dp"
@@ -39,10 +39,20 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="@dimen/margin_chat_top"
             android:layout_toRightOf="@id/iv_avatar"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/add_avator"
-            android:background="@drawable/chat_left_qp_ovo"
-            android:scaleType="fitXY" />
+
+            android:background="@drawable/chat_left_qp_ovo">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/iv_picture"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/add_avator"
+                android:scaleType="centerCrop" />
+
+        </RelativeLayout>
+
+
         
         <ProgressBar
             android:id="@+id/progress_load"
@@ -50,7 +60,7 @@
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/iv_picture"
+            android:layout_toRightOf="@id/_tmpI_VNIELW"
             android:visibility="visible" />
         
     </RelativeLayout>

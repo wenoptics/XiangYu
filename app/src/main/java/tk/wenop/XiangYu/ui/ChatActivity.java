@@ -638,8 +638,13 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
     private class selectPhotoOnClickListener implements OnClickListener {
         @Override
         public void onClick(View viewBtn) {
+
+
             View view = LayoutInflater.from(ChatActivity.this).inflate(R.layout.pop_showavator,
                     null);
+
+            final PopupWindow avatorPop = new PopupWindow(view, mScreenWidth, 600);
+
             RelativeLayout layout_choose = (RelativeLayout) view.findViewById(R.id.layout_choose);
             RelativeLayout layout_photo = (RelativeLayout) view.findViewById(R.id.layout_photo);
             layout_photo.setOnClickListener(new OnClickListener() {
@@ -648,6 +653,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
                 public void onClick(View arg0) {
                     ShowLog("点击拍照");
                     selectImageFromCamera();
+                    avatorPop.dismiss();
                 }
             });
             layout_choose.setOnClickListener(new OnClickListener() {
@@ -657,11 +663,11 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 
                     ShowLog("点击相册");
                     selectImageFromLocal();
+                    avatorPop.dismiss();
 
                 }
             });
 
-            final PopupWindow avatorPop = new PopupWindow(view, mScreenWidth, 600);
             avatorPop.setTouchInterceptor(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {

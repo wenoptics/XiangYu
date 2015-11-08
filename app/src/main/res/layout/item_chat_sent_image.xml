@@ -28,23 +28,36 @@
             android:contentDescription="@string/add_avator"
             android:scaleType="fitXY" />
 
-        <ImageView
-            android:id="@+id/iv_picture"
+        <RelativeLayout
+            android:id="@+id/_tmpI_NEWL"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="@dimen/margin_chat_top"
             android:layout_toLeftOf="@id/iv_avatar"
             android:background="@drawable/chat_right_qp_ovo"
-            android:contentDescription="@string/add_avator"
-            android:scaleType="fitXY"
             android:maxWidth="200.0dip"
             android:minHeight="150dp"
             android:minWidth="150dp"
             android:paddingLeft="5dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:paddingRight="27dp" />
+            android:paddingRight="27dp">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/iv_picture"
+                android:contentDescription="@string/add_avator"
+                android:scaleType="centerCrop"
+                android:maxWidth="200.0dip"
+                android:minHeight="150dp"
+                android:minWidth="150dp"
+                android:adjustViewBounds="true"/>
+
+        </RelativeLayout>
+
+
 
         <ImageView
             android:id="@+id/iv_fail_resend"
@@ -52,7 +65,7 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/iv_picture"
+            android:layout_toLeftOf="@id/_tmpI_NEWL"
             android:clickable="true"
             android:contentDescription="@string/action_settings"
             android:scaleType="fitCenter"
@@ -67,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/iv_picture"
+            android:layout_toLeftOf="@id/_tmpI_NEWL"
             android:textSize="12sp"
             android:visibility="invisible" />
 
@@ -77,7 +90,7 @@
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/iv_picture"
+            android:layout_toLeftOf="@id/_tmpI_NEWL"
             android:visibility="visible" />
     </RelativeLayout>
 
