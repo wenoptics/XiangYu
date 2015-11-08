@@ -295,6 +295,17 @@ private ArrayList<MessageEntity> mainActDataSet = new ArrayList<>();
         mainActDataSet.addAll(dbManager.getAllMessageEntities());
         mainActRVAdapter = new MainScreenChatAdapter(SideActivity.this, mainActDataSet);
         mRecyclerView.setAdapter(mainActRVAdapter);
+
+        // wenop-add 监测，当没有内容的时候, 显示“内容空”View
+        mainActRVAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+//                Log.d("====== onChanged",
+//                        String.format("count:%d", mainActRVAdapter.getItemCount()));
+                // TODO : wenop
+            }
+        });
     }
 
 
