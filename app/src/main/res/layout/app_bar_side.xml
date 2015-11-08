@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".UI.SideActivity">
+    tools:context=".UI.SideActivity"
+    android:background="#ffffff">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,7 +22,38 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView13"
+                android:src="@drawable/bg_forestdribbs"
+                android:scaleType="fitCenter"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="这里什么也没有..."
+                android:id="@+id/textView4"
+                android:layout_marginTop="200dp"
+                android:layout_centerHorizontal="true"
+                android:textSize="28dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
     <include layout="@layout/content_main_screen_chat" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
